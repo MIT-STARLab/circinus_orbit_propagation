@@ -84,7 +84,7 @@ end
 %% Combine all czml file parts into a single file
 
 delete(final_czml_file_name)
-copyfile('czml_header.czml.part.txt',final_czml_file_name);
+copyfile('../czml/czml_header.czml.part.txt',final_czml_file_name);
 
 for i=1:size(sat_file_names,1)
     sat_file_name = sat_file_names{i};

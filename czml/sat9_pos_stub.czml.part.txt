@@ -1,7 +1,7 @@
   {
     "id":"Satellite/CubeSat9",
     "name":"CubeSat9",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
     "description":"<!--HTML-->\r\n<p>My very first cubesat</p>",
     "billboard":{
       "eyeOffset":{
@@ -49,7 +49,7 @@
     "path":{
       "show":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+          "interval":"2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
           "boolean":true
         }
       ],
@@ -71,5 +71,5 @@
       "interpolationAlgorithm":"LAGRANGE",
       "interpolationDegree":5,
       "referenceFrame":"INERTIAL",
-      "epoch":"2012-03-15T10:00:00Z",
+      "epoch":"2017-03-15T10:00:00Z",
       "cartesian":[
