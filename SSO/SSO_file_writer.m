@@ -17,7 +17,7 @@ addpath('../czml');
 
 sat_file_names = {};
 
-%% Specify orbit for 10:30 LTAN
+%% Specify orbit for 10:30 LTAN, write position file, part of czml file
 
 % angles should be in degrees below
 LTN = 10.5;  % local time of ascending node for SSO
@@ -49,7 +49,7 @@ for sat_num = 1:10
 end
 
 
-%% Specify orbit for 2:30 LTAN
+%% Specify orbit for 2:30 LTAN, write position file, part of czml file
 
 % angles should be in degrees below
 LTN = 14.5;  % local time of ascending node for SSO

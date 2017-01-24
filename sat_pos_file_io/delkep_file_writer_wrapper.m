@@ -39,7 +39,7 @@ formatOut = 'dd mmm yyyy HH:MM:SS.FFF';
 
 %% Propagate
 
-addpath('../PROPAT/propat_code')
+addpath('../Libraries/PROPAT/propat_code')
 
 RTD = 180/pi;
 DTR = pi/180;
