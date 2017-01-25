@@ -1,7 +1,7 @@
 addpath('demo_sun2')
 
 % t = datetime('now')
-t = datetime([2015, 1, 23, 0, 0, 0])
+t = datetime([2017, 3, 15, 0, 0, 0])
 jdate = juliandate(t)
 [rasc, decl, rsun] = sun2 (jdate);
 
