@@ -5,8 +5,8 @@
 
 final_czml_file_name = 'sats_file.czml';
 
-start_time_str = '15 Mar 2012 00:00:00.000';
-startdatevec = [2012, 3, 15, 0, 0, 0];
+start_time_str = '15 Mar 2012 10:00:00.000';
+startdatevec = [2012, 3, 15, 10, 0, 0];
 mJDEpoch = mjuliandate(startdatevec);
 
 delta_t_sec = 60;  % seconds
@@ -20,7 +20,7 @@ sat_file_names = {};
 %% Specify orbit for 10:30 LTAN, write position file, part of czml file
 
 % angles should be in degrees below
-LTN = 10.5;  % local time of ascending node for SSO
+LTN = 10.5;  % local time of ascending node for SSO+
 Re = 6378.0088;
 altitude = 600;  % km
 e = 0;
