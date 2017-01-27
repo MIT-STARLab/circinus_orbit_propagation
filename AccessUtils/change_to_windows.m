@@ -18,6 +18,10 @@ function [windows,indices] = change_to_windows(times_list,window_spacing_days)
 windows = [];
 indices = [];
 
+if size(times_list,1) == 0
+    return
+end
+
 current_time = datenum(times_list(1,:));
 current_indx = 1;
 start_time = current_time;

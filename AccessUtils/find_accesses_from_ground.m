@@ -1,19 +1,20 @@
-function [access_times, az_el_range] = find_accesses_from_ground(times,sat_locations,ground_locations)
+function [access_times, az_el_range] = find_accesses_from_ground(times,sat_locations,ground_locations,el_cutoff)
 % Author: Kit Kennedy
 
-% simple first order approximation to find eclipse times for a satellite in
-% orbit around the earth. Assumes sun rays are parallel at earth's orbit,
-% and sat is in eclipse when simply behind the earth (no consideration for
-% penumbra/umbra difference)
+% finds access times and azimuth, elevation, range for a satellite as
+% viewed from a ground location.
 
 % Inputs:
-% Length N array of time strings
-% N x 3 array of satellite locations in ECI ref frame
-% N x 3 array of sun locations in ECI ref frame
+% times - Length N array of time strings
+% sat_locations - N x 3 array of satellite locations in ECI ref frame
+% ground_locations - N x 3 array of ground locations in ECI ref frame
+% el_cutoff - elevation cutoff angle for accesses
 
 % Outputs:
-% Length M array of time strings - each string in here is contained in an
-% eclipse
+% access_times - Length M array of time strings - each string in here is contained in an
+% access
+% az_el_range - length M array of az (deg), el (deg), range (km)
+% corresponding to access_times
 
 
 num_timepoints = size(times,1);
@@ -34,7 +35,7 @@ for timepoint_num=1:num_timepoints
     temp_ang = dot(vec_gr_sat,ground_vec)/norm(vec_gr_sat)/norm(ground_vec);
     temp_el = 90 - acosd(temp_ang);
     
-    if temp_el > 0
+    if temp_el > el_cutoff
         el = [el ; temp_el];
         
         % calc and store range 
