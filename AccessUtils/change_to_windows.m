@@ -1,4 +1,4 @@
-function [windows] = change_to_windows(times_list,window_spacing_days)
+function [windows,indices] = change_to_windows(times_list,window_spacing_days)
 % Author: Kit Kennedy
 
 % This function turns a non-temporally-continuous list of time points into
@@ -16,14 +16,20 @@ function [windows] = change_to_windows(times_list,window_spacing_days)
 % windows - array of windows, where each row is a single window, with start time (datenum), end time (datenum), size of window in seconds
 
 windows = [];
+indices = [];
 
 current_time = datenum(times_list(1,:));
+current_indx = 1;
 start_time = current_time;
+start_indx = current_indx;
 last_time = current_time;
+last_indx = current_indx;
 
 for i = 2:size(times_list,1)
     last_time = current_time;
+    last_indx = current_indx;
     current_time = datenum(times_list(i,:));
+    current_indx = i;
     
     % close a window and move on to next
     % note that if trailing point is start of a new window, that new
@@ -31,7 +37,9 @@ for i = 2:size(times_list,1)
     if current_time - last_time >= window_spacing_days
         end_time = last_time;
         windows = [windows; start_time end_time (end_time - start_time)*86400]; 
+        indices = [indices; start_indx last_indx];
         start_time = current_time;
+        start_indx = current_indx;
     end
 end
 
@@ -39,11 +47,13 @@ end
 if current_time - last_time < window_spacing_days
     end_time = current_time;
     windows = [windows; start_time end_time (end_time - start_time)*86400]; 
+    indices = [indices; start_indx current_indx];
 end
 
 % get rid of first window if it only has a single time point.
 if windows(1,3) == 0
     windows = windows(2:end,:);
+    indices = indices(2:end,:);
 end
 
 end
