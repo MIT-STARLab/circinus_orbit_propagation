@@ -11,8 +11,12 @@ addpath('../AccessUtils');
 num_sats = 20;
 
 parameters_filename = 'parameters_descope.xlsx'; % Change to 'parameters_descope.xlsx'
-[in_a, in_b] = xlsread(parameters_filename,'Target_parameters');
-num_obs = size(in_a,1);
+[target_in_a, target_in_b] = xlsread(parameters_filename,'Target_parameters');
+num_obs = size(target_in_a,1);
+
+[gs_in_a, gs_in_b] = xlsread(parameters_filename,'GS_parameters');
+num_gs = size(gs_in_a,1);
+
 
 
 %% Read in Sat files
@@ -63,13 +67,13 @@ addpath('../sat_pos_file_io');
 addpath('../Libraries/PROPAT/propat_code');
 
 % Determine obs coordinates in ECEF. Only one point because doesn't change
-target_lat_lon_rad = in_a(:,3:4)*pi/180;
+target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
 for target_num=1:num_obs
     target_ecef_xyz(target_num,:) = sph_geodetic_to_geocentric([target_lat_lon_rad(target_num,2),target_lat_lon_rad(target_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
 end
 
 % get ECI positions of targets as function of time
-target_lat_lon_rad = in_a(:,3:4)*pi/180;
+target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
 target_eci_xyz = zeros(num_timepoints,3,num_obs);
 for timepoint_num=1:num_timepoints
     dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
@@ -108,6 +112,60 @@ for sat_num = 1:num_sats
         end
         
         obs{sat_num,target_num} = obs_at_target;
+    end
+    
+end
+
+
+%% Calculate Downlink Times
+
+addpath('../sat_pos_file_io');
+addpath('../Libraries/PROPAT/propat_code');
+
+% Determine obs coordinates in ECEF. Only one point because doesn't change
+gs_lat_lon_rad = gs_in_a(:,2:3)*pi/180;
+for gs_num=1:num_gs
+    gs_ecef_xyz(gs_num,:) = sph_geodetic_to_geocentric([gs_lat_lon_rad(gs_num,2),gs_lat_lon_rad(gs_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
+end
+
+% get ECI positions of targets as function of time
+gs_lat_lon_rad = gs_in_a(:,3:4)*pi/180;
+gs_eci_xyz = zeros(num_timepoints,3,num_gs);
+for timepoint_num=1:num_timepoints
+    dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
+    mjdi = djm(day(dt), month(dt), year(dt));  % get modified julian day for ECEF -> ECI conversion
+    dayf = mod(datenum(dt),1)*86400;  % get fraction of day in seconds
+    gwst = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
+    
+    for gs_num=1:num_gs
+        temp = terrestrial_to_inertial (gwst, [gs_ecef_xyz(gs_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
+        gs_eci_xyz(timepoint_num,:,gs_num) = temp(1:3);  % km
+    end
+end
+
+gslink = cell(num_sats,num_gs);
+gsaer = cell(num_sats,num_gs);
+for sat_num = 1:num_sats
+    
+    for gs_num=1:num_gs
+        
+        % find obs target overpasses, and then turn into windows
+        [access_times, az_el_range] = find_accesses_from_ground(sat_times,sat_locations_all_sats(:,:,sat_num),gs_eci_xyz(:,:,gs_num));
+        [dlnk_windows,indices] = change_to_windows(access_times,5/60/24);
+        
+        % for each overpass, find max el in it and report that as well as
+        % time and range as an obs event, in a list of all events at this
+        % sat, target combination
+        aer = {};
+        for i=1:size(indices,1)
+            start_indx = indices(i,1);
+            end_indx = indices(i,2);
+            az_el_range_slice = az_el_range(start_indx:end_indx,:);
+            aer = [aer; az_el_range_slice];
+        end
+        
+        gslink{sat_num,gs_num} = dlnk_windows;
+        gsaer{sat_num,gs_num} = aer;
     end
     
 end
