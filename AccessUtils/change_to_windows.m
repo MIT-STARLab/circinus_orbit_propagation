@@ -13,7 +13,7 @@ function [windows,indices] = change_to_windows(times_list,window_spacing_days)
 % different windows
 
 % Outputs:
-% windows - array of windows, where each row is a single window, with start time (datenum), end time (datenum), size of window in seconds
+% windows - array of windows, where each row is a single window, with start time (mjuliandate), end time (datenum), size of window in seconds
 
 windows = [];
 indices = [];
@@ -22,7 +22,7 @@ if size(times_list,1) == 0
     return
 end
 
-current_time = datenum(times_list(1,:));
+current_time = mjuliandate(times_list(1,:));
 current_indx = 1;
 start_time = current_time;
 start_indx = current_indx;
@@ -32,7 +32,7 @@ last_indx = current_indx;
 for i = 2:size(times_list,1)
     last_time = current_time;
     last_indx = current_indx;
-    current_time = datenum(times_list(i,:));
+    current_time = mjuliandate(times_list(i,:));
     current_indx = i;
     
     % close a window and move on to next

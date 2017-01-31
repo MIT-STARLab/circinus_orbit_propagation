@@ -3,6 +3,12 @@
 % to calculate access times: observation times, downlink times, crosslink 
 % times, eclipse times
 
+% outputs, intended to be saved to a .mat file (see end of this script):
+
+% Note that times in the outputs from this script are in modified julian
+% date, obtained from mjuliandate(). To change to another time system, need
+% to change mjuliandate call both here and in change_to_windows()
+
 %% Inputs
 clear
 
@@ -19,6 +25,7 @@ num_gs = size(gs_in_a,1);
 
 el_cutoff = 0; % elevation cutoff for finding ground accesses.
 
+info = ['created for ',num2str(num_sats),' satellite scenario from matlab scripts SSO_file_writer.m and SSO_accesses_calc_and_save.m'];
 
 %% Read in Sat files
 % Note: assuming sat_time is same for all satellites
@@ -121,7 +128,7 @@ for sat_num = 1:num_sats
             access_times_slice = access_times(start_indx:end_indx,:);
             
             [max_el, indx] = max(az_el_range_slice(:,2)); % find max el
-            obs_event = [ datenum(access_times_slice(indx,:)), max_el, az_el_range_slice(indx,3)]; % obs has time of max el, max el, and range at max el (km).
+            obs_event = [ mjuliandate(access_times_slice(indx,:)), max_el, az_el_range_slice(indx,3)]; % obs has time of max el, max el, and range at max el (km).
             obs_at_target = [obs_at_target ; obs_event];
         end
         
@@ -173,8 +180,10 @@ for sat_num = 1:num_sats
         for i=1:size(indices,1)
             start_indx = indices(i,1);
             end_indx = indices(i,2);
+            access_times_slice = access_times(start_indx:end_indx,:);
             az_el_range_slice = az_el_range(start_indx:end_indx,:);
-            aer = [aer; az_el_range_slice];
+            
+            aer = [aer; mjuliandate(access_times_slice) az_el_range_slice];
         end
         
         gslink{sat_num,gs_num} = dlnk_windows;
@@ -209,8 +218,10 @@ for sat_num = 1:num_sats
         for i=1:size(indices,1)
             start_indx = indices(i,1);
             end_indx = indices(i,2);
+            access_times_slice = access_times(start_indx:end_indx,:);
             range_slice = range(start_indx:end_indx,:);
-            sats_xlnks_range = [sats_xlnks_range; range_slice];
+            alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
+            sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
         end
         
         xlink{sat_num,other_sat_num} = xlnk_windows;
@@ -219,3 +230,11 @@ for sat_num = 1:num_sats
     
 end
 
+
+%% Save relevant info for running sim_OF_const to file
+
+tstep_dayf = (datenum(sat_times(2,:)) - datenum(sat_times(1,:)));
+startdatestr = sat_times(1,:);
+enddatestr = sat_times(end,:);
+
+save(strcat('SatN',num2str(num_sats),'_matlabprop.mat'),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','gslink','gsaer','sunecl','xlink','xrange');

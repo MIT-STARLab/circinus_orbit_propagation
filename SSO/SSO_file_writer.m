@@ -5,7 +5,7 @@
 
 final_czml_file_name = 'sats_file.czml';
 
-start_time_str = '15 Mar 2012 10:00:00.000';
+start_time_str = '15 Mar 2017 10:00:00.000';  % NOTE: currently the czml files are hardcoded to this date ... if the date is changed here, the czml file will no longer work
 startdatevec = [2012, 3, 15, 10, 0, 0];
 mJDEpoch = mjuliandate(startdatevec);
 
