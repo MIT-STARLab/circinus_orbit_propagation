@@ -6,9 +6,9 @@ function [access_times, az_el_range] = find_accesses_from_ground(times,sat_locat
 
 % Inputs:
 % times - Length N array of time strings
-% sat_locations - N x 3 array of satellite locations in ECI ref frame
-% ground_locations - N x 3 array of ground locations in ECI ref frame
-% el_cutoff - elevation cutoff angle for accesses
+% sat_locations - N x 3 array of satellite locations in ECI ref frame (km)
+% ground_locations - N x 3 array of ground locations in ECI ref frame (km)
+% el_cutoff - elevation cutoff angle for accesses (deg)
 
 % Outputs:
 % access_times - Length M array of time strings - each string in here is contained in an

@@ -9,7 +9,7 @@ start_time_str = '15 Mar 2017 10:00:00.000';  % NOTE: currently the czml files a
 startdatevec = [2012, 3, 15, 10, 0, 0];
 mJDEpoch = mjuliandate(startdatevec);
 
-delta_t_sec = 60;  % seconds
+delta_t_sec = 10;  % seconds
 end_time_sec = 86400;  % seconds
 
 addpath('../sat_pos_file_io');
