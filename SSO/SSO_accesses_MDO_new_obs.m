@@ -15,13 +15,20 @@
 % observation data is acquired in reality
 
 %% Inputs
-clear
+
+tic
+
+% if we're not automating this, then we need to set numbers of satellites
+if exist('automated_generation') && automated_generation == 1
+    % No-op
+else
+    clear
+    num_sats = 6;
+end
 
 addpath('../AccessUtils');
 
-num_sats = 20;
-
-parameters_filename = 'parameters_descope.xlsx'; % Change to 'parameters_descope.xlsx'
+parameters_filename = 'parameters_descope_2.xlsx'; % Change to 'parameters_descope.xlsx'
 [target_in_a, target_in_b] = xlsread(parameters_filename,'Target_parameters');
 num_obs = size(target_in_a,1);
 
@@ -241,4 +248,6 @@ tstep_dayf = (datenum(sat_times(2,:)) - datenum(sat_times(1,:)));
 startdatestr = sat_times(1,:);
 enddatestr = sat_times(end,:);
 
-save(strcat('SatN',num2str(num_sats),'_matlabprop.mat'),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+save(strcat('Sat_2orb_',num2str(num_sats),'_matlabprop.mat'),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+
+toc

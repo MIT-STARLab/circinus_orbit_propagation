@@ -3,7 +3,15 @@
 
 %% Inputs
 
-final_czml_file_name = 'sats_file.czml';
+% if we're not automating this, then we need to set numbers of satellites
+if exist('automated_generation') && automated_generation == 1
+    % No-op
+else
+    num_sats_orbit_1 = 3;
+    num_sats_orbit_2 = 3;
+end
+
+final_czml_file_name = strcat('sats_file_',num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'.czml');
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % NOTE: currently the czml files are hardcoded to this date ... if the date is changed here, the czml file will no longer work
 startdatevec = [2012, 3, 15, 10, 0, 0];
@@ -30,11 +38,11 @@ i = oe.i_deg;
 RAAN = oe.RAAN;
 arg_perigee = 0;
 
-for sat_num = 1:10
+for sat_num = 1:num_sats_orbit_1
     satname = strcat('sat',num2str(sat_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
-    mean_anom = 360/10*(sat_num-1);
+    mean_anom = 360/num_sats_orbit_1*(sat_num-1);
     
     delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom);
 
@@ -62,11 +70,11 @@ i = oe.i_deg;
 RAAN = oe.RAAN;
 arg_perigee = 0;
 
-for sat_num = 11:20
-    satname = strcat('sat',num2str(sat_num));
+for sat_num = 1:num_sats_orbit_2
+    satname = strcat('sat',num2str(sat_num+num_sats_orbit_1));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
-    mean_anom = 360/10*(sat_num-11);
+    mean_anom = 360/num_sats_orbit_2*(sat_num-1);
     
     delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom);
 
@@ -75,7 +83,7 @@ for sat_num = 11:20
     
     decimation = 5;
     sat_file_name = strcat(satname,'_pos.czml.part.txt');
-    sat_locations_to_czml_file(sat_file_name,sat_num,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
+    sat_locations_to_czml_file(sat_file_name,sat_num+num_sats_orbit_1,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
     sat_file_names = [sat_file_names; sat_file_name];
 end
