@@ -1,6 +1,6 @@
   {
-    "id":"Satellite/CubeSat20",
-    "name":"CubeSat20",
+    "id":"Satellite/CubeSat29",
+    "name":"CubeSat29",
     "availability":"2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
     "description":"<!--HTML-->\r\n<p>My very first cubesat</p>",
     "billboard":{
@@ -43,7 +43,7 @@
       },
       "show":true,
       "style":"FILL_AND_OUTLINE",
-      "text":"CubeSat20",
+      "text":"CubeSat29",
       "verticalOrigin":"CENTER"
     },
     "path":{

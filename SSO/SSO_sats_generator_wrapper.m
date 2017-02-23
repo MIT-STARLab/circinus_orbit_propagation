@@ -1,6 +1,6 @@
 automated_generation = 1;
 
-for sats_per_orbit=19:20
+for sats_per_orbit=20:20
     sats_per_orbit
     
     % Propagate sat orbits
