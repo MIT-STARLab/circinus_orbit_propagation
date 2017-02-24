@@ -7,8 +7,8 @@
 if exist('automated_generation') && automated_generation == 1
     % No-op
 else
-    num_sats_orbit_1 = 3;
-    num_sats_orbit_2 = 3;
+    num_sats_orbit_1 = 10;
+    num_sats_orbit_2 = 10;
 end
 
 final_czml_file_name = strcat('sats_file_',num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'.czml');
