@@ -52,8 +52,8 @@
     }
   },
   {
-    "id": "Facility/Table Mountain 2",
-    "name": "Table Mountain 2",
+    "id": "Facility/Piura 2",
+    "name": "Piura 2",
     "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
@@ -84,16 +84,16 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Table Mountain 2",
+      "text": "Piura 2",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [-118.58, 37.19, 0]
+      "cartographicDegrees": [-80.702, -5.193, 0]
     }
   },
   {
-    "id": "Facility/Teide 3",
-    "name": "Teide 3",
+    "id": "Facility/Dadaab 3",
+    "name": "Dadaab 3",
     "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
@@ -124,16 +124,16 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Teide 3",
+      "text": "Dadaab 3",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [-16.64, 28.27, 0]
+      "cartographicDegrees": [40.263, 0.0998, 0]
     }
   },
   {
-    "id": "Facility/Hartebeesthoek 4",
-    "name": "Hartebeesthoek 4",
+    "id": "Facility/Darwin 4",
+    "name": "Darwin 4",
     "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
@@ -164,11 +164,11 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Hartebeesthoek 4",
+      "text": "Darwin 4",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [28.08, -25.64, 0]
+      "cartographicDegrees": [130.863, -12.426, 0]
     }
   },
   {

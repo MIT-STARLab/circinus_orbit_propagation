@@ -23,12 +23,20 @@ if exist('automated_generation') && automated_generation == 1
     % No-op
 else
     clear
-    num_sats = 6;
+    num_sats = 20;
+    
+    parameters_filename = 'parameters_descope_6_1gs.xlsx'; % Change to 'parameters_descope.xlsx'
+    
+    yes_crosslinks = 1;
+
+    filename_pre_string = 'Sat_2orb_';
+    filename_post_string = '_1gs_matlabprop.mat';
+
 end
+
 
 addpath('../AccessUtils');
 
-parameters_filename = 'parameters_descope_2.xlsx'; % Change to 'parameters_descope.xlsx'
 [target_in_a, target_in_b] = xlsread(parameters_filename,'Target_parameters');
 num_obs = size(target_in_a,1);
 
@@ -206,51 +214,56 @@ end
 
 %% Calculate Crosslink Times and Ranges
 
-% disp('calculate crosslink times');
-% 
-% xlink = cell(num_sats,num_gs);
-% xrange = cell(num_sats,num_gs);
-% for sat_num = 1:num_sats
-%     
-%     sat_num
-%     
-%     for other_sat_num=1:num_sats
-%         
-%         if sat_num == other_sat_num
-%             continue
-%         end
-%         
-%         % find obs target overpasses, and then turn into windows
-%         [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_all_sats(:,:,sat_num),sat_locations_all_sats(:,:,other_sat_num));
-%         [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
-%         
-%         % save AER of all the accesses
-%         sats_xlnks_range = {};
-%         for i=1:size(indices,1)
-%             start_indx = indices(i,1);
-%             end_indx = indices(i,2);
-%             access_times_slice = access_times(start_indx:end_indx,:);
-%             range_slice = range(start_indx:end_indx,:);
-%             alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
-%             sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
-%         end
-%         
-%         xlink{sat_num,other_sat_num} = xlnk_windows;
-%         xrange{sat_num,other_sat_num} = sats_xlnks_range;
-%     end
-%     
-% end
+if yes_crosslinks
 
+    disp('calculate crosslink times');
 
+    xlink = cell(num_sats,num_gs);
+    xrange = cell(num_sats,num_gs);
+    for sat_num = 1:num_sats
+
+        sat_num
+
+        for other_sat_num=1:num_sats
+
+            if sat_num == other_sat_num
+                continue
+            end
+
+            % find obs target overpasses, and then turn into windows
+            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_all_sats(:,:,sat_num),sat_locations_all_sats(:,:,other_sat_num));
+            [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
+
+            % save AER of all the accesses
+            sats_xlnks_range = {};
+            for i=1:size(indices,1)
+                start_indx = indices(i,1);
+                end_indx = indices(i,2);
+                access_times_slice = access_times(start_indx:end_indx,:);
+                range_slice = range(start_indx:end_indx,:);
+                alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
+                sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
+            end
+
+            xlink{sat_num,other_sat_num} = xlnk_windows;
+            xrange{sat_num,other_sat_num} = sats_xlnks_range;
+        end
+
+    end
+
+end
 %% Save relevant info for running sim_OF_const to file
 
 tstep_dayf = (datenum(sat_times(2,:)) - datenum(sat_times(1,:)));
 startdatestr = sat_times(1,:);
 enddatestr = sat_times(end,:);
 
-% save(strcat('Sat_2orb_',num2str(num_sats),'_matlabprop.mat'),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+if yes_crosslinks
+    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+else
 % or no crosslinks
-save(strcat('Sat_2orb_',num2str(num_sats),'_matlabprop.mat'),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
+    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
+end
 
 
 toc
