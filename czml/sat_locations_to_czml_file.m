@@ -1,4 +1,4 @@
-function [] = sat_locations_to_czml_file(file_name,sat_num,sat_locations, timestep, decimation)
+function [] = sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations, timestep, decimation)
 % creates a section of a czml json file, with the data for a single satellite
 
 % note the czml file currently assumes a day long scenario.
@@ -11,9 +11,9 @@ z = sat_locations(:,3)*1000;
 
 pos = [x y z];
 
-copyfile(strcat('../czml/sat',num2str(sat_num),'_pos_stub.czml.part.txt'),file_name);
+copyfile(sat_header_file_name,sat_output_file_name);
 
-fileID = fopen(file_name,'a+');
+fileID = fopen(sat_output_file_name,'a+');
 
 time = start_time;
 dec_counter = 5;

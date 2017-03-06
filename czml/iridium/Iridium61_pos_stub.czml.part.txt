@@ -1,4 +1,3 @@
-[
 {
 	"id":"Satellite/Iridium61",
 "name":"Iridium61",

@@ -51,10 +51,11 @@ for sat_num = 1:num_sats_orbit_1
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_file_name = strcat(satname,'_pos.czml.part.txt');
-    sat_locations_to_czml_file(sat_file_name,sat_num,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
+    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
+    sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_file_name];
+    sat_file_names = [sat_file_names; sat_output_file_name];
 end
 
 
@@ -85,10 +86,11 @@ for sat_num = 1:num_sats_orbit_2
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_file_name = strcat(satname,'_pos.czml.part.txt');
-    sat_locations_to_czml_file(sat_file_name,sat_num+sat_name_base_num,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
+    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
+    sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_file_name];
+    sat_file_names = [sat_file_names; sat_output_file_name];
 end
 
 %% Specify equatorial orbit, write position file, part of czml file
@@ -116,10 +118,11 @@ for sat_num = 1:num_sats_orbit_3
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_file_name = strcat(satname,'_pos.czml.part.txt');
-    sat_locations_to_czml_file(sat_file_name,sat_num+sat_name_base_num,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
+    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
+    sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_file_name];
+    sat_file_names = [sat_file_names; sat_output_file_name];
 end
 
 
