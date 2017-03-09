@@ -1,11 +1,13 @@
 # use the SublimePrettyJson package in to pretty print the output czml correctly (note that the json has to be valid for pretty print to work). Link: https://github.com/dzhibas/SublimePrettyJson/issues
 
+import datetime
 
-def writeGStext(fd,name,start_avail='2017-03-15T10:00:00Z',end_avail='2017-03-16T10:00:00Z',latitude=0.0,longitude=0.0):
+
+def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
 
     id_string = '\t"id":"Facility/'+name+'",\n'
     name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail+'/'+end_avail+'",\n'
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
 
 
     description = 'no description'
@@ -31,14 +33,13 @@ def writeGStext(fd,name,start_avail='2017-03-15T10:00:00Z',end_avail='2017-03-16
     fd.write( pos_string);
     fd.write( '},\n');
 
-
-def writeObsText(fd,name,start_avail='2017-03-15T10:00:00Z',end_avail='2017-03-16T10:00:00Z',latitude=0.0,longitude=0.0):
+def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
 
     target_pic = 'target.jpg'
 
     id_string = '\t"id":"Target/'+name+'",\n'
     name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail+'/'+end_avail+'",\n'
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
 
 
     description = 'no description'
@@ -64,11 +65,11 @@ def writeObsText(fd,name,start_avail='2017-03-15T10:00:00Z',end_avail='2017-03-1
     fd.write( pos_string);
     fd.write( '},\n');
 
-def writeSatTextHeader(fd,name='CubeSat',start_avail='2017-03-15T10:00:00Z',end_avail='2017-03-16T10:00:00Z',img_file='CubeSat1.png',scale=0.2,label_text='CubeSat'):
+def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),img_file='CubeSat1.png',scale=0.2,label_text='CubeSat'):
 
     id_string = '\t"id":"Satellite/'+name+'",\n'
     name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail+'/'+end_avail+'",\n'
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
 
 
     description = 'my very first cubesat'
@@ -111,3 +112,80 @@ def writeSatTextHeader(fd,name='CubeSat',start_avail='2017-03-15T10:00:00Z',end_
     # 86300,4250684.092000,-1275243.364000,-5384983.373000,
     # 86350,4493825.425000,-1432048.016000,-5142701.463000,
     # 86400,4723826.578000,-1584659.610000,-4885378.511000
+
+def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), polyline_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color_str='0,0,255,255',reference1='Satellite/CubeSatN#position',reference2='Satellite/CubeSatM#position'):
+
+    id_string = '\t"id":"'+ID+'",\n'
+    name_string = '"name":"'+name+'",\n'
+
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+
+
+    polyline_intervals = []
+    polyline_intervals_show = []
+
+    if len(polyline_show_times) > 0:
+        last_time = start_avail
+
+        for i, times  in enumerate(polyline_show_times):
+            polyline_intervals.append([last_time,times[0]])
+            polyline_intervals_show.append(False)
+
+            polyline_intervals.append([times[0],times[1]])
+            polyline_intervals_show.append(True)
+
+            if times[1] < times[0]:
+                print 'error 1'
+            if times[0] < last_time:
+                print 'error 2'
+
+            last_time = times[1]
+
+        polyline_intervals.append([last_time,end_avail])
+        polyline_intervals_show.append(False)
+
+        if end_avail < last_time:
+            print 'error 3'
+
+    polyline_string_1 = '"polyline":{\n"show":'
+    polyline_string_2 = ''
+    polyline_body_strings = []
+
+    if not polyline_intervals:
+        polyline_string_1 += 'false,\n'
+    else:
+        polyline_string_1 += '[\n'
+
+        for i, intervals  in enumerate(polyline_intervals):
+
+            string = ''
+            if not i == 0: string+=','
+
+            string+= '{\n'
+            string+= '"interval":"'+intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+            string+='"boolean":'+str(polyline_intervals_show[i]).lower()+'\n'
+            string+= '}\n'
+
+            polyline_body_strings.append(string)
+
+        polyline_string_2 = '],\n'
+
+    polyline_string_2 += '"width":6,\n'
+    polyline_string_3 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
+
+    polyline_string_4 = '"followSurface":false,\n"positions":{\n"references":[\n"'+reference1+'","'+reference2+'"\n]\n}\n}\n'
+
+
+    fd.write( '{\n')
+    fd.write( id_string)
+    fd.write( name_string)
+    fd.write( availability_string)
+    fd.write( polyline_string_1)
+
+    for string in polyline_body_strings:
+        fd.write( string)
+
+    fd.write( polyline_string_2)
+    fd.write( polyline_string_3)
+    fd.write( polyline_string_4)
+    fd.write( '},\n')
