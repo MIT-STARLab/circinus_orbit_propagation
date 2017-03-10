@@ -37,16 +37,14 @@ end
 
 addpath('../AccessUtils');
 
-[target_in_a, target_in_b] = xlsread(parameters_filename,'Target_parameters');
+[target_in_a, target_in_b] = xlsread(targets_parameters_filename,'Target_parameters');
 num_obs = size(target_in_a,1);
 
-[gs_in_a, gs_in_b] = xlsread(parameters_filename,'GS_parameters');
+[gs_in_a, gs_in_b] = xlsread(gs_parameters_filename,'4');
 num_gs = size(gs_in_a,1);
 
 el_cutoff = 0; % elevation cutoff for finding ground accesses. (deg)
 el_cutoff_obs = 60; % elevation cutoff for finding obs times. (deg)
-
-info = ['created for ',num2str(num_sats),' satellite scenario from matlab scripts SSO_file_writer.m and SSO_accesses_calc_and_save.m'];
 
 %% Read in Sat files
 % Note: assuming sat_time is same for all satellites
