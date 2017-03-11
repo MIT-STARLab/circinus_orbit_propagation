@@ -168,7 +168,7 @@ def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime
 
             polyline_body_strings.append(string)
 
-        polyline_string_2 = '],\n'
+        polyline_string_2 += '],\n'
 
     polyline_string_2 += '"width":6,\n'
     polyline_string_3 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
@@ -188,4 +188,84 @@ def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime
     fd.write( polyline_string_2)
     fd.write( polyline_string_3)
     fd.write( polyline_string_4)
+    fd.write( '},\n')
+
+def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color_str='255,0,0,150',position_ref='Satellite/CubeSatN#position'):
+
+    id_string = '\t"id":"'+ID+'",\n'
+    name_string = '"name":"'+name+'",\n'
+
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+
+
+    cylinder_intervals = []
+    cylinder_intervals_show = []
+
+    if len(cylinder_show_times) > 0:
+        last_time = start_avail
+
+        for i, times  in enumerate(cylinder_show_times):
+            cylinder_intervals.append([last_time,times[0]])
+            cylinder_intervals_show.append(False)
+
+            cylinder_intervals.append([times[0],times[1]])
+            cylinder_intervals_show.append(True)
+
+            if times[1] < times[0]:
+                print 'error 1'
+            if times[0] < last_time:
+                print 'error 2'
+
+            last_time = times[1]
+
+        cylinder_intervals.append([last_time,end_avail])
+        cylinder_intervals_show.append(False)
+
+        if end_avail < last_time:
+            print 'error 3'
+
+    cylinder_string_1 = '"cylinder" : {\n"length" : 530000.0,\n"topRadius" : 0.0,\n"bottomRadius" : 400000.0,\n'
+    cylinder_string_2 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
+    cylinder_string_3 = '"fill" : true,\n'
+
+    cylinder_string_4 = '"show":'
+    cylinder_string_5 = ''
+    cylinder_body_strings = []
+
+    if not cylinder_intervals:
+        cylinder_string_4 += 'false,\n'
+    else:
+        cylinder_string_4 += '[\n'
+
+        for i, intervals  in enumerate(cylinder_intervals):
+
+            string = ''
+            if not i == 0: string+=','
+
+            string+= '{\n'
+            string+= '"interval":"'+intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+            string+='"boolean":'+str(cylinder_intervals_show[i]).lower()+'\n'
+            string+= '}\n'
+
+            cylinder_body_strings.append(string)
+
+        cylinder_string_5 += ']\n},\n'
+
+
+    cylinder_string_5 += '"position":{\n"reference":"'+position_ref+'"\n}'
+
+
+    fd.write( '{\n')
+    fd.write( id_string)
+    fd.write( name_string)
+    fd.write( availability_string)
+    fd.write( cylinder_string_1)
+    fd.write( cylinder_string_2)
+    fd.write( cylinder_string_3)
+    fd.write( cylinder_string_4)
+
+    for string in cylinder_body_strings:
+        fd.write( string)
+
+    fd.write( cylinder_string_5)
     fd.write( '},\n')
