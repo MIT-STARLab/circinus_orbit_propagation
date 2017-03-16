@@ -37,10 +37,10 @@ end
 
 addpath('../AccessUtils');
 
-[target_in_a, target_in_b] = xlsread(targets_parameters_filename,'Target_parameters');
+[target_in_a, target_in_b] = xlsread(targets_parameters_filename,targets_parameters_sheetname);
 num_obs = size(target_in_a,1);
 
-[gs_in_a, gs_in_b] = xlsread(gs_parameters_filename,'4');
+[gs_in_a, gs_in_b] = xlsread(gs_parameters_filename,gs_parameters_sheetname);
 num_gs = size(gs_in_a,1);
 
 el_cutoff = 0; % elevation cutoff for finding ground accesses. (deg)

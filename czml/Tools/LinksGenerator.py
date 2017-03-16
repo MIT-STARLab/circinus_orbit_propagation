@@ -82,7 +82,7 @@ for sat_indx in xrange(0,num_sats):
 
         # if it's not empty
         if xlnk.any():
-            other_sat_indx = x_part[sat_indx][xlnk_indx][0][0]
+            other_sat_num = x_part[sat_indx][xlnk_indx][0][0]
 
             # do a bunch of crap to convert to datetime. Note that jd2gcal returns year,month,day, FRACTION OF DAY (GOD WHY!?) so we have to convert.
             start_xlnk = jdcal.jd2gcal(jdcal.MJD_0,xlnk[0][0])
@@ -96,7 +96,7 @@ for sat_indx in xrange(0,num_sats):
             start_xlnk_datetime = datetime.datetime(start_xlnk[0],start_xlnk[1],start_xlnk[2],int(start_xlnk_hours),int(start_xlnk_minutes),int(start_xlnk_seconds))
             end_xlnk_datetime = datetime.datetime(end_xlnk[0],end_xlnk[1],end_xlnk[2],int(end_xlnk_hours),int(end_xlnk_minutes),int(end_xlnk_seconds))
 
-            crosslink_times_datetime[sat_indx][other_sat_indx].append([start_xlnk_datetime,end_xlnk_datetime])
+            crosslink_times_datetime[sat_indx][other_sat_num-1].append([start_xlnk_datetime,end_xlnk_datetime])
 
 
 # import observations
