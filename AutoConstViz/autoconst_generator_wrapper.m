@@ -16,7 +16,7 @@ num_sats_orbit_2 = 10;  % SSO 1230 LTAN
 num_sats_orbit_3 = 10;  % SSO 1630 LTAN
 num_sats_orbit_4 = 10;  % Equatorial
 
-autoconst_file_writer
+% autoconst_file_writer
 
 
 
@@ -26,7 +26,7 @@ autoconst_file_writer
 % more frequent change
 gs_network = 1;
 targets_parameters_sheetname = 'mov_rev_3_targ';
-yes_crosslinks = 0;
+yes_crosslinks = 1;
 filename_pre_string = 'AutoconstSats_';
 % filename_pre_string = 'Sat_single_ISS_';
 % filename_pre_string = 'Sat_single_Equat_';
@@ -34,7 +34,7 @@ filename_post_string = '_matlabprop.mat';
 
     
 %less frequent change
-num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3;
+num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3 + num_sats_orbit_4;
 
 % parameters_filename = 'parameters_single_sat_sfn.xlsx'; % Change to 'parameters_descope.xlsx'
 targets_parameters_filename = '../parameters_targets.xlsx';

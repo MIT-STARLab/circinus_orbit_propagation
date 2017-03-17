@@ -89,12 +89,12 @@ for timepoint_num=1:num_timepoints
     [rasc, decl, rsun(timepoint_num,:)] = sun2 (jdate);  % rsun in km
 end
 
-sunecl = {};
+sunecl = cell(1,num_sats);
 for sat_num = 1:num_sats
     sat_num
     
     eclipse_times = find_eclipse_times(sat_times,sat_locations_all_sats(:,:,sat_num),rsun);
-    sunecl = [sunecl change_to_windows(eclipse_times,5/60/24)];  % make eclipse windows, with a spaceing of at least 5 minutes between windows
+    sunecl{1,sat_num} = change_to_windows(eclipse_times,5/60/24);  % make eclipse windows, with a spaceing of at least 5 minutes between windows
 end
 
 %% Calculate Observation Times and AER
