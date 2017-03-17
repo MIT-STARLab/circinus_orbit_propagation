@@ -137,7 +137,7 @@ for sat_indx in xrange(0,num_sats):
 
 all_fd = open("out.json", "w")
 
-start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
+start_avail=datetime.datetime(2017, 3, 15, 11, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
 
 GS_names_choice = GS_names[gs_network][0]

@@ -33,7 +33,7 @@ def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end
     fd.write( pos_string);
     fd.write( '},\n');
 
-def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
+def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True):
 
     target_pic = 'target.jpg'
 
@@ -60,9 +60,35 @@ def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),en
     fd.write( name_string);
     fd.write( availability_string);
     fd.write( description_string);
-    fd.write( billboard_string);
+    if include_billboard:
+        fd.write( billboard_string);
     fd.write( label_string);
     fd.write( pos_string);
+    fd.write( '},\n');
+
+def writeObsTextRect(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),color_str='0,0,255,255',lower_lat=0.0,upper_lat=10.0,left_long=5.0,right_long=10.0):
+
+
+    id_string = '\t"id":"Rectangle/'+name+'",\n'
+    name_string = '"name":"'+name+'",\n'
+    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+
+
+    description = 'no description'
+    description_string = '"description":"<!--HTML-->\\r\\n<p>\\r\\n'+description+'\\r\\n</p>",\n'
+
+
+    rec_string_1 = '"rectangle": {\n"show": true,\n"height": 0,\n"coordinates": {\n"wsenDegrees": ['+str(left_long)+','+str(lower_lat)+','+str(right_long)+','+str(upper_lat)+']\n},'
+
+    rec_string_2 = '"fill": true,\n"material": {\n"solidColor": {\n"color": {\n"rgba": ['+color_str+']\n}\n}\n}\n}'
+
+    fd.write( '{\n');
+    fd.write( id_string);
+    fd.write( name_string);
+    fd.write( availability_string);
+    fd.write( description_string);
+    fd.write( rec_string_1);
+    fd.write( rec_string_2);
     fd.write( '},\n');
 
 def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),img_file='CubeSat1.png',scale=0.2,label_text='CubeSat'):
@@ -212,9 +238,9 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
             cylinder_intervals_show.append(True)
 
             if times[1] < times[0]:
-                print 'error 1'
+                print 'error 4'
             if times[0] < last_time:
-                print 'error 2'
+                print 'error 5'
 
             last_time = times[1]
 
@@ -222,7 +248,7 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
         cylinder_intervals_show.append(False)
 
         if end_avail < last_time:
-            print 'error 3'
+            print 'error 6'
 
     cylinder_string_1 = '"cylinder" : {\n"length" : 530000.0,\n"topRadius" : 0.0,\n"bottomRadius" : 400000.0,\n'
     cylinder_string_2 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
