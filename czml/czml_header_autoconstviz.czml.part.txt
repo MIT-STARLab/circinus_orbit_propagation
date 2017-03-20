@@ -14,7 +14,7 @@
   {
     "id": "Facility/Prudhoe Bay 1",
     "name": "Prudhoe Bay 1",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -54,7 +54,7 @@
   {
     "id": "Facility/Fairbanks 2",
     "name": "Fairbanks 2",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -94,7 +94,7 @@
   {
     "id": "Facility/Seattle 3",
     "name": "Seattle 3",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -134,7 +134,7 @@
   {
     "id": "Facility/New Mexico 4",
     "name": "New Mexico 4",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -174,7 +174,7 @@
   {
     "id": "Facility/New England 5",
     "name": "New England 5",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -214,7 +214,7 @@
   {
     "id": "Facility/Hawaii 6",
     "name": "Hawaii 6",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -254,7 +254,7 @@
   {
     "id": "Facility/Florida 7",
     "name": "Florida 7",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -294,7 +294,7 @@
   {
     "id": "Facility/Argentina 8",
     "name": "Argentina 8",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -334,7 +334,7 @@
   {
     "id": "Facility/Brazil 9",
     "name": "Brazil 9",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -374,7 +374,7 @@
   {
     "id": "Facility/Munich 10",
     "name": "Munich 10",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -414,7 +414,7 @@
   {
     "id": "Facility/Norway 11",
     "name": "Norway 11",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -454,7 +454,7 @@
   {
     "id": "Facility/South Africa 12",
     "name": "South Africa 12",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -494,7 +494,7 @@
   {
     "id": "Facility/Dubai 13",
     "name": "Dubai 13",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -534,7 +534,7 @@
   {
     "id": "Facility/Singapore 14",
     "name": "Singapore 14",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -574,7 +574,7 @@
   {
     "id": "Facility/Guam 15",
     "name": "Guam 15",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -614,7 +614,7 @@
   {
     "id": "Facility/Japan 16",
     "name": "Japan 16",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -654,7 +654,7 @@
   {
     "id": "Facility/New Zealand 17",
     "name": "New Zealand 17",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
     "billboard": {
       "eyeOffset": {
@@ -694,23 +694,8 @@
   {
     "id": "Target/New York 1",
     "name": "New York 1",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -736,23 +721,8 @@
   {
     "id": "Target/Chicago 2",
     "name": "Chicago 2",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -778,23 +748,8 @@
   {
     "id": "Target/S. California 3",
     "name": "S. California 3",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -820,23 +775,8 @@
   {
     "id": "Target/Central Valley 4",
     "name": "Central Valley 4",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -862,23 +802,8 @@
   {
     "id": "Target/San Francisco 5",
     "name": "San Francisco 5",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -904,23 +829,8 @@
   {
     "id": "Target/Colorado 6",
     "name": "Colorado 6",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -944,25 +854,10 @@
     }
   },
   {
-    "id": "Target/Mount Rainier 7",
-    "name": "Mount Rainier 7",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "id": "Target/Mount Etna 7",
+    "name": "Mount Etna 7",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -978,33 +873,18 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Mount Rainier 7",
+      "text": "Mount Etna 7",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [-121.75011, 46.865919, 0]
+      "cartographicDegrees": [14.9894774, 37.7499245, 0]
     }
   },
   {
     "id": "Target/Havana 8",
     "name": "Havana 8",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1030,23 +910,8 @@
   {
     "id": "Target/Amazon 9",
     "name": "Amazon 9",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1072,23 +937,8 @@
   {
     "id": "Target/Sao Paulo 10",
     "name": "Sao Paulo 10",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1114,23 +964,8 @@
   {
     "id": "Target/Buenos Aires 11",
     "name": "Buenos Aires 11",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1156,23 +991,8 @@
   {
     "id": "Target/Panama Canal 12",
     "name": "Panama Canal 12",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1198,23 +1018,8 @@
   {
     "id": "Target/Paris 13",
     "name": "Paris 13",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1240,23 +1045,8 @@
   {
     "id": "Target/Berlin 14",
     "name": "Berlin 14",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1282,23 +1072,8 @@
   {
     "id": "Target/Vienna 15",
     "name": "Vienna 15",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1324,23 +1099,8 @@
   {
     "id": "Target/Moscow 16",
     "name": "Moscow 16",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1366,23 +1126,8 @@
   {
     "id": "Target/North Sea 17",
     "name": "North Sea 17",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1408,23 +1153,8 @@
   {
     "id": "Target/Suez Canal 18",
     "name": "Suez Canal 18",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1450,23 +1180,8 @@
   {
     "id": "Target/Kuwait 19",
     "name": "Kuwait 19",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1490,25 +1205,10 @@
     }
   },
   {
-    "id": "Target/Dubai 20",
-    "name": "Dubai 20",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "id": "Target/Addis Ababa 20",
+    "name": "Addis Ababa 20",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1524,33 +1224,18 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Dubai 20",
+      "text": "Addis Ababa 20",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [55.339891, 25.250257, 0]
+      "cartographicDegrees": [38.7081045, 8.9631703, 0]
     }
   },
   {
     "id": "Target/Lagos 21",
     "name": "Lagos 21",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1576,23 +1261,8 @@
   {
     "id": "Target/DRC 22",
     "name": "DRC 22",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1618,23 +1288,8 @@
   {
     "id": "Target/Cape Town 23",
     "name": "Cape Town 23",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1660,23 +1315,8 @@
   {
     "id": "Target/Mumbai 24",
     "name": "Mumbai 24",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1702,23 +1342,8 @@
   {
     "id": "Target/New Delhi 25",
     "name": "New Delhi 25",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1744,23 +1369,8 @@
   {
     "id": "Target/Dhaka 26",
     "name": "Dhaka 26",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1786,23 +1396,8 @@
   {
     "id": "Target/Bangkok 27",
     "name": "Bangkok 27",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1826,25 +1421,10 @@
     }
   },
   {
-    "id": "Target/Singapore 28",
-    "name": "Singapore 28",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "id": "Target/Indonesia 28",
+    "name": "Indonesia 28",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1860,33 +1440,18 @@
       },
       "show": true,
       "style": "FILL_AND_OUTLINE",
-      "text": "Singapore 28",
+      "text": "Indonesia 28",
       "verticalOrigin": "CENTER"
     },
     "position": {
-      "cartographicDegrees": [103.851294, 1.37434, 0]
+      "cartographicDegrees": [113.8666456, -2.2097019, 0]
     }
   },
   {
     "id": "Target/Hong Kong 29",
     "name": "Hong Kong 29",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1912,23 +1477,8 @@
   {
     "id": "Target/Shanghai 30",
     "name": "Shanghai 30",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1954,23 +1504,8 @@
   {
     "id": "Target/Beijing 31",
     "name": "Beijing 31",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -1996,23 +1531,8 @@
   {
     "id": "Target/Tokyo 32",
     "name": "Tokyo 32",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -2038,23 +1558,8 @@
   {
     "id": "Target/Omsk 33",
     "name": "Omsk 33",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -2080,23 +1585,8 @@
   {
     "id": "Target/Sydney 34",
     "name": "Sydney 34",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -2122,23 +1612,8 @@
   {
     "id": "Target/Perth 35",
     "name": "Perth 35",
-    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
     "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
-    "billboard": {
-      "eyeOffset": {
-        "cartesian": [0, 0, 0]
-      },
-      "horizontalOrigin": "CENTER",
-      "image": {
-        "uri": "target.jpg"
-      },
-      "pixelOffset": {
-        "cartesian2": [0, 0]
-      },
-      "scale": 0.1,
-      "show": true,
-      "verticalOrigin": "CENTER"
-    },
     "label": {
       "fillColor": {
         "rgba": [0, 255, 255, 255]
@@ -2159,5 +1634,740 @@
     },
     "position": {
       "cartographicDegrees": [116.738662, -31.91244, 0]
+    }
+  },
+  {
+    "id": "Rectangle/New York 1",
+    "name": "New York 1",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-76.1180866, 38.705565, -72.1180866, 42.705565]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Chicago 2",
+    "name": "Chicago 2",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-89.8722384, 39.8336478, -85.8722384, 43.8336478]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/S. California 3",
+    "name": "S. California 3",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-119.372769, 31.833765, -115.372769, 35.833765]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Central Valley 4",
+    "name": "Central Valley 4",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-121.603913, 34.125231, -117.603913, 38.125231]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/San Francisco 5",
+    "name": "San Francisco 5",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-124.420643, 35.783587, -120.420643, 39.783587]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Colorado 6",
+    "name": "Colorado 6",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-108.789534, 37.358974, -104.789534, 41.358974]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Mount Etna 7",
+    "name": "Mount Etna 7",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [12.9894774, 35.7499245, 16.9894774, 39.7499245]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Havana 8",
+    "name": "Havana 8",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-84.31092, 21.0907, -80.31092, 25.0907]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Amazon 9",
+    "name": "Amazon 9",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-62.010668, -5.113053, -58.010668, -1.113053]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Sao Paulo 10",
+    "name": "Sao Paulo 10",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-48.858481, -25.404804, -44.858481, -21.404804]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Buenos Aires 11",
+    "name": "Buenos Aires 11",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-60.620841, -36.85161, -56.620841, -32.85161]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Panama Canal 12",
+    "name": "Panama Canal 12",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [-81.670526, 7.174024, -77.670526, 11.174024]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Paris 13",
+    "name": "Paris 13",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [0.300722, 46.625623, 4.300722, 50.625623]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Berlin 14",
+    "name": "Berlin 14",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [11.321765, 50.546047, 15.321765, 54.546047]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Vienna 15",
+    "name": "Vienna 15",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [14.375964, 46.15443, 18.375964, 50.15443]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Moscow 16",
+    "name": "Moscow 16",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [35.686186, 53.700184, 39.686186, 57.700184]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/North Sea 17",
+    "name": "North Sea 17",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [1.505061, 57.242012, 5.505061, 61.242012]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Suez Canal 18",
+    "name": "Suez Canal 18",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [30.381991, 28.705666, 34.381991, 32.705666]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Kuwait 19",
+    "name": "Kuwait 19",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [47.081795, 27.588284, 51.081795, 31.588284]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Addis Ababa 20",
+    "name": "Addis Ababa 20",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [36.7081045, 6.9631703, 40.7081045, 10.9631703]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Lagos 21",
+    "name": "Lagos 21",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [1.379779, 4.520423, 5.379779, 8.520423]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/DRC 22",
+    "name": "DRC 22",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [20.173712, -4.024093, 24.173712, -0.024093]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Cape Town 23",
+    "name": "Cape Town 23",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [16.526935, -35.872026, 20.526935, -31.872026]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Mumbai 24",
+    "name": "Mumbai 24",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [70.863436, 17.004886, 74.863436, 21.004886]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/New Delhi 25",
+    "name": "New Delhi 25",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [75.195693, 26.585252, 79.195693, 30.585252]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Dhaka 26",
+    "name": "Dhaka 26",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [88.447047, 21.625859, 92.447047, 25.625859]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Bangkok 27",
+    "name": "Bangkok 27",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [98.950904, 11.673364, 102.950904, 15.673364]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Indonesia 28",
+    "name": "Indonesia 28",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [111.8666456, -4.2097019, 115.8666456, -0.2097019]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Hong Kong 29",
+    "name": "Hong Kong 29",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [112.155498, 20.440325, 116.155498, 24.440325]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Shanghai 30",
+    "name": "Shanghai 30",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [119.198994, 29.240996, 123.198994, 33.240996]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Beijing 31",
+    "name": "Beijing 31",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [114.369419, 37.757344, 118.369419, 41.757344]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Tokyo 32",
+    "name": "Tokyo 32",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [137.504185, 33.664099, 141.504185, 37.664099]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Omsk 33",
+    "name": "Omsk 33",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [71.898349, 52.922771, 75.898349, 56.922771]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Sydney 34",
+    "name": "Sydney 34",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [148.866372, -35.955051, 152.866372, -31.955051]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "Rectangle/Perth 35",
+    "name": "Perth 35",
+    "availability": "2017-03-15T11:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML-->\r\n<p>\r\nno description\r\n</p>",
+    "rectangle": {
+      "show": true,
+      "height": 0,
+      "coordinates": {
+        "wsenDegrees": [114.738662, -33.91244, 118.738662, -29.91244]
+      },
+      "fill": true,
+      "material": {
+        "solidColor": {
+          "color": {
+            "rgba": [0, 255, 255, 100]
+          }
+        }
+      }
     }
   },
