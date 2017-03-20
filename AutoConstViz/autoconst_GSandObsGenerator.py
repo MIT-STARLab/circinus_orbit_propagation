@@ -14,7 +14,7 @@ all_fd.write( '[\n');
 
 # GS and targets based on parameters_descope_2 from MDO work
 
-start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
+start_avail=datetime.datetime(2017, 3, 15, 11, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
 
 

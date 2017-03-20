@@ -295,3 +295,36 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
 
     fd.write( cylinder_string_5)
     fd.write( '},\n')
+
+def writeDataStorageHistory(fd,ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]]):
+
+    id_string = '\t"id":"'+ID+'",\n'
+
+    datavol_string_1 = '"datavol": {\n"interpolationAlgorithm": "LINEAR",\n"interpolationDegree": 1,\n'
+    datavol_string_2 = '}\n'
+
+    epoch_string = '"epoch": "'+epoch.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+
+    number_string_1 = '"number": [\n'
+    number_string_2 = ']\n'
+
+    number_body_strings = []
+    for i, sample in enumerate(data_history):
+        if i == len(data_history)-1:
+            number_body_strings.append('%f,%f\n'%(sample[0],sample[1]))
+        else:
+            number_body_strings.append('%f,%f,\n'%(sample[0],sample[1]))
+
+
+    fd.write( '{\n')
+    fd.write( id_string)
+    fd.write( datavol_string_1)
+    fd.write( epoch_string)
+    fd.write( number_string_1)
+
+    for string in number_body_strings:
+        fd.write(string)
+
+    fd.write( number_string_2)
+    fd.write( datavol_string_2)
+    fd.write( '},\n')

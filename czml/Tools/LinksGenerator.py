@@ -31,6 +31,7 @@ x_part = mat['x_part']
 num_gs = mat['num_gs'][0][0]
 GS_names = mat['GS_names']
 gs_network = mat['gs_network'][0][0]
+q_o_sizes_history = mat['q_o_sizes_history'][0]
 
 
 # print t_o
@@ -136,9 +137,12 @@ for sat_indx in xrange(0,num_sats):
 ########################################
 
 all_fd = open("out.json", "w")
+all_fd.write( '[\n')
 
-start_avail=datetime.datetime(2017, 3, 15, 11, 0, 0)
+start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
+
+data_hist_epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
 
 GS_names_choice = GS_names[gs_network][0]
 
@@ -199,6 +203,18 @@ for sat_indx in xrange(num_sats):
     ID = 'Obs/Sat'+str(sat_indx+1)
 
     cztl.writeObsPacket(all_fd,ID,name,start_avail,end_avail, cylinder_show_times = obs_datetime, color_str=obscone_color_str,position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post)
+
+
+# write q_o_sizes_history
+epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+for sat_indx in xrange(num_sats):
+    name = 'q_o_sizes_history for satellite '+str(sat_indx+1)
+
+    ID = 'Satellite/CubeSat'+str(sat_indx+1)
+
+    cztl.writeDataStorageHistory(all_fd,ID,name, data_hist_epoch, q_o_sizes_history[sat_indx])
+
+all_fd.write( ']')
 
 
 # print t_o[0]
