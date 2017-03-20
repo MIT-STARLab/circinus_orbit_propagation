@@ -163,6 +163,8 @@ def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime
             if times[1] < times[0]:
                 print 'error 1'
             if times[0] < last_time:
+                print times[0]
+                print last_time
                 print 'error 2'
 
             last_time = times[1]
@@ -240,6 +242,8 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
             if times[1] < times[0]:
                 print 'error 4'
             if times[0] < last_time:
+                print times[0]
+                print last_time
                 print 'error 5'
 
             last_time = times[1]
@@ -296,7 +300,7 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
     fd.write( cylinder_string_5)
     fd.write( '},\n')
 
-def writeDataStorageHistory(fd,ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]]):
+def writeDataStorageHistory(fd,ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
 
     id_string = '\t"id":"'+ID+'",\n'
 
@@ -310,6 +314,9 @@ def writeDataStorageHistory(fd,ID='Obs/SatN',name='q_o_sizes_history for satelli
 
     number_body_strings = []
     for i, sample in enumerate(data_history):
+        if sample[0] < filter_seconds_beg or sample[1] > filter_seconds_end:
+            continue
+
         if i == len(data_history)-1:
             number_body_strings.append('%f,%f\n'%(sample[0],sample[1]))
         else:

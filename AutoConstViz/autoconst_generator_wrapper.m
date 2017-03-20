@@ -16,7 +16,7 @@ num_sats_orbit_2 = 10;  % SSO 1230 LTAN
 num_sats_orbit_3 = 10;  % SSO 1630 LTAN
 num_sats_orbit_4 = 10;  % Equatorial
 
-% autoconst_file_writer
+autoconst_file_writer
 
 
 
