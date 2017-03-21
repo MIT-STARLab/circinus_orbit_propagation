@@ -5,6 +5,8 @@ import datetime
 
 def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
 
+    name_without_num = ' '.join(name.split(' ')[:-1])
+
     id_string = '\t"id":"Facility/'+name+'",\n'
     name_string = '"name":"'+name+'",\n'
     availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
@@ -17,7 +19,7 @@ def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end
     billboard_string = '"billboard":{\n"eyeOffset":{\n"cartesian":[\n0,0,0\n]\n},\n"horizontalOrigin":"CENTER",\n"image":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACvSURBVDhPrZDRDcMgDAU9GqN0lIzijw6SUbJJygUeNQgSqepJTyHG91LVVpwDdfxM3T9TSl1EXZvDwii471fivK73cBFFQNTT/d2KoGpfGOpSIkhUpgUMxq9DFEsWv4IXhlyCnhBFnZcFEEuYqbiUlNwWgMTdrZ3JbQFoEVG53rd8ztG9aPJMnBUQf/VFraBJeWnLS0RfjbKyLJA8FkT5seDYS1Qwyv8t0B/5C2ZmH2/eTGNNBgMmAAAAAElFTkSuQmCC",\n"pixelOffset":{\n"cartesian2":[\n0,0\n]\n},\n"scale":2.0,\n"show":true,\n"verticalOrigin":"CENTER"\n},\n'
 
 
-    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"11pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name+'",\n"verticalOrigin":"CENTER"\n},'
+    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"10pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name_without_num+'",\n"verticalOrigin":"CENTER"\n},'
 
 
     pos_string = '"position":{\n"cartographicDegrees": [ '+str(longitude)+', '+str(latitude)+', 0 ]\n}\n'
@@ -35,6 +37,8 @@ def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end
 
 def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True):
 
+    name_without_num = ' '.join(name.split(' ')[:-1])
+
     target_pic = 'target.jpg'
 
     id_string = '\t"id":"Target/'+name+'",\n'
@@ -49,7 +53,7 @@ def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),en
     billboard_string = '"billboard":{\n"eyeOffset":{\n"cartesian":[\n0,0,0\n]\n},\n"horizontalOrigin":"CENTER",\n"image": {\n"uri": "'+target_pic+'"\n},\n"pixelOffset":{\n"cartesian2":[\n0,0\n]\n},\n"scale":0.1,\n"show":true,\n"verticalOrigin":"CENTER"\n},\n'
 
 
-    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"11pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name+'",\n"verticalOrigin":"CENTER"\n},'
+    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"10pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name_without_num+'",\n"verticalOrigin":"CENTER"\n},'
 
 
     pos_string = '"position":{\n"cartographicDegrees": [ '+str(longitude)+', '+str(latitude)+', 0 ]\n}\n'

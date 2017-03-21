@@ -8,10 +8,11 @@ for pkt in czml:
     # print pkt
 
     if 'label' in pkt.keys():
+
+        if 'Satellite' in pkt['id']:
         # print pkt['label']
 
-
-        pkt['label']['show'] = False
+            pkt['label']['show'] = False
     # for field in pkt:
         # print field
 
