@@ -15,6 +15,7 @@ import CZMLtextTools as cztl
 
 import datetime
 import math
+import json
 
 # mat = scipy.io.loadmat('../../../Comm_constellation_MDO/landing_pad/timing_output.mat')
 
@@ -136,10 +137,11 @@ for sat_indx in xrange(0,num_sats):
 # File Writing
 ########################################
 
-all_fd = open("out.json", "w")
-all_fd.write( '[\n')
+czml_content = []
 
-start_avail=datetime.datetime(2017, 3, 15, 11, 0, 0)
+all_fd = open("out.json", "w")
+
+start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
 
 data_hist_epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
@@ -154,7 +156,7 @@ gs_pos_ref_pre ='Facility/'
 
 
 # write downlinks
-dlnk_color_str = '0,0,255,255'
+dlnk_color = [0,0,255,255]
 
 i = 0
 for sat_indx in xrange(num_sats):
@@ -167,13 +169,13 @@ for sat_indx in xrange(num_sats):
         ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
 
         gs_name = GS_names_choice[gs_indx][0][0]
-        cztl.writeLinkPacket(all_fd,ID,name,start_avail,end_avail, polyline_show_times = dlnks_datetime, color_str=dlnk_color_str,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=gs_pos_ref_pre+gs_name+pos_ref_post)
+        czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = dlnks_datetime, color=dlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=gs_pos_ref_pre+gs_name+pos_ref_post))
 
         i+=1
 
 
 # write crosslinks
-xlnk_color_str = '255,0,0,255'
+xlnk_color = [255,0,0,255]
 
 i = 0
 for sat_indx in xrange(num_sats):
@@ -185,14 +187,14 @@ for sat_indx in xrange(num_sats):
         # print dlnks_datetime
         ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
 
-        cztl.writeLinkPacket(all_fd,ID,name,start_avail,end_avail, polyline_show_times = xlnks_datetime, color_str=xlnk_color_str,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=sat_pos_ref_pre+str(other_sat_indx+1)+pos_ref_post)
+        czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = xlnks_datetime, color=xlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=sat_pos_ref_pre+str(other_sat_indx+1)+pos_ref_post))
 
         i+=1
 
 
 
 # write observations
-obscone_color_str = '238,130,238,100'
+obscone_color = [238,130,238,100]
 
 for sat_indx in xrange(num_sats):
     name = 'obs sat '+str(sat_indx+1)
@@ -202,7 +204,7 @@ for sat_indx in xrange(num_sats):
     # print dlnks_datetime
     ID = 'Obs/Sat'+str(sat_indx+1)
 
-    cztl.writeObsPacket(all_fd,ID,name,start_avail,end_avail, cylinder_show_times = obs_datetime, color_str=obscone_color_str,position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post)
+    czml_content.append(cztl.createObsPacket(ID,name,start_avail,end_avail, cylinder_show_times = obs_datetime, color=obscone_color,position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post))
 
 
 # write q_o_sizes_history
@@ -213,20 +215,7 @@ for sat_indx in xrange(num_sats):
 
     ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-    cztl.writeDataStorageHistory(all_fd,ID,name, data_hist_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=3600,filter_seconds_end=86400)
-
-all_fd.write( ']')
+    czml_content.append(cztl.createDataStorageHistory(ID,name, data_hist_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
 
 
-# print t_o[0]
-# print not t_o[0][20]
-# print t_o[0][0][0]
-# print t_o[0][0][0][0]
-
-
-
-# cztl.writeLinkPacket(all_fd)
-
-# cztl.writeLinkPacket(all_fd,ID='Xlnk/Sat4-to-Sat3',name='a link',start_avail,end_avail, polyline_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 01, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color_str='0,0,255,255',reference1='Satellite/CubeSatN#position',reference2='Satellite/CubeSatM#position')
-
-all_fd.close()
+json.dump(czml_content,all_fd,indent=2,sort_keys=False)

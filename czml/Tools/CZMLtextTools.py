@@ -51,16 +51,16 @@ def createGS(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail
 
 def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
 
-    gs = {}
+    obs_targ = {}
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
-    gs['id'] = 'Target/'+name
-    gs['name'] = name
-    gs['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
+    obs_targ['id'] = 'Target/'+name
+    obs_targ['name'] = name
+    obs_targ['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     description = 'no description'
-    gs['description'] = '<!--HTML--><p>'+description+'</p>'
+    obs_targ['description'] = '<!--HTML--><p>'+description+'</p>'
 
     if include_billboard:
         eyeOffset = {'cartesian':[0,0,0]}
@@ -73,7 +73,7 @@ def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),en
             'show':True,                    \
             'verticalOrigin':'CENTER',      \
             'horizontalOrigin':'CENTER'}
-        gs['billboard'] = billboard
+        obs_targ['billboard'] = billboard
 
     fillColor = {'rgba':[0, 255, 255, 255]}
     outlineColor = {'rgba':[0, 0, 0, 255]}
@@ -88,24 +88,24 @@ def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),en
         'text':name_without_num,        \
         'verticalOrigin':'CENTER',      \
         'horizontalOrigin':'LEFT'}
-    gs['label'] = label
+    obs_targ['label'] = label
 
-    gs['position'] = {'cartographicDegrees':[longitude,latitude,0]}
+    obs_targ['position'] = {'cartographicDegrees':[longitude,latitude,0]}
 
-    return gs
+    return obs_targ
 
 def createObsRectangle(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),color=[0,0,255,255],lower_lat=0.0,upper_lat=10.0,left_long=5.0,right_long=10.0):
 
-    gs = {}
+    obs_rect = {}
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
-    gs['id'] = 'Rectangle/'+name
-    gs['name'] = name
-    gs['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
+    obs_rect['id'] = 'Rectangle/'+name
+    obs_rect['name'] = name
+    obs_rect['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     description = 'no description'
-    gs['description'] = '<!--HTML--><p>'+description+'</p>'
+    obs_rect['description'] = '<!--HTML--><p>'+description+'</p>'
 
 
     rec_string_1 = '"rectangle": {\n"show": true,\n"height": 0,\n"coordinates": {\n"wsenDegrees": ['+str(left_long)+','+str(lower_lat)+','+str(right_long)+','+str(upper_lat)+']\n},'
@@ -117,9 +117,9 @@ def createObsRectangle(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
         'coordinates':coordinates,  \
         'fill':True,                \
         'material':material}
-    gs['rectangle'] = rectangle
+    obs_rect['rectangle'] = rectangle
 
-    return gs
+    return obs_rect
 
 def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),img_file='CubeSat1.png',scale=0.2,label_text='CubeSat'):
 
@@ -169,14 +169,15 @@ def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 
     # 86350,4493825.425000,-1432048.016000,-5142701.463000,
     # 86400,4723826.578000,-1584659.610000,-4885378.511000
 
-def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), polyline_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color_str='0,0,255,255',reference1='Satellite/CubeSatN#position',reference2='Satellite/CubeSatM#position'):
+def createLinkPacket(ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), polyline_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[0,0,255,255],reference1='Satellite/CubeSatN#position',reference2='Satellite/CubeSatM#position'):
 
-    id_string = '\t"id":"'+ID+'",\n'
-    name_string = '"name":"'+name+'",\n'
+    link = {}
 
-    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+    link['id'] = ID
+    link['name'] = name
+    link['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-
+    # Figure out intervals
     polyline_intervals = []
     polyline_intervals_show = []
 
@@ -205,57 +206,39 @@ def writeLinkPacket(fd,ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime
         if end_avail < last_time:
             print 'error 3'
 
-    polyline_string_1 = '"polyline":{\n"show":'
-    polyline_string_2 = ''
-    polyline_body_strings = []
 
-    if not polyline_intervals:
-        polyline_string_1 += 'false,\n'
-    else:
-        polyline_string_1 += '[\n'
+    # Store intervals in jsonic object
+    polyline_show = False
 
-        for i, intervals  in enumerate(polyline_intervals):
+    if polyline_intervals:
+        polyline_show = []
 
-            string = ''
-            if not i == 0: string+=','
+        for i, intervals in enumerate(polyline_intervals):
 
-            string+= '{\n'
-            string+= '"interval":"'+intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
-            string+='"boolean":'+str(polyline_intervals_show[i]).lower()+'\n'
-            string+= '}\n'
+            interval = intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            polyline_body_strings.append(string)
+            polyline_show.append({'interval':interval,'boolean':polyline_intervals_show[i]})
 
-        polyline_string_2 += '],\n'
+    material = {'solidColor':{'color':{'rgba':color}}}
+    positions = {'references':[reference1,reference2]}
+    polyline = {'width':6,          \
+        'followSurface':False,      \
+        'positions':positions,      \
+        'show': polyline_show,      \
+        'material':material}
+    link['polyline'] = polyline
 
-    polyline_string_2 += '"width":6,\n'
-    polyline_string_3 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
+    return link
 
-    polyline_string_4 = '"followSurface":false,\n"positions":{\n"references":[\n"'+reference1+'","'+reference2+'"\n]\n}\n}\n'
+def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[255,0,0,150],position_ref='Satellite/CubeSatN#position'):
 
+    obs_cyl = {}
 
-    fd.write( '{\n')
-    fd.write( id_string)
-    fd.write( name_string)
-    fd.write( availability_string)
-    fd.write( polyline_string_1)
+    obs_cyl['id'] = ID
+    obs_cyl['name'] = name
+    obs_cyl['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    for string in polyline_body_strings:
-        fd.write( string)
-
-    fd.write( polyline_string_2)
-    fd.write( polyline_string_3)
-    fd.write( polyline_string_4)
-    fd.write( '},\n')
-
-def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color_str='255,0,0,150',position_ref='Satellite/CubeSatN#position'):
-
-    id_string = '\t"id":"'+ID+'",\n'
-    name_string = '"name":"'+name+'",\n'
-
-    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
-
-
+    # Figure out intervals
     cylinder_intervals = []
     cylinder_intervals_show = []
 
@@ -284,84 +267,50 @@ def writeObsPacket(fd,ID='Obs/SatN',name='observation cone for satellite',start_
         if end_avail < last_time:
             print 'error 6'
 
-    cylinder_string_1 = '"cylinder" : {\n"length" : 530000.0,\n"topRadius" : 0.0,\n"bottomRadius" : 400000.0,\n'
-    cylinder_string_2 = '"material":{\n"solidColor":{\n"color":{\n"rgba":[\n'+color_str+'\n]\n}\n}\n},\n'
-    cylinder_string_3 = '"fill" : true,\n'
-
-    cylinder_string_4 = '"show":'
-    cylinder_string_5 = ''
-    cylinder_body_strings = []
-
-    if not cylinder_intervals:
-        cylinder_string_4 += 'false,\n'
-    else:
-        cylinder_string_4 += '[\n'
-
-        for i, intervals  in enumerate(cylinder_intervals):
-
-            string = ''
-            if not i == 0: string+=','
-
-            string+= '{\n'
-            string+= '"interval":"'+intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
-            string+='"boolean":'+str(cylinder_intervals_show[i]).lower()+'\n'
-            string+= '}\n'
-
-            cylinder_body_strings.append(string)
-
-        cylinder_string_5 += ']\n},\n'
 
 
-    cylinder_string_5 += '"position":{\n"reference":"'+position_ref+'"\n}'
+    # Store intervals in jsonic object
+    cylinder_show = False
 
+    if cylinder_intervals:
+        cylinder_show = []
 
-    fd.write( '{\n')
-    fd.write( id_string)
-    fd.write( name_string)
-    fd.write( availability_string)
-    fd.write( cylinder_string_1)
-    fd.write( cylinder_string_2)
-    fd.write( cylinder_string_3)
-    fd.write( cylinder_string_4)
+        for i, intervals in enumerate(cylinder_intervals):
 
-    for string in cylinder_body_strings:
-        fd.write( string)
+            interval = intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    fd.write( cylinder_string_5)
-    fd.write( '},\n')
+            cylinder_show.append({'interval':interval,'boolean':cylinder_intervals_show[i]})
 
-def writeDataStorageHistory(fd,ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
+    material = {'solidColor':{'color':{'rgba':color}}}
+    cylinder = {'length':530000.0,      \
+        'topRadius':0.0,                \
+        'bottomRadius':400000.0,        \
+        'fill':True,                    \
+        'show': cylinder_show,          \
+        'material':material}
+    obs_cyl['cylinder'] = cylinder
 
-    id_string = '\t"id":"'+ID+'",\n'
+    obs_cyl['position'] = {'reference':position_ref}
 
-    datavol_string_1 = '"datavol": {\n"interpolationAlgorithm": "LINEAR",\n"interpolationDegree": 1,\n'
-    datavol_string_2 = '}\n'
+    return obs_cyl
 
-    epoch_string = '"epoch": "'+epoch.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+def createDataStorageHistory(ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
 
-    number_string_1 = '"number": [\n'
-    number_string_2 = ']\n'
+    datavol = {}
+    datavol['id'] = ID
 
-    number_body_strings = []
+    interleaved_time_datavol_list = []
     for i, sample in enumerate(data_history):
         if sample[0] < filter_seconds_beg or sample[1] > filter_seconds_end:
             continue
 
-        if i == len(data_history)-1:
-            number_body_strings.append('%f,%f\n'%(sample[0],sample[1]))
-        else:
-            number_body_strings.append('%f,%f,\n'%(sample[0],sample[1]))
+        interleaved_time_datavol_list.append(sample[0])
+        interleaved_time_datavol_list.append(sample[1])
 
+    datavol_stuff = {'interpolationAlgorithm':'LINEAR',   \
+        'interpolationDegree':1,                        \
+        'epoch':epoch.strftime('%Y-%m-%dT%H:%M:%SZ'),   \
+        'number':interleaved_time_datavol_list}
+    datavol['datavol'] = datavol_stuff
 
-    fd.write( '{\n')
-    fd.write( id_string)
-    fd.write( datavol_string_1)
-    fd.write( epoch_string)
-    fd.write( number_string_1)
-
-    for string in number_body_strings:
-        fd.write(string)
-
-    fd.write( number_string_2)
-    fd.write( datavol_string_2)
-    fd.write( '},\n')
+    return datavol
