@@ -35,11 +35,9 @@ def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end
     fd.write( pos_string);
     fd.write( '},\n');
 
-def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True):
+def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
 
     name_without_num = ' '.join(name.split(' ')[:-1])
-
-    target_pic = 'target.jpg'
 
     id_string = '\t"id":"Target/'+name+'",\n'
     name_string = '"name":"'+name+'",\n'

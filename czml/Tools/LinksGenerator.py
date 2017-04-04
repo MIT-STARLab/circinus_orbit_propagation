@@ -192,7 +192,7 @@ for sat_indx in xrange(num_sats):
 
 
 # write observations
-obscone_color_str = '255,0,0,150'
+obscone_color_str = '238,130,238,100'
 
 for sat_indx in xrange(num_sats):
     name = 'obs sat '+str(sat_indx+1)

@@ -16,7 +16,7 @@ all_fd.write( '[\n');
 
 start_avail=datetime.datetime(2017, 3, 15, 11, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
-
+end_avail_etna_1 = datetime.datetime(2017, 3, 15, 17, 27, 30)
 
 cztl.writeGStext(all_fd,'Prudhoe Bay 1',start_avail,end_avail,latitude=70.37,longitude=  -148.75)
 cztl.writeGStext(all_fd,'Fairbanks 2',start_avail,end_avail,latitude=64.84 ,longitude=  -147.65)
@@ -42,7 +42,7 @@ cztl.writeObsText(all_fd,'S. California 3',start_avail,end_avail,latitude=33.833
 cztl.writeObsText(all_fd,'Central Valley 4',start_avail,end_avail,latitude=36.125231,longitude=-119.603913,include_billboard=False)
 cztl.writeObsText(all_fd,'San Francisco 5',start_avail,end_avail,latitude=37.783587,longitude=-122.420643,include_billboard=False)
 cztl.writeObsText(all_fd,'Colorado 6',start_avail,end_avail,latitude=39.358974,longitude=-106.789534,include_billboard=False)
-cztl.writeObsText(all_fd,'Mount Etna 7',start_avail,end_avail,latitude=37.7499245,longitude=14.9894774,include_billboard=False)
+cztl.writeObsText(all_fd,'Mount Etna 7',start_avail,end_avail_etna_1,latitude=37.7499245,longitude=14.9894774,include_billboard=False)
 cztl.writeObsText(all_fd,'Havana 8',start_avail,end_avail,latitude=23.0907,longitude=-82.31092,include_billboard=False)
 cztl.writeObsText(all_fd,'Amazon 9',start_avail,end_avail,latitude=-3.113053,longitude=-60.010668,include_billboard=False)
 cztl.writeObsText(all_fd,'Sao Paulo 10',start_avail,end_avail,latitude=-23.404804,longitude=-46.858481,include_billboard=False)
@@ -78,7 +78,7 @@ cztl.writeObsTextRect(all_fd,'S. California 3',start_avail,end_avail,color_str='
 cztl.writeObsTextRect(all_fd,'Central Valley 4',start_avail,end_avail,color_str='0,255,255,100',lower_lat=34.125231,upper_lat=38.125231,left_long=-121.603913,right_long=-117.603913)
 cztl.writeObsTextRect(all_fd,'San Francisco 5',start_avail,end_avail,color_str='0,255,255,100',lower_lat=35.783587,upper_lat=39.783587,left_long=-124.420643,right_long=-120.420643)
 cztl.writeObsTextRect(all_fd,'Colorado 6',start_avail,end_avail,color_str='0,255,255,100',lower_lat=37.358974,upper_lat=41.358974,left_long=-108.789534,right_long=-104.789534)
-cztl.writeObsTextRect(all_fd,'Mount Etna 7',start_avail,end_avail,color_str='0,255,255,100',lower_lat=35.7499245,upper_lat=39.7499245,left_long=12.9894774,right_long=16.9894774)
+cztl.writeObsTextRect(all_fd,'Mount Etna 7',start_avail,end_avail_etna_1,color_str='0,255,255,100',lower_lat=35.7499245,upper_lat=39.7499245,left_long=12.9894774,right_long=16.9894774)
 cztl.writeObsTextRect(all_fd,'Havana 8',start_avail,end_avail,color_str='0,255,255,100',lower_lat=21.0907,upper_lat=25.0907,left_long=-84.31092,right_long=-80.31092)
 cztl.writeObsTextRect(all_fd,'Amazon 9',start_avail,end_avail,color_str='0,255,255,100',lower_lat=-5.113053,upper_lat=-1.113053,left_long=-62.010668,right_long=-58.010668)
 cztl.writeObsTextRect(all_fd,'Sao Paulo 10',start_avail,end_avail,color_str='0,255,255,100',lower_lat=-25.404804,upper_lat=-21.404804,left_long=-48.858481,right_long=-44.858481)
@@ -107,6 +107,10 @@ cztl.writeObsTextRect(all_fd,'Tokyo 32',start_avail,end_avail,color_str='0,255,2
 cztl.writeObsTextRect(all_fd,'Omsk 33',start_avail,end_avail,color_str='0,255,255,100',lower_lat=52.922771,upper_lat=56.922771,left_long=71.898349,right_long=75.898349)
 cztl.writeObsTextRect(all_fd,'Sydney 34',start_avail,end_avail,color_str='0,255,255,100',lower_lat=-35.955051,upper_lat=-31.955051,left_long=148.866372,right_long=152.866372)
 cztl.writeObsTextRect(all_fd,'Perth 35',start_avail,end_avail,color_str='0,255,255,100',lower_lat=-33.91244,upper_lat=-29.91244,left_long=114.738662,right_long=118.738662)
+
+start_avail_2=datetime.datetime(2017, 3, 15, 17, 27, 30)
+cztl.writeObsText(all_fd,'Mount Etna 7 2',start_avail_2,end_avail,latitude=37.7499245,longitude=14.9894774,include_billboard=True,target_pic='volcano.png')
+cztl.writeObsTextRect(all_fd,'Mount Etna 7 2',start_avail_2,end_avail,color_str='255,69,0,100',lower_lat=35.7499245,upper_lat=39.7499245,left_long=12.9894774,right_long=16.9894774)
 
 all_fd.write( ']\n');
 
