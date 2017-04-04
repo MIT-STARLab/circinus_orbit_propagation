@@ -3,95 +3,123 @@
 import datetime
 
 
-def writeGStext(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
+def createGS(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
+
+    gs = {}
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
-    id_string = '\t"id":"Facility/'+name+'",\n'
-    name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
-
+    gs['id'] = 'Facility/'+name
+    gs['name'] = name
+    gs['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     description = 'no description'
-    description_string = '"description":"<!--HTML-->\\r\\n<p>\\r\\n'+description+'\\r\\n</p>",\n'
+    gs['description'] = '<!--HTML--><p>'+description+'</p>'
 
 
-    billboard_string = '"billboard":{\n"eyeOffset":{\n"cartesian":[\n0,0,0\n]\n},\n"horizontalOrigin":"CENTER",\n"image":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACvSURBVDhPrZDRDcMgDAU9GqN0lIzijw6SUbJJygUeNQgSqepJTyHG91LVVpwDdfxM3T9TSl1EXZvDwii471fivK73cBFFQNTT/d2KoGpfGOpSIkhUpgUMxq9DFEsWv4IXhlyCnhBFnZcFEEuYqbiUlNwWgMTdrZ3JbQFoEVG53rd8ztG9aPJMnBUQf/VFraBJeWnLS0RfjbKyLJA8FkT5seDYS1Qwyv8t0B/5C2ZmH2/eTGNNBgMmAAAAAElFTkSuQmCC",\n"pixelOffset":{\n"cartesian2":[\n0,0\n]\n},\n"scale":2.0,\n"show":true,\n"verticalOrigin":"CENTER"\n},\n'
+    eyeOffset = {'cartesian':[0,0,0]}
+    pixelOffset = {'cartesian2':[0,0]}
+    img_str = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACvSURBVDhPrZDRDcMgDAU9GqN0lIzijw6SUbJJygUeNQgSqepJTyHG91LVVpwDdfxM3T9TSl1EXZvDwii471fivK73cBFFQNTT/d2KoGpfGOpSIkhUpgUMxq9DFEsWv4IXhlyCnhBFnZcFEEuYqbiUlNwWgMTdrZ3JbQFoEVG53rd8ztG9aPJMnBUQf/VFraBJeWnLS0RfjbKyLJA8FkT5seDYS1Qwyv8t0B/5C2ZmH2/eTGNNBgMmAAAAAElFTkSuQmCC'
+    billboard = {'eyeOffset':eyeOffset, \
+        'image':img_str,                \
+        'pixelOffset':pixelOffset,      \
+        'scale':2.0,                    \
+        'show':True,                    \
+        'verticalOrigin':'CENTER',      \
+        'horizontalOrigin':'CENTER'}
+    gs['billboard'] = billboard
 
 
-    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"10pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name_without_num+'",\n"verticalOrigin":"CENTER"\n},'
+    fillColor = {'rgba':[0, 255, 255, 255]}
+    outlineColor = {'rgba':[0, 0, 0, 255]}
+    pixelOffset = {'cartesian2':[12,0]}
+    label = {'fillColor':fillColor,     \
+        'font':'10pt Lucida Console',   \
+        'outlineColor':outlineColor,    \
+        'outlineWidth':2,               \
+        'pixelOffset':pixelOffset,      \
+        'show':True,                    \
+        'style':'FILL_AND_OUTLINE',     \
+        'text':name_without_num,        \
+        'verticalOrigin':'CENTER',      \
+        'horizontalOrigin':'LEFT'}
+    gs['label'] = label
 
+    gs['position'] = {'cartographicDegrees':[longitude,latitude,0]}
 
-    pos_string = '"position":{\n"cartographicDegrees": [ '+str(longitude)+', '+str(latitude)+', 0 ]\n}\n'
+    return gs
 
+def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
 
-    fd.write( '{\n');
-    fd.write( id_string);
-    fd.write( name_string);
-    fd.write( availability_string);
-    fd.write( description_string);
-    fd.write( billboard_string);
-    fd.write( label_string);
-    fd.write( pos_string);
-    fd.write( '},\n');
-
-def writeObsText(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
+    gs = {}
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
-    id_string = '\t"id":"Target/'+name+'",\n'
-    name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
-
+    gs['id'] = 'Target/'+name
+    gs['name'] = name
+    gs['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     description = 'no description'
-    description_string = '"description":"<!--HTML-->\\r\\n<p>\\r\\n'+description+'\\r\\n</p>",\n'
+    gs['description'] = '<!--HTML--><p>'+description+'</p>'
 
-
-    billboard_string = '"billboard":{\n"eyeOffset":{\n"cartesian":[\n0,0,0\n]\n},\n"horizontalOrigin":"CENTER",\n"image": {\n"uri": "'+target_pic+'"\n},\n"pixelOffset":{\n"cartesian2":[\n0,0\n]\n},\n"scale":0.1,\n"show":true,\n"verticalOrigin":"CENTER"\n},\n'
-
-
-    label_string = '"label":{\n"fillColor":{\n"rgba":[\n0,255,255,255\n]\n},\n"font":"10pt Lucida Console",\n"horizontalOrigin":"LEFT",\n"outlineColor":{\n"rgba":[\n0,0,0,255\n]\n},\n"outlineWidth":2,\n"pixelOffset":{\n"cartesian2":[\n12,0\n]\n},\n"show":true,\n"style":"FILL_AND_OUTLINE",\n"text":"'+name_without_num+'",\n"verticalOrigin":"CENTER"\n},'
-
-
-    pos_string = '"position":{\n"cartographicDegrees": [ '+str(longitude)+', '+str(latitude)+', 0 ]\n}\n'
-
-
-    fd.write( '{\n');
-    fd.write( id_string);
-    fd.write( name_string);
-    fd.write( availability_string);
-    fd.write( description_string);
     if include_billboard:
-        fd.write( billboard_string);
-    fd.write( label_string);
-    fd.write( pos_string);
-    fd.write( '},\n');
+        eyeOffset = {'cartesian':[0,0,0]}
+        pixelOffset = {'cartesian2':[0,0]}
+        image = {'uri':target_pic}
+        billboard = {'eyeOffset':eyeOffset, \
+            'image':image,                  \
+            'pixelOffset':pixelOffset,      \
+            'scale':0.1,                    \
+            'show':True,                    \
+            'verticalOrigin':'CENTER',      \
+            'horizontalOrigin':'CENTER'}
+        gs['billboard'] = billboard
 
-def writeObsTextRect(fd,name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),color_str='0,0,255,255',lower_lat=0.0,upper_lat=10.0,left_long=5.0,right_long=10.0):
+    fillColor = {'rgba':[0, 255, 255, 255]}
+    outlineColor = {'rgba':[0, 0, 0, 255]}
+    pixelOffset = {'cartesian2':[12,0]}
+    label = {'fillColor':fillColor,     \
+        'font':'10pt Lucida Console',   \
+        'outlineColor':outlineColor,    \
+        'outlineWidth':2,               \
+        'pixelOffset':pixelOffset,      \
+        'show':True,                    \
+        'style':'FILL_AND_OUTLINE',     \
+        'text':name_without_num,        \
+        'verticalOrigin':'CENTER',      \
+        'horizontalOrigin':'LEFT'}
+    gs['label'] = label
 
+    gs['position'] = {'cartographicDegrees':[longitude,latitude,0]}
 
-    id_string = '\t"id":"Rectangle/'+name+'",\n'
-    name_string = '"name":"'+name+'",\n'
-    availability_string = '"availability":"'+start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'",\n'
+    return gs
 
+def createObsRectangle(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),color=[0,0,255,255],lower_lat=0.0,upper_lat=10.0,left_long=5.0,right_long=10.0):
+
+    gs = {}
+
+    name_without_num = ' '.join(name.split(' ')[:-1])
+
+    gs['id'] = 'Rectangle/'+name
+    gs['name'] = name
+    gs['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     description = 'no description'
-    description_string = '"description":"<!--HTML-->\\r\\n<p>\\r\\n'+description+'\\r\\n</p>",\n'
+    gs['description'] = '<!--HTML--><p>'+description+'</p>'
 
 
     rec_string_1 = '"rectangle": {\n"show": true,\n"height": 0,\n"coordinates": {\n"wsenDegrees": ['+str(left_long)+','+str(lower_lat)+','+str(right_long)+','+str(upper_lat)+']\n},'
 
-    rec_string_2 = '"fill": true,\n"material": {\n"solidColor": {\n"color": {\n"rgba": ['+color_str+']\n}\n}\n}\n}'
+    coordinates = {'wsenDegrees':[left_long,lower_lat,right_long,upper_lat]}
+    material = {'solidColor':{'color':{'rgba':color}}}
+    rectangle = {'show':True,       \
+        'height':0,                 \
+        'coordinates':coordinates,  \
+        'fill':True,                \
+        'material':material}
+    gs['rectangle'] = rectangle
 
-    fd.write( '{\n');
-    fd.write( id_string);
-    fd.write( name_string);
-    fd.write( availability_string);
-    fd.write( description_string);
-    fd.write( rec_string_1);
-    fd.write( rec_string_2);
-    fd.write( '},\n');
+    return gs
 
 def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),img_file='CubeSat1.png',scale=0.2,label_text='CubeSat'):
 
