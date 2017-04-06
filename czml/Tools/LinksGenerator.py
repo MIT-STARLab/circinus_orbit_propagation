@@ -33,7 +33,7 @@ num_gs = mat['num_gs'][0][0]
 GS_names = mat['GS_names']
 gs_network = mat['gs_network'][0][0]
 q_o_sizes_history = mat['q_o_sizes_history']
-
+gs_availability_windows = mat['gs_availability_windows']
 
 # print t_o
 # print o_locations
@@ -128,6 +128,32 @@ for sat_indx in xrange(0,num_sats):
             observation_times_datetime[sat_indx].append([start_obs_datetime,end_obs_datetime])
 
 
+# import gs availability windows
+
+gsavail_times_datetime = [[] for k in range(num_gs)]
+
+for gs_indx in xrange(0,num_gs):
+    gs_avail_list = gs_availability_windows[gs_indx]
+
+    for avail_wind_indx, avail_wind in enumerate(gs_avail_list):
+
+        # if it's not empty
+        if avail_wind.any():
+
+            # do a bunch of crap to convert to datetime. Note that jd2gcal returns year,month,day, FRACTION OF DAY (GOD WHY!?) so we have to convert.
+            start_gs_avail = jdcal.jd2gcal(jdcal.MJD_0,avail_wind[0][0])
+            end_gs_avail = jdcal.jd2gcal(jdcal.MJD_0,avail_wind[0][1])
+            start_gs_avail_hours = math.floor(start_gs_avail[3]*24)
+            start_gs_avail_minutes = math.floor((start_gs_avail[3]*24-start_gs_avail_hours) * 60)
+            start_gs_avail_seconds = math.floor(((start_gs_avail[3]*24-start_gs_avail_hours) * 60 - start_gs_avail_minutes) * 60)
+            end_gs_avail_hours = math.floor(end_gs_avail[3]*24)
+            end_gs_avail_minutes = math.floor((end_gs_avail[3]*24-end_gs_avail_hours) * 60)
+            end_gs_avail_seconds = math.floor(((end_gs_avail[3]*24-end_gs_avail_hours) * 60 - end_gs_avail_minutes) * 60)
+            start_gs_avail_datetime = datetime.datetime(start_gs_avail[0],start_gs_avail[1],start_gs_avail[2],int(start_gs_avail_hours),int(start_gs_avail_minutes),int(start_gs_avail_seconds))
+            end_gs_avail_datetime = datetime.datetime(end_gs_avail[0],end_gs_avail[1],end_gs_avail[2],int(end_gs_avail_hours),int(end_gs_avail_minutes),int(end_gs_avail_seconds))
+
+            gsavail_times_datetime[gs_indx].append([start_gs_avail_datetime,end_gs_avail_datetime])
+
 
 
 
@@ -216,6 +242,19 @@ for sat_indx in xrange(num_sats):
     ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
     czml_content.append(cztl.createDataStorageHistory(ID,name, data_hist_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+
+
+# write gs_avail_windows
+for gs_indx in xrange(num_gs):
+    name = 'gs avail windows gs num '+str(gs_indx+1)
+
+    gsavail_datetime = gsavail_times_datetime[gs_indx]
+
+    # print dlnks_datetime
+    gs_name = GS_names_choice[gs_indx][0][0]
+    ID = 'Facility/'+gs_name
+
+    czml_content.append(cztl.createGSavailabilityPacket(ID,name,availability_times = gsavail_datetime))
 
 
 json.dump(czml_content,all_fd,indent=2,sort_keys=False)

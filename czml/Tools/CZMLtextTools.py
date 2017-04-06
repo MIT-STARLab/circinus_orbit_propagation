@@ -1,11 +1,76 @@
 # use the SublimePrettyJson package in to pretty print the output czml correctly (note that the json has to be valid for pretty print to work). Link: https://github.com/dzhibas/SublimePrettyJson/issues
 
 import datetime
+import collections
 
+def getBooleanShowIntervals(show_times, start_avail, end_avail):
+
+    # Figure out intervals for showing and not showing
+    intervals = []
+    intervals_show = []
+
+    if len(show_times) > 0:
+        last_time = start_avail
+
+        for i, times  in enumerate(show_times):
+
+            # check case where window is before start_avail
+            if times[0] < last_time and times[1] < last_time:
+                continue
+            elif times[0] < last_time:
+                start_time = last_time
+            else:
+                start_time = times[0]
+
+            # check case where window is after end_avail
+            if times[0] > end_avail and times[1] > end_avail:
+                continue
+            elif times[1] > end_avail:
+                end_time = end_avail
+            else:
+                end_time = times[1]
+
+            # add a "not show" up to the current window
+            if not last_time == start_time:
+                intervals.append([last_time,start_time])
+                intervals_show.append(False)
+
+            # add a "show" for the current window
+            if not start_time == end_time:
+                intervals.append([start_time,end_time])
+                intervals_show.append(True)
+
+            if end_time < start_time:
+                print 'error 1'
+            if start_time < last_time:
+                print start_time
+                print last_time
+                print 'error 2'
+
+            last_time = end_time
+
+        # add very last "not show"
+        intervals.append([last_time,end_avail])
+        intervals_show.append(False)
+
+        if end_avail < last_time:
+            print 'error 3'
+
+    # Store intervals in jsonic object
+    show_intervals = []
+
+    if intervals:
+        for i, intervals in enumerate(intervals):
+
+            interval = intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')
+
+            show_intervals.append({'interval':interval,'boolean':intervals_show[i]})
+
+    return show_intervals
 
 def createGS(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0):
 
-    gs = {}
+    gs = collections.OrderedDict()
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
@@ -51,7 +116,7 @@ def createGS(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail
 
 def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
 
-    obs_targ = {}
+    obs_targ = collections.OrderedDict()
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
@@ -96,7 +161,7 @@ def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),en
 
 def createObsRectangle(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),color=[0,0,255,255],lower_lat=0.0,upper_lat=10.0,left_long=5.0,right_long=10.0):
 
-    obs_rect = {}
+    obs_rect = collections.OrderedDict()
 
     name_without_num = ' '.join(name.split(' ')[:-1])
 
@@ -171,60 +236,22 @@ def writeSatTextHeader(fd,name='CubeSat',start_avail=datetime.datetime(2017, 3, 
 
 def createLinkPacket(ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), polyline_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[0,0,255,255],reference1='Satellite/CubeSatN#position',reference2='Satellite/CubeSatM#position'):
 
-    link = {}
+    link = collections.OrderedDict()
 
     link['id'] = ID
     link['name'] = name
     link['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    # Figure out intervals
-    polyline_intervals = []
-    polyline_intervals_show = []
-
-    if len(polyline_show_times) > 0:
-        last_time = start_avail
-
-        for i, times  in enumerate(polyline_show_times):
-            polyline_intervals.append([last_time,times[0]])
-            polyline_intervals_show.append(False)
-
-            polyline_intervals.append([times[0],times[1]])
-            polyline_intervals_show.append(True)
-
-            if times[1] < times[0]:
-                print 'error 1'
-            if times[0] < last_time:
-                print times[0]
-                print last_time
-                print 'error 2'
-
-            last_time = times[1]
-
-        polyline_intervals.append([last_time,end_avail])
-        polyline_intervals_show.append(False)
-
-        if end_avail < last_time:
-            print 'error 3'
-
-
-    # Store intervals in jsonic object
-    polyline_show = False
-
-    if polyline_intervals:
-        polyline_show = []
-
-        for i, intervals in enumerate(polyline_intervals):
-
-            interval = intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')
-
-            polyline_show.append({'interval':interval,'boolean':polyline_intervals_show[i]})
+    # Figure out intervals for showing and not showing
+    show_intervals = getBooleanShowIntervals(polyline_show_times, start_avail, end_avail)
+    show_intervals = show_intervals if show_intervals else False
 
     material = {'solidColor':{'color':{'rgba':color}}}
     positions = {'references':[reference1,reference2]}
     polyline = {'width':6,          \
         'followSurface':False,      \
         'positions':positions,      \
-        'show': polyline_show,      \
+        'show': show_intervals,      \
         'material':material}
     link['polyline'] = polyline
 
@@ -232,61 +259,22 @@ def createLinkPacket(ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.d
 
 def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[255,0,0,150],position_ref='Satellite/CubeSatN#position'):
 
-    obs_cyl = {}
+    obs_cyl = collections.OrderedDict()
 
     obs_cyl['id'] = ID
     obs_cyl['name'] = name
     obs_cyl['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    # Figure out intervals
-    cylinder_intervals = []
-    cylinder_intervals_show = []
-
-    if len(cylinder_show_times) > 0:
-        last_time = start_avail
-
-        for i, times  in enumerate(cylinder_show_times):
-            cylinder_intervals.append([last_time,times[0]])
-            cylinder_intervals_show.append(False)
-
-            cylinder_intervals.append([times[0],times[1]])
-            cylinder_intervals_show.append(True)
-
-            if times[1] < times[0]:
-                print 'error 4'
-            if times[0] < last_time:
-                print times[0]
-                print last_time
-                print 'error 5'
-
-            last_time = times[1]
-
-        cylinder_intervals.append([last_time,end_avail])
-        cylinder_intervals_show.append(False)
-
-        if end_avail < last_time:
-            print 'error 6'
-
-
-
-    # Store intervals in jsonic object
-    cylinder_show = False
-
-    if cylinder_intervals:
-        cylinder_show = []
-
-        for i, intervals in enumerate(cylinder_intervals):
-
-            interval = intervals[0].strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+intervals[1].strftime('%Y-%m-%dT%H:%M:%SZ')
-
-            cylinder_show.append({'interval':interval,'boolean':cylinder_intervals_show[i]})
+    # Figure out intervals for showing and not showing
+    show_intervals = getBooleanShowIntervals(cylinder_show_times, start_avail, end_avail)
+    show_intervals = show_intervals if show_intervals else False
 
     material = {'solidColor':{'color':{'rgba':color}}}
     cylinder = {'length':530000.0,      \
         'topRadius':0.0,                \
         'bottomRadius':400000.0,        \
         'fill':True,                    \
-        'show': cylinder_show,          \
+        'show': show_intervals,          \
         'material':material}
     obs_cyl['cylinder'] = cylinder
 
@@ -296,8 +284,9 @@ def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_av
 
 def createDataStorageHistory(ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
 
-    datavol = {}
+    datavol = collections.OrderedDict()
     datavol['id'] = ID
+    datavol['name'] = name
 
     interleaved_time_datavol_list = []
     for i, sample in enumerate(data_history):
@@ -314,3 +303,18 @@ def createDataStorageHistory(ID='Obs/SatN',name='q_o_sizes_history for satellite
     datavol['datavol'] = datavol_stuff
 
     return datavol
+
+def createGSavailabilityPacket(ID='Facility/GS Name',name='gs avail windows gs num N', start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0), end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), availability_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]]):
+
+    gs_avail = collections.OrderedDict()
+
+    gs_avail['id'] = ID
+    gs_avail['name'] = name
+
+    # Figure out intervals for showing and not showing
+    show_intervals = getBooleanShowIntervals(availability_times, start_avail, end_avail)
+    show_intervals = show_intervals if show_intervals else False
+
+    gs_avail['gs_availability'] = show_intervals
+
+    return gs_avail
