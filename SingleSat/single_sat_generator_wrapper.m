@@ -7,10 +7,15 @@ automated_generation = 1;
 
 
 %% inputs
-header_file = '../czml/czml_header_single_sat_sfn.czml.part.txt';
+% header_file = '../czml/czml_header_single_sat_sfn.czml.part.txt';
 % header_file = '../czml/czml_header_single_sat_bridgesat.czml.part.txt';
+% header_file = '../czml/czml_header_single_sat_ksat.czml.part.txt';
+ header_file = '../czml/czml_header_single_sat_lcrd.czml.part.txt';
 
-final_czml_file_name_pre = 'sats_file_single_sfn_';
+% final_czml_file_name_pre = 'sats_file_single_sfn_';
+% final_czml_file_name_pre = 'sats_file_single_bridgesat_';
+% final_czml_file_name_pre = 'sats_file_single_ksat_';
+final_czml_file_name_pre = 'sats_file_single_lcrd_';
 
 num_sats_orbit_1 = 0;  % SSO 1030 LTAN
 num_sats_orbit_2 = 0;  % ISS
