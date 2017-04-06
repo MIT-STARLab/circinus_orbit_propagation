@@ -4,6 +4,9 @@ import datetime
 import collections
 
 def getBooleanShowIntervals(show_times, start_avail, end_avail):
+    '''
+    This creates a list of boolean "show" intervals of alternating true and false values. A natural use for this is "show" intervals in standard czml packets (hence the function name), but this function can also be used for specifying any property that has bool intervals.
+    '''
 
     # Figure out intervals for showing and not showing
     intervals = []
@@ -282,39 +285,53 @@ def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_av
 
     return obs_cyl
 
-def createDataStorageHistory(ID='Obs/SatN',name='q_o_sizes_history for satellite', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , data_history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
+def createSampledPropertyHistory(ID='Satellite/CubeSatN',name='q_o_sizes_history for satellite', custom_property_name ='datavol', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
+    '''
+    This creates a czml packet for a custom Number property.
 
-    datavol = collections.OrderedDict()
-    datavol['id'] = ID
-    datavol['name'] = name
+    history must be in format:
+    [ t1 , val1
+      t2 , val2
+      t3 , val3
+      tf , valf ]
 
-    interleaved_time_datavol_list = []
-    for i, sample in enumerate(data_history):
+      t values are measured since epoch
+    '''
+
+    history_pkt = collections.OrderedDict()
+    history_pkt['id'] = ID
+    history_pkt['name'] = name
+
+    interleaved_time_value_list = []
+    for i, sample in enumerate(history):
         if sample[0] < filter_seconds_beg or sample[1] > filter_seconds_end:
             continue
 
-        interleaved_time_datavol_list.append(sample[0])
-        interleaved_time_datavol_list.append(sample[1])
+        interleaved_time_value_list.append(sample[0])
+        interleaved_time_value_list.append(sample[1])
 
-    datavol_stuff = {'interpolationAlgorithm':'LINEAR',   \
+    history_stuff = {'interpolationAlgorithm':'LINEAR',   \
         'interpolationDegree':1,                        \
         'epoch':epoch.strftime('%Y-%m-%dT%H:%M:%SZ'),   \
-        'number':interleaved_time_datavol_list}
-    datavol['datavol'] = datavol_stuff
+        'number':interleaved_time_value_list}
+    history_pkt[custom_property_name] = history_stuff
 
-    return datavol
+    return history_pkt
 
-def createGSavailabilityPacket(ID='Facility/GS Name',name='gs avail windows gs num N', start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0), end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), availability_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]]):
+def createShowIntervalsPacket(ID='Facility/GS Name',name='gs avail windows gs num N', custom_property_name ='gs_availability', start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0), end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]]):
+    '''
+    This creates a czml packet for a custom boolean property. We hijack the show intervals creation function to create the intervals
+    '''
 
-    gs_avail = collections.OrderedDict()
+    show_pkt = collections.OrderedDict()
 
-    gs_avail['id'] = ID
-    gs_avail['name'] = name
+    show_pkt['id'] = ID
+    show_pkt['name'] = name
 
     # Figure out intervals for showing and not showing
-    show_intervals = getBooleanShowIntervals(availability_times, start_avail, end_avail)
+    show_intervals = getBooleanShowIntervals(show_times, start_avail, end_avail)
     show_intervals = show_intervals if show_intervals else False
 
-    gs_avail['gs_availability'] = show_intervals
+    show_pkt[custom_property_name] = show_intervals
 
-    return gs_avail
+    return show_pkt

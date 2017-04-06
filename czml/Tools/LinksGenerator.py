@@ -34,6 +34,8 @@ GS_names = mat['GS_names']
 gs_network = mat['gs_network'][0][0]
 q_o_sizes_history = mat['q_o_sizes_history']
 gs_availability_windows = mat['gs_availability_windows']
+batt_stored_history = mat['batt_stored_history']
+t_eclipse = mat['t_eclipse']
 
 # print t_o
 # print o_locations
@@ -44,11 +46,8 @@ num_sats = len(t_o)
 # Import data
 ########################################
 
-
 # import downlinks
-
 downlink_times_datetime = [[[]  for j in range(num_gs)] for k in range(num_sats)]
-
 for sat_indx in xrange(0,num_sats):
     dlnk_list = t_d[sat_indx]
 
@@ -72,11 +71,8 @@ for sat_indx in xrange(0,num_sats):
 
             downlink_times_datetime[sat_indx][gs_num-1].append([start_dlnk_datetime,end_dlnk_datetime])
 
-
 # import crosslinks
-
 crosslink_times_datetime = [[[]  for j in range(num_sats)] for k in range(num_sats)]
-
 for sat_indx in xrange(0,num_sats):
     xlnk_list = t_x[sat_indx]
 
@@ -100,11 +96,8 @@ for sat_indx in xrange(0,num_sats):
 
             crosslink_times_datetime[sat_indx][other_sat_num-1].append([start_xlnk_datetime,end_xlnk_datetime])
 
-
 # import observations
-
 observation_times_datetime = [[] for k in range(num_sats)]
-
 for sat_indx in xrange(0,num_sats):
     obs_list = t_o[sat_indx]
 
@@ -127,11 +120,8 @@ for sat_indx in xrange(0,num_sats):
 
             observation_times_datetime[sat_indx].append([start_obs_datetime,end_obs_datetime])
 
-
 # import gs availability windows
-
 gsavail_times_datetime = [[] for k in range(num_gs)]
-
 for gs_indx in xrange(0,num_gs):
     gs_avail_list = gs_availability_windows[gs_indx]
 
@@ -154,6 +144,30 @@ for gs_indx in xrange(0,num_gs):
 
             gsavail_times_datetime[gs_indx].append([start_gs_avail_datetime,end_gs_avail_datetime])
 
+# import eclipse times
+eclipse_times_datetime = [[] for k in range(num_sats)]
+for sat_indx in xrange(0,num_sats):
+    eclipse_list = t_eclipse[sat_indx]
+
+    for eclipse_wind_indx, eclipse_wind in enumerate(eclipse_list):
+
+        # if it's not empty
+        if eclipse_wind.any():
+
+            # do a bunch of crap to convert to datetime. Note that jd2gcal returns year,month,day, FRACTION OF DAY (GOD WHY!?) so we have to convert.
+            start_eclipse = jdcal.jd2gcal(jdcal.MJD_0,eclipse_wind[0][0])
+            end_eclipse = jdcal.jd2gcal(jdcal.MJD_0,eclipse_wind[0][1])
+            start_eclipse_hours = math.floor(start_eclipse[3]*24)
+            start_eclipse_minutes = math.floor((start_eclipse[3]*24-start_eclipse_hours) * 60)
+            start_eclipse_seconds = math.floor(((start_eclipse[3]*24-start_eclipse_hours) * 60 - start_eclipse_minutes) * 60)
+            end_eclipse_hours = math.floor(end_eclipse[3]*24)
+            end_eclipse_minutes = math.floor((end_eclipse[3]*24-end_eclipse_hours) * 60)
+            end_eclipse_seconds = math.floor(((end_eclipse[3]*24-end_eclipse_hours) * 60 - end_eclipse_minutes) * 60)
+            start_eclipse_datetime = datetime.datetime(start_eclipse[0],start_eclipse[1],start_eclipse[2],int(start_eclipse_hours),int(start_eclipse_minutes),int(start_eclipse_seconds))
+            end_eclipse_datetime = datetime.datetime(end_eclipse[0],end_eclipse[1],end_eclipse[2],int(end_eclipse_hours),int(end_eclipse_minutes),int(end_eclipse_seconds))
+
+            eclipse_times_datetime[sat_indx].append([start_eclipse_datetime,end_eclipse_datetime])
+
 
 
 
@@ -170,7 +184,7 @@ all_fd = open("out.json", "w")
 start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
 end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
 
-data_hist_epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+history_epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
 
 GS_names_choice = GS_names[gs_network][0]
 
@@ -180,10 +194,8 @@ sat_pos_ref_pre = 'Satellite/CubeSat'
 pos_ref_post = '#position'
 gs_pos_ref_pre ='Facility/'
 
-
-# write downlinks
+# create downlinks
 dlnk_color = [0,0,255,255]
-
 i = 0
 for sat_indx in xrange(num_sats):
     for gs_indx in xrange(num_gs):
@@ -199,10 +211,8 @@ for sat_indx in xrange(num_sats):
 
         i+=1
 
-
-# write crosslinks
+# create crosslinks
 xlnk_color = [255,0,0,255]
-
 i = 0
 for sat_indx in xrange(num_sats):
     for other_sat_indx in xrange(sat_indx+1,num_sats):
@@ -217,11 +227,8 @@ for sat_indx in xrange(num_sats):
 
         i+=1
 
-
-
-# write observations
+# create observations
 obscone_color = [238,130,238,100]
-
 for sat_indx in xrange(num_sats):
     name = 'obs sat '+str(sat_indx+1)
 
@@ -232,8 +239,7 @@ for sat_indx in xrange(num_sats):
 
     czml_content.append(cztl.createObsPacket(ID,name,start_avail,end_avail, cylinder_show_times = obs_datetime, color=obscone_color,position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post))
 
-
-# write q_o_sizes_history
+# create q_o_sizes_history
 epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
 for sat_indx in xrange(num_sats):
 
@@ -241,10 +247,9 @@ for sat_indx in xrange(num_sats):
 
     ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-    czml_content.append(cztl.createDataStorageHistory(ID,name, data_hist_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+    czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'datavol',history_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
 
-
-# write gs_avail_windows
+# create gs_avail_windows
 for gs_indx in xrange(num_gs):
     name = 'gs avail windows gs num '+str(gs_indx+1)
 
@@ -254,7 +259,29 @@ for gs_indx in xrange(num_gs):
     gs_name = GS_names_choice[gs_indx][0][0]
     ID = 'Facility/'+gs_name
 
-    czml_content.append(cztl.createGSavailabilityPacket(ID,name,availability_times = gsavail_datetime))
+    czml_content.append(cztl.createShowIntervalsPacket(ID,name,'gs_availability',show_times = gsavail_datetime))
+
+# create batt_stored_history
+epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+for sat_indx in xrange(num_sats):
+
+    name = 'batt_stored_history for satellite '+str(sat_indx+1)
+
+    ID = 'Satellite/CubeSat'+str(sat_indx+1)
+
+    czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'battery',history_epoch, batt_stored_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+
+# create eclipse "availability" windows
+for sat_indx in xrange(num_sats):
+    name = 'eclipse times sat num '+str(sat_indx+1)
+
+    eclipse_datetime = eclipse_times_datetime[sat_indx]
+
+    # print dlnks_datetime
+    ID = 'Satellite/CubeSat'+str(sat_indx+1)
+
+    czml_content.append(cztl.createShowIntervalsPacket(ID,name,'eclipse',show_times = eclipse_datetime))
 
 
+# write to file
 json.dump(czml_content,all_fd,indent=2,sort_keys=False)
