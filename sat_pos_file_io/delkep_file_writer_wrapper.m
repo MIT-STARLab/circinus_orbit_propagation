@@ -1,4 +1,4 @@
-function [] = delkep_file_writer_wrapper(satname, filename, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom)
+function [] = delkep_file_writer_wrapper(satname, filename, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom, base_directory)
 
 % delkep_file_writer.m
 % Meant to serve as an easy-to-use wrapper for propagating a LEO
@@ -39,7 +39,7 @@ formatOut = 'dd mmm yyyy HH:MM:SS.FFF';
 
 %% Propagate
 
-addpath('../Libraries/PROPAT/propat_code')
+addpath(strcat(base_directory,'/Libraries/PROPAT/propat_code'))
 
 RTD = 180/pi;
 DTR = pi/180;

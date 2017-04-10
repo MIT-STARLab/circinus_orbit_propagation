@@ -2,6 +2,7 @@ clear
 
 automated_generation = 1;
 
+base_directory = '../..';
     
 % Propagate sat orbits
 
@@ -10,7 +11,7 @@ automated_generation = 1;
 % header_file = '../czml/czml_header_single_sat_sfn.czml.part.txt';
 % header_file = '../czml/czml_header_single_sat_bridgesat.czml.part.txt';
 % header_file = '../czml/czml_header_single_sat_ksat.czml.part.txt';
- header_file = '../czml/czml_header_single_sat_lcrd.czml.part.txt';
+ header_file = '../../czml/czml_header_single_sat_lcrd.czml.part.txt';
 
 % final_czml_file_name_pre = 'sats_file_single_sfn_';
 % final_czml_file_name_pre = 'sats_file_single_bridgesat_';

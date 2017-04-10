@@ -35,7 +35,7 @@ else
 end
 
 
-addpath('../AccessUtils');
+addpath(strcat(base_directory,'/AccessUtils'));
 
 [target_in_a, target_in_b] = xlsread(targets_parameters_filename,targets_parameters_sheetname);
 num_obs = size(target_in_a,1);
@@ -77,7 +77,7 @@ num_timepoints = size(sat_times,1);
 
 disp('calculate eclipse times');
 
-addpath('../Libraries/Solar_Ephmeris/demo_sun2');
+addpath(strcat(base_directory,'/Libraries/Solar_Ephmeris/demo_sun2'));
 % initialize sun ephemeris  (kinda dumb...)
 global suncoef
 suncoef = 1;
@@ -101,8 +101,8 @@ end
 
 disp('calculate observation times');
 
-addpath('../sat_pos_file_io');
-addpath('../Libraries/PROPAT/propat_code');
+addpath(strcat(base_directory,'/sat_pos_file_io'));
+addpath(strcat(base_directory,'/Libraries/PROPAT/propat_code'));
 
 % Determine obs coordinates in ECEF. Only one point because doesn't change
 target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
