@@ -1,1 +1,0 @@
-These utils written by Kit Kennedy

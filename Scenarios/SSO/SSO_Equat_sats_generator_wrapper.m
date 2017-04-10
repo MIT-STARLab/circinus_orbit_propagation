@@ -1,3 +1,7 @@
+% Creates file for large constellation scenario. 
+% includes sats in 2 different SSO orbits and an equatorial orbit,
+% currently
+
 automated_generation = 1;
 
 % for sats_per_orbit=7:7

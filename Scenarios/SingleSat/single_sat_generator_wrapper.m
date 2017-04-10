@@ -1,3 +1,6 @@
+% Creates files for single sat scenario. Sat can be in one of 3 orbits
+% currently, SSO, ISS, or equatorial
+
 clear
 
 automated_generation = 1;

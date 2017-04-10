@@ -1,3 +1,5 @@
+% Note: currently not up to date!
+
 automated_generation = 1;
 
 for sats_per_orbit=20:20

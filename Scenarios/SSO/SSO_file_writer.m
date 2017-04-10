@@ -1,5 +1,4 @@
-% SSO_file_writer.m
-% creates a bunch of files for satellites in a two SSO orbits. 
+% Note: currently not up to date!
 
 %% Inputs
 

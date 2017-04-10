@@ -1,3 +1,8 @@
+ % Generates files for satellites in automated constellation visulization
+ % video for Vienna, March 2017. 
+ 
+ % Features 3 SSO orbits and 1 equatorial orbit
+
 clear
 
 automated_generation = 1;

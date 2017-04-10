@@ -1,5 +1,6 @@
-% SSO_file_writer.m
-% creates a bunch of files for satellites in a two SSO orbits. 
+% Creates file for large constellation scenario. 
+% includes sats in 2 different SSO orbits and an equatorial orbit,
+% currently
 
 %% Inputs
 

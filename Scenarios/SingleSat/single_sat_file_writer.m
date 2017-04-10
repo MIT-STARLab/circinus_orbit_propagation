@@ -1,5 +1,5 @@
-% SSO_file_writer.m
-% creates a bunch of files for satellites in a two SSO orbits. 
+% Creates file for single sat scenario. Sat can be in one of 3 orbits
+% currently, SSO, ISS, or equatorial
 
 %% Inputs
 
