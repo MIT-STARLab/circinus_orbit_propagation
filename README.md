@@ -4,6 +4,8 @@ Last modified: 4/10/2017
 # OrbitPropagation
 Contains convenient code for simple orbit propagation tasks. Can use to produce input files for visualization in CesiumJS. Intended as an alternative to being dependent on STK for all orbit prop/visualization tasks.
 
+Please feel free to update this code! The more tools are here, the more useful it'll be for the whole lab. I want this to be the GOTO solution for any easy orbit propagation / analysis stuff. Try to respect the current organization though - if you have questions about changing things, please drop me a note: akennedy@mit.edu
+
 ## Directories
 
 1. Scenarios
