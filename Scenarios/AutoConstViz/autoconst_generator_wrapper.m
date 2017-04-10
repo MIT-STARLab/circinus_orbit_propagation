@@ -2,19 +2,20 @@ clear
 
 automated_generation = 1;
 
+base_directory = '../..';
     
 % Propagate sat orbits
 
 
 % inputs
-header_file = '../czml/czml_header_autoconstviz.czml.part.txt';
+header_file = '../../czml/czml_header_autoconstviz.czml.part.txt';
 
 final_czml_file_name_pre = 'sats_file_autoconst4orb_';
 
-num_sats_orbit_1 = 10;  % SSO 830 LTAN
-num_sats_orbit_2 = 10;  % SSO 1230 LTAN
-num_sats_orbit_3 = 10;  % SSO 1630 LTAN
-num_sats_orbit_4 = 10;  % Equatorial
+num_sats_orbit_1 = 1;  % SSO 830 LTAN
+num_sats_orbit_2 = 1;  % SSO 1230 LTAN
+num_sats_orbit_3 = 1;  % SSO 1630 LTAN
+num_sats_orbit_4 = 1;  % Equatorial
 
 autoconst_file_writer
 
@@ -43,6 +44,6 @@ gs_parameters_sheetname = num2str(gs_network);
 
 info = ['created for ',num2str(num_sats),' satellite scenario from matlab script autoconst_generator_wrapper.m, using targets params file sheet ',targets_parameters_sheetname,' and gs sheet ',gs_parameters_sheetname];
 
-
+addpath(strcat(base_directory,'/AccessUtils'))
 calc_and_store_accesses
 % end

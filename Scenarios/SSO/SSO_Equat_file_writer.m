@@ -22,12 +22,14 @@ mJDEpoch = mjuliandate(startdatevec);
 delta_t_sec = 10;  % seconds
 end_time_sec = 86400;  % seconds
 
-addpath('../sat_pos_file_io');
-addpath('../czml');
+addpath(strcat(base_directory,'/SatPosFileIO'));
+addpath(strcat(base_directory,'/czml'));
 
 sat_file_names = {};
 
 %% Specify orbit for 10:30 LTAN, write position file, part of czml file
+
+addpath(strcat(base_directory,'/MatlabTools'));
 
 % angles should be in degrees below
 LTN = 10.5;  % local time of ascending node for SSO+
@@ -46,13 +48,13 @@ for sat_num = 1:num_sats_orbit_1
     
     mean_anom = 360/num_sats_orbit_1*(sat_num-1);
     
-    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom);
+    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom, base_directory);
 
     num_header_lines = 6;
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -81,13 +83,13 @@ for sat_num = 1:num_sats_orbit_2
     
     mean_anom = 360/num_sats_orbit_2*(sat_num-1);
     
-    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom);
+    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom, base_directory);
 
     num_header_lines = 6;
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -113,13 +115,13 @@ for sat_num = 1:num_sats_orbit_3
     
     mean_anom = 360/num_sats_orbit_3*(sat_num-1);
     
-    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom);
+    delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom, base_directory);
 
     num_header_lines = 6;
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat('../czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -130,7 +132,7 @@ end
 %% Combine all czml file parts into a single file
 
 delete(final_czml_file_name)
-copyfile('../czml/czml_header_equatorial.czml.part.txt',final_czml_file_name);
+copyfile(strcat(base_directory,'/czml/czml_header_equatorial.czml.part.txt'),final_czml_file_name);
 
 for i=1:size(sat_file_names,1)
     sat_file_name = sat_file_names{i};

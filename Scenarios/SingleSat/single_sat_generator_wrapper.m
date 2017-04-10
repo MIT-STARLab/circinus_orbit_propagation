@@ -48,5 +48,6 @@ gs_parameters_sheetname = num2str(gs_network);
 
 info = ['created for ',num2str(num_sats),' satellite scenario from matlab script single_sat_generator_wrapper.m, using targets params file sheet ',targets_parameters_sheetname,' and gs sheet ',gs_parameters_sheetname];
 
+addpath(strcat(base_directory,'/AccessUtils'))
 calc_and_store_accesses
 % end

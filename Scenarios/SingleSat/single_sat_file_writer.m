@@ -23,12 +23,14 @@ mJDEpoch = mjuliandate(startdatevec);
 delta_t_sec = 10;  % seconds
 end_time_sec = 86400;  % seconds
 
-addpath(strcat(base_directory,'/sat_pos_file_io'));
-addpath(strcat(base_directory,'../../czml'));
+addpath(strcat(base_directory,'/SatPosFileIO'));
+addpath(strcat(base_directory,'/czml'));
 
 sat_file_names = {};
 
 %% Specify orbit for 10:30 LTAN, write position file, part of czml file
+
+addpath(strcat(base_directory,'/MatlabTools'));
 
 % angles should be in degrees below
 LTN = 10.5;  % local time of ascending node for SSO+
