@@ -39,6 +39,7 @@ There's also a bunch of other files in each scenario directory. These include th
 Specifically for SingleSat, I added "sat1_delkep_pos.txt" and "sats_file_single_sfn_0_0_1.czml" as an example of the produced position output file and czml file. The _pos.txt file contains the satellite's position as a function of time, and is self-explanatory. The .czml file is, again, an input file for CesiumJS. It's a subset of the JSON standard, and specifies properties of the visualization. For more info about how to use this file, see Kit's other repo, MATLAB_sat_viz (it's currently not in the STAR Lab github, but Kit may add it there. He's not sure why he didn't put it there. Dumb.)
 
 So to run a scenario, simply:
+
 1. Open a _generator_wrapper.m file.
 2. At the top of the file, modify the number of sats in each orbit (and czml file names if desired)
 3. In the lower half of the file, modify any of the choices for ground station network, use of crosslinks, etc that you want. Note that you don't have to run this code if you're not looking for anything beyond the sat's orbit
