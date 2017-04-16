@@ -17,6 +17,9 @@ import datetime
 import math
 import json
 
+import collections
+import datetime
+
 def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file = './viz_out.json'):
 
     mat = scipy.io.loadmat(file_from_sim)
@@ -36,6 +39,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     gs_availability_windows = mat['gs_availability_windows']
     batt_stored_history = mat['batt_stored_history']
     t_eclipse = mat['t_eclipse']
+    sim_output_time = mat['creation_time'][0]
 
     # print t_o
     # print o_locations
@@ -283,9 +287,53 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
         czml_content.append(cztl.createShowIntervalsPacket(ID,name,'eclipse',show_times = eclipse_datetime))
 
 
+    timetags = {}
+    timetags['timetags'] = 'dummy_string'
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
+    timetags['sim_output_updated'] = str(sim_output_time)
+    czml_content.append(timetags)
+
+
     # write to file
     json.dump(czml_content,all_fd,indent=2,sort_keys=False)
 
+def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_description_file = '../renderers/description.json', renderers_list = ['/Apps/MATLAB_SatViz/renderers/test.js'], renderer_mapping = {'Satellite':['Test'],'Facility':['Test']}):
+
+    mat = scipy.io.loadmat(file_from_sim)
+
+    # print mat
+    GS_names = mat['GS_names']
+    gs_network = mat['gs_network'][0][0]
+    GS_names_choice = GS_names[gs_network][0]
+    t_o = mat['t_o']
+    num_sats = len(t_o)
+    sim_output_time = mat['creation_time'][0]
+
+
+    json_content = collections.OrderedDict()
+
+    json_content['renderers'] = renderers_list
+
+    renderMapping = collections.OrderedDict()
+
+    if 'Satellite' in renderer_mapping.keys():
+        for i in xrange(num_sats):
+            renderMapping['Satellite/CubeSat'+str(i)] = renderer_mapping['Satellite']
+
+    if 'Facility' in renderer_mapping.keys():
+        for name in GS_names_choice:
+            gs_name = name[0][0]
+            renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
+
+    json_content['renderMapping'] = renderMapping
+
+    timetags = {}
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
+    timetags['sim_output_updated'] = str(sim_output_time)
+    json_content['timetags'] = timetags
+
+    fd = open(renderer_description_file, "w")
+    json.dump(json_content,fd,indent=2,sort_keys=False)
 
 if __name__ == '__main__':
     generateVizInputs()
