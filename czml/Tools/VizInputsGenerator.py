@@ -40,6 +40,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     batt_stored_history = mat['batt_stored_history']
     t_eclipse = mat['t_eclipse']
     sim_output_time = mat['creation_time'][0]
+    dlnk_rate_history = mat['dlnk_rate_history']
 
     # print t_o
     # print o_locations
@@ -287,6 +288,30 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
         czml_content.append(cztl.createShowIntervalsPacket(ID,name,'eclipse',show_times = eclipse_datetime))
 
 
+    # create dlnk_rate_history
+    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+    i = 0
+    for sat_indx in xrange(num_sats):
+        for gs_indx in xrange(num_gs):
+
+            name = 'dlnk_rate_history for dlnk '+str(i)+', satellite '+str(sat_indx+1)+' and GS '+str(gs_indx+1)
+
+            # needs to have same ID as original downlink to work
+            ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
+
+            if dlnk_rate_history[sat_indx][gs_indx].any():
+                pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
+
+                # attach the text dlnk rate summary to GS position
+                gs_name = GS_names_choice[gs_indx][0][0]
+                pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
+
+                czml_content.append(pkt)
+
+            i+=1
+
+
+
     timetags = {}
     timetags['timetags'] = 'dummy_string'
     timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
@@ -308,6 +333,8 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     t_o = mat['t_o']
     num_sats = len(t_o)
     sim_output_time = mat['creation_time'][0]
+    num_gs = mat['num_gs'][0][0]
+    dlnk_rate_history = mat['dlnk_rate_history']
 
 
     json_content = collections.OrderedDict()
@@ -318,12 +345,18 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
 
     if 'Satellite' in renderer_mapping.keys():
         for i in xrange(num_sats):
-            renderMapping['Satellite/CubeSat'+str(i)] = renderer_mapping['Satellite']
+            renderMapping['Satellite/CubeSat'+str(i+1)] = renderer_mapping['Satellite']
 
     if 'Facility' in renderer_mapping.keys():
         for name in GS_names_choice:
             gs_name = name[0][0]
             renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
+
+    if 'Dlnk' in renderer_mapping.keys():
+        for i in xrange(num_sats):
+            for j in xrange(num_gs):
+                if dlnk_rate_history[i][j].any():
+                    renderMapping['Dlnk/Sat'+str(i+1)+'-GS'+str(j+1)] = renderer_mapping['Dlnk']
 
     json_content['renderMapping'] = renderMapping
 
