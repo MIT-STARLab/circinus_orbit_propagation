@@ -41,6 +41,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     t_eclipse = mat['t_eclipse']
     sim_output_time = mat['creation_time'][0]
     dlnk_rate_history = mat['dlnk_rate_history']
+    xlnk_rate_history = mat['xlnk_rate_history']
 
     # print t_o
     # print o_locations
@@ -294,7 +295,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     for sat_indx in xrange(num_sats):
         for gs_indx in xrange(num_gs):
 
-            name = 'dlnk_rate_history for dlnk '+str(i)+', satellite '+str(sat_indx+1)+' and GS '+str(gs_indx+1)
+            name = 'dlnk_rate_history for downlink '+str(i)+', satellite '+str(sat_indx+1)+' and GS '+str(gs_indx+1)
 
             # needs to have same ID as original downlink to work
             ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
@@ -302,9 +303,31 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
             if dlnk_rate_history[sat_indx][gs_indx].any():
                 pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
 
-                # attach the text dlnk rate summary to GS position
+                # attach a proxy position for displaying data rate text
                 gs_name = GS_names_choice[gs_indx][0][0]
                 pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
+
+                czml_content.append(pkt)
+
+            i+=1
+
+
+    # create xlnk_rate_history
+    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+    i = 0
+    for sat_indx in xrange(num_sats):
+        for other_sat_indx in xrange(sat_indx+1,num_sats):
+
+            name = 'xlnk_rate_history for crosslink '+str(i)+', satellite '+str(sat_indx+1)+' and xsat '+str(other_sat_indx+1)
+
+            # needs to have same ID as original crosslink to work
+            ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
+
+            if xlnk_rate_history[sat_indx][other_sat_indx].any():
+                pkt = cztl.createSampledPropertyHistory(ID,name,'datarate',history_epoch, xlnk_rate_history[sat_indx][other_sat_indx], filter_seconds_beg=0,filter_seconds_end=86400)
+
+                # attach a proxy position for displaying data rate text
+                pkt['position_proxy'] = {"reference": sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post}
 
                 czml_content.append(pkt)
 
@@ -335,6 +358,7 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     sim_output_time = mat['creation_time'][0]
     num_gs = mat['num_gs'][0][0]
     dlnk_rate_history = mat['dlnk_rate_history']
+    xlnk_rate_history = mat['xlnk_rate_history']
 
 
     json_content = collections.OrderedDict()
@@ -357,6 +381,12 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
             for j in xrange(num_gs):
                 if dlnk_rate_history[i][j].any():
                     renderMapping['Dlnk/Sat'+str(i+1)+'-GS'+str(j+1)] = renderer_mapping['Dlnk']
+
+    if 'Xlnk' in renderer_mapping.keys():
+        for i in xrange(num_sats):
+            for j in xrange(i+1,num_sats):
+                if xlnk_rate_history[i][j].any():
+                    renderMapping['Xlnk/Sat'+str(i+1)+'-Sat'+str(j+1)] = renderer_mapping['Xlnk']
 
     json_content['renderMapping'] = renderMapping
 
