@@ -260,7 +260,7 @@ def createLinkPacket(ID='Xlnk/SatN-to-SatM',name='a link',start_avail=datetime.d
 
     return link
 
-def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[255,0,0,150],position_ref='Satellite/CubeSatN#position'):
+def createObsPacket_DEPRECATED(ID='Obs/SatN',name='observation cone for satellite',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), cylinder_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], color=[255,0,0,150],position_ref='Satellite/CubeSatN#position'):
 
     obs_cyl = collections.OrderedDict()
 
@@ -284,6 +284,40 @@ def createObsPacket(ID='Obs/SatN',name='observation cone for satellite',start_av
     obs_cyl['position'] = {'reference':position_ref}
 
     return obs_cyl
+
+def createObsPacket(ID='Satellite/CubeSatN/Sensor/SensorM',name='observation sensor M for satellite N',parent='Satellite/CubeSatN',start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0), sensor_show_times = [[datetime.datetime(2017, 3, 15, 12, 0, 0),datetime.datetime(2017, 3, 16, 1, 0, 0)],[datetime.datetime(2017, 3, 16, 5, 0, 0),datetime.datetime(2017, 3, 16, 9, 0, 0)]], lateral_color=[0,255,0,51],intersection_color=[0,255,0,255],position_ref='Satellite/CubeSatN#position',orientation_ref='Satellite/CubeSatN#orientation'):
+
+    obs_sensor = collections.OrderedDict()
+
+    obs_sensor['id'] = ID
+    obs_sensor['name'] = name
+    obs_sensor['parent'] = parent
+    obs_sensor['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    # Figure out intervals for showing and not showing
+    show_intervals = getBooleanShowIntervals(sensor_show_times, start_avail, end_avail)
+    show_intervals = show_intervals if show_intervals else False
+
+    intersectionColor = {'rgba':intersection_color}
+    lateralSurfaceMaterial = {'solidColor':{'color':{'rgba':lateral_color}}}
+    conicSensor = {
+        'showIntersection':True,
+        'intersectionColor':intersectionColor,
+        'intersectionWidth':2,
+        'portionToDisplay':"COMPLETE",
+        'lateralSurfaceMaterial':lateralSurfaceMaterial,
+        'innerHalfAngle':0,
+        'outerHalfAngle':0.5,
+        'minimumClockAngle':0.0,
+        'maximumClockAngle':6.283185307179586,
+        'radius':5e7,
+        'show': show_intervals}
+    obs_sensor['agi_conicSensor'] = conicSensor
+
+    obs_sensor['position'] = {'reference':position_ref}
+    obs_sensor['orientation'] = {'reference':orientation_ref}
+
+    return obs_sensor
 
 def createSampledPropertyHistory(ID='Satellite/CubeSatN',name='q_o_sizes_history for satellite', custom_property_name ='datavol', epoch = datetime.datetime(2017, 3, 15, 10, 0, 0) , history = [[0,0],[86400,0]],filter_seconds_beg=0,filter_seconds_end=86400):
     '''

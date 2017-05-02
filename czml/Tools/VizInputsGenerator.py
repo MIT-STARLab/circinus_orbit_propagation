@@ -196,8 +196,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
 
     sat_pos_ref_pre = 'Satellite/CubeSat'
     pos_ref_post = '#position'
-    sat_pos_ref_pre = 'Satellite/CubeSat'
-    pos_ref_post = '#position'
+    orient_ref_post = '#orientation'
     gs_pos_ref_pre ='Facility/'
 
     # create downlinks
@@ -234,16 +233,17 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
             i+=1
 
     # create observations
-    obscone_color = [238,130,238,100]
     for sat_indx in xrange(num_sats):
-        name = 'obs sat '+str(sat_indx+1)
+        name = 'observation sensor 1 for satellite '+str(sat_indx+1)
 
         obs_datetime = observation_times_datetime[sat_indx]
 
         # print dlnks_datetime
-        ID = 'Obs/Sat'+str(sat_indx+1)
+        ID = 'Satellite/CubeSat'+str(sat_indx+1)+'/Sensor/Sensor1'
 
-        czml_content.append(cztl.createObsPacket(ID,name,start_avail,end_avail, cylinder_show_times = obs_datetime, color=obscone_color,position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post))
+        parent = 'Satellite/CubeSat'+str(sat_indx+1)
+
+        czml_content.append(cztl.createObsPacket(ID,name,parent,start_avail,end_avail, sensor_show_times = obs_datetime, lateral_color=[0,255,0,51],intersection_color=[0,255,0,255],position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,orientation_ref=sat_pos_ref_pre+str(sat_indx+1)+orient_ref_post))
 
     # create q_o_sizes_history
     epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
@@ -396,6 +396,39 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     json_content['timetags'] = timetags
 
     fd = open(renderer_description_file, "w")
+    json.dump(json_content,fd,indent=2,sort_keys=False)
+
+def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../app_data_files/viz_objects.json', callbacks_mapping = {'Satellite':["orientation","drawNadirRF"]}):
+
+    mat = scipy.io.loadmat(file_from_sim)
+
+    t_o = mat['t_o']
+    num_sats = len(t_o)
+    sim_output_time = mat['creation_time'][0]
+
+    json_content = collections.OrderedDict()
+
+    callbacks = collections.OrderedDict()
+
+    if 'Satellite' in callbacks_mapping.keys():
+        sat_cllbks = callbacks_mapping['Satellite']
+
+        for cllbk in sat_cllbks:
+            cllbk_items = []
+
+            for i in xrange(num_sats):
+                cllbk_items.append('Satellite/CubeSat'+str(i+1))
+
+            callbacks[cllbk] = cllbk_items
+
+    json_content['callbacks'] = callbacks
+
+    timetags = {}
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
+    timetags['sim_output_updated'] = str(sim_output_time)
+    json_content['timetags'] = timetags
+
+    fd = open(vizobj_file, "w")
     json.dump(json_content,fd,indent=2,sort_keys=False)
 
 if __name__ == '__main__':
