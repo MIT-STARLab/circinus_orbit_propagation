@@ -3,6 +3,8 @@
  
  % Features 3 SSO orbits and 1 equatorial orbit
 
+info_string % <- adding to force error. Need to update to new info string usage. See single sat wrapper
+ 
 clear
 
 automated_generation = 1;

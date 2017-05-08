@@ -256,10 +256,10 @@ startdatestr = sat_times(1,:);
 enddatestr = sat_times(end,:);
 
 if yes_crosslinks
-    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
 else
 % or no crosslinks
-    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
+    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
 end
 
 

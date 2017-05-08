@@ -43,6 +43,8 @@ i = oe.i_deg;
 RAAN = oe.RAAN;
 arg_perigee = 0;
 
+info_string = [info_string,', 10:30 LTAN ',num2str(num_sats_orbit_1)];
+
 for sat_num = 1:num_sats_orbit_1
     satname = strcat('sat',num2str(sat_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
@@ -81,6 +83,8 @@ arg_perigee = 269.1478;
 
 sat_name_base_num = num_sats_orbit_1;
 
+info_string = [info_string,', ISS ',num2str(num_sats_orbit_2)];
+
 for sat_num = 1:num_sats_orbit_2
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
@@ -113,6 +117,8 @@ RAAN = 0;
 arg_perigee = 0;
 
 sat_name_base_num = num_sats_orbit_1+num_sats_orbit_2;
+
+info_string = [info_string,', equatorial ',num2str(num_sats_orbit_3)];
 
 for sat_num = 1:num_sats_orbit_3
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
