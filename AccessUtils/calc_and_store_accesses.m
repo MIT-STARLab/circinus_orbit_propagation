@@ -51,7 +51,7 @@ el_cutoff_obs = 60; % elevation cutoff for finding obs times. (deg)
 
 disp('read in sat files');
 
-addpath('../SatPosFileIO');
+addpath(strcat(base_directory,'/SatPosFileIO'));
 
 sat_times = [];
 
@@ -101,7 +101,6 @@ end
 
 disp('calculate observation times');
 
-addpath(strcat(base_directory,'/sat_pos_file_io'));
 addpath(strcat(base_directory,'/Libraries/PROPAT/propat_code'));
 
 % Determine obs coordinates in ECEF. Only one point because doesn't change
