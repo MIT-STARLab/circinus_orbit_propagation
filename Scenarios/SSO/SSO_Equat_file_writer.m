@@ -14,14 +14,10 @@ else
 end
 
 
-final_czml_file_name = strcat('sats_file_equat_',num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'_',num2str(num_sats_orbit_3),'.czml');
+final_czml_file_name = strcat(final_czml_file_name_pre,num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'_',num2str(num_sats_orbit_3),'.czml');
 
-start_time_str = '15 Mar 2017 10:00:00.000';  % NOTE: currently the czml files are hardcoded to this date ... if the date is changed here, the czml file will no longer work
-startdatevec = [2012, 3, 15, 10, 0, 0];
+startdatevec = datevec(start_time_str);
 mJDEpoch = mjuliandate(startdatevec);
-
-delta_t_sec = 10;  % seconds
-end_time_sec = 86400;  % seconds
 
 addpath(strcat(base_directory,'/SatPosFileIO'));
 addpath(strcat(base_directory,'/czml'));
@@ -57,7 +53,7 @@ for sat_num = 1:num_sats_orbit_1
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,sat_headers_loc,satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -94,7 +90,7 @@ for sat_num = 1:num_sats_orbit_2
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,sat_headers_loc,satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -128,7 +124,7 @@ for sat_num = 1:num_sats_orbit_3
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
     
     decimation = 5;
-    sat_header_file_name = strcat(base_directory,'/czml/',satname,'_pos_stub.czml.part.txt');
+    sat_header_file_name = strcat(base_directory,sat_headers_loc,satname,'_pos_stub.czml.part.txt');
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
@@ -139,14 +135,21 @@ end
 %% Combine all czml file parts into a single file
 
 delete(final_czml_file_name)
-copyfile(strcat(base_directory,'/czml/czml_header_equatorial.czml.part.txt'),final_czml_file_name);
+copyfile(header_file,final_czml_file_name);
 
-for i=1:size(sat_file_names,1)
+for i=1:size(sat_file_names,1)  
     sat_file_name = sat_file_names{i};
     system(['cat ',sat_file_name,' >> ', final_czml_file_name]);
 end
 
 fileID = fopen(final_czml_file_name,'a+');
 fprintf(fileID,'\n  {}\n]');  %print end matter stuff for czml json file
+fclose(fileID);
+
 
 system('rm *_pos.czml.part.txt');  % remove intermediate files
+
+% Update epoch times in file
+startdatenum = datenum(start_time_str);
+enddatenum = startdatenum + end_time_sec/86400;
+system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);

@@ -59,3 +59,5 @@ while time < end_time_sec
     fprintf(fileID,'%s    % 12.6f    % 12.6f    % 12.6f \n',datestr(start_time+time/86400,formatOut),rv(1)/1000,rv(2)/1000,rv(3)/1000);
 end
 
+fclose(fileID);
+

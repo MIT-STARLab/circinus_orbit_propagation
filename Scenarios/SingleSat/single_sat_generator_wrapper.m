@@ -6,8 +6,7 @@ clear
 automated_generation = 1;
 
 base_directory = '../..';
-    
-% Propagate sat orbits
+sat_headers_loc = '/czml/sat_headers/';
 
 
 %% file inputs
@@ -27,6 +26,12 @@ final_czml_file_name_pre = 'sats_file_single_equatalt_';
 num_sats_orbit_1 = 0;  % SSO 1030 LTAN
 num_sats_orbit_2 = 0;  % ISS
 num_sats_orbit_3 = 1;  % Equatorial
+
+
+start_time_str = '18 Apr 2017 13:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
+
+delta_t_sec = 10;  % seconds
+end_time_sec = 86400*2.5;  % seconds
 
 
 %% geometry inputs

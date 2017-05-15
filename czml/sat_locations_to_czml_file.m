@@ -36,4 +36,6 @@ end
 
 fprintf(fileID,'      ]\n    }\n  },');  %end matter
 
+fclose(fileID);
+
 end
