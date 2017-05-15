@@ -39,9 +39,19 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     gs_availability_windows = mat['gs_availability_windows']
     batt_stored_history = mat['batt_stored_history']
     t_eclipse = mat['t_eclipse']
-    sim_output_time = mat['creation_time'][0]
+    sim_output_time = str(mat['creation_time'][0])
     dlnk_rate_history = mat['dlnk_rate_history']
     xlnk_rate_history = mat['xlnk_rate_history']
+    startdatestr = str(mat['startdatestr'][0])
+    enddatestr = str(mat['enddatestr'][0])
+
+    print mat.keys()
+
+    if 'info_string' in mat.keys():
+        file_writer_info_string = str(mat['info_string'][0])
+    else:
+        file_writer_info_string = 'no file writer info string found'
+
 
     # print t_o
     # print o_locations
@@ -187,10 +197,10 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
 
     all_fd = open(output_viz_czml_file, "w")
 
-    start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0)
-    end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0)
+    start_avail= datetime.datetime.strptime(startdatestr,'%d %b %Y %H:%M:%S.%f')
+    end_avail= datetime.datetime.strptime(enddatestr,'%d %b %Y %H:%M:%S.%f')
 
-    history_epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+    history_epoch = start_avail
 
     GS_names_choice = GS_names[gs_network][0]
 
@@ -337,8 +347,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
 
     timetags = {}
     timetags['timetags'] = 'dummy_string'
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
-    timetags['sim_output_updated'] = str(sim_output_time)
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    timetags['sim_output_updated'] = sim_output_time
+    timetags['file_writer_info_string_input'] = file_writer_info_string
     czml_content.append(timetags)
 
 
@@ -355,10 +366,15 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     GS_names_choice = GS_names[gs_network][0]
     t_o = mat['t_o']
     num_sats = len(t_o)
-    sim_output_time = mat['creation_time'][0]
+    sim_output_time = str(mat['creation_time'][0])
     num_gs = mat['num_gs'][0][0]
     dlnk_rate_history = mat['dlnk_rate_history']
     xlnk_rate_history = mat['xlnk_rate_history']
+
+    if 'info_string' in mat.keys():
+        file_writer_info_string = str(mat['info_string'][0])
+    else:
+        file_writer_info_string = 'no file writer info string found'
 
 
     json_content = collections.OrderedDict()
@@ -391,8 +407,9 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     json_content['renderMapping'] = renderMapping
 
     timetags = {}
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
-    timetags['sim_output_updated'] = str(sim_output_time)
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    timetags['sim_output_updated'] = sim_output_time
+    timetags['file_writer_info_string_input'] = file_writer_info_string
     json_content['timetags'] = timetags
 
     fd = open(renderer_description_file, "w")
@@ -404,7 +421,13 @@ def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../
 
     t_o = mat['t_o']
     num_sats = len(t_o)
-    sim_output_time = mat['creation_time'][0]
+    sim_output_time = str(mat['creation_time'][0])
+
+    if 'info_string' in mat.keys():
+        file_writer_info_string = str(mat['info_string'][0])
+    else:
+        file_writer_info_string = 'no file writer info string found'
+
 
     json_content = collections.OrderedDict()
 
@@ -424,8 +447,9 @@ def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../
     json_content['callbacks'] = callbacks
 
     timetags = {}
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%SZ')
-    timetags['sim_output_updated'] = str(sim_output_time)
+    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    timetags['sim_output_updated'] = sim_output_time
+    timetags['file_writer_info_string_input'] = file_writer_info_string
     json_content['timetags'] = timetags
 
     fd = open(vizobj_file, "w")

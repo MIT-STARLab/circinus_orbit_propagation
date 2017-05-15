@@ -15,14 +15,14 @@ header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 final_czml_file_name_pre = 'sats_file_ssoequat_';
 
 % inputs
-num_sats_orbit_1 = 1;
-num_sats_orbit_2 = 0;
-num_sats_orbit_3 = 0;
+num_sats_orbit_1 = 10;
+num_sats_orbit_2 = 10;
+num_sats_orbit_3 = 10;
 
-start_time_str = '18 Apr 2017 13:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
+start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
-end_time_sec = 86400*2.5;  % seconds
+end_time_sec = 86400;  % seconds
 
 %% geometry inputs
 

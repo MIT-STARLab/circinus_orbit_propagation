@@ -249,7 +249,7 @@ if yes_crosslinks
     end
 
 end
-%% Save relevant info for running sim_OF_const to file
+%% Save relevant info for running sim_constellation to file
 
 tstep_dayf = (datenum(sat_times(2,:)) - datenum(sat_times(1,:)));
 startdatestr = sat_times(1,:);

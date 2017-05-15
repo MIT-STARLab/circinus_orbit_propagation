@@ -143,7 +143,7 @@ for i=1:size(sat_file_names,1)
 end
 
 fileID = fopen(final_czml_file_name,'a+');
-fprintf(fileID,'\n  {}\n]');  %print end matter stuff for czml json file
+fprintf(fileID,['\n  { "file_writer_info_string":','"',info_string,'"','}\n]']);  %print helpful info string
 fclose(fileID);
 
 
