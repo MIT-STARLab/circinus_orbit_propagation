@@ -344,10 +344,10 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
 
 
     metadata = collections.OrderedDict()
-    metadata['metadata'] = 'dummy_string'
+    metadata['metadata_satsfile_updater'] = 'dummy_string'
     metadata['sim_output_updated'] = sim_output_time
     metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    metadata['file_writer_info_string_input'] = file_writer_info_string
+    metadata['file_writer_info_string'] = file_writer_info_string
     czml_content.append(metadata)
 
 
@@ -407,8 +407,8 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     metadata = collections.OrderedDict()
     metadata['sim_output_updated'] = sim_output_time
     metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    metadata['file_writer_info_string_input'] = file_writer_info_string
-    json_content['metadata'] = metadata
+    metadata['file_writer_info_string'] = file_writer_info_string
+    json_content['metadata_satsfile_updater'] = metadata
 
     fd = open(renderer_description_file, "w")
     json.dump(json_content,fd,indent=2,sort_keys=False)
@@ -447,8 +447,8 @@ def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../
     metadata = collections.OrderedDict()
     metadata['sim_output_updated'] = sim_output_time
     metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    metadata['file_writer_info_string_input'] = file_writer_info_string
-    json_content['metadata'] = metadata
+    metadata['file_writer_info_string'] = file_writer_info_string
+    json_content['metadata_satsfile_updater'] = metadata
 
     fd = open(vizobj_file, "w")
     json.dump(json_content,fd,indent=2,sort_keys=False)
