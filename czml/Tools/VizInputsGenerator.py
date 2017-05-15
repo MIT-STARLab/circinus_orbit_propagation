@@ -45,8 +45,6 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     startdatestr = str(mat['startdatestr'][0])
     enddatestr = str(mat['enddatestr'][0])
 
-    print mat.keys()
-
     if 'info_string' in mat.keys():
         file_writer_info_string = str(mat['info_string'][0])
     else:
@@ -345,12 +343,12 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
 
 
 
-    timetags = {}
-    timetags['timetags'] = 'dummy_string'
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    timetags['sim_output_updated'] = sim_output_time
-    timetags['file_writer_info_string_input'] = file_writer_info_string
-    czml_content.append(timetags)
+    metadata = collections.OrderedDict()
+    metadata['metadata'] = 'dummy_string'
+    metadata['sim_output_updated'] = sim_output_time
+    metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    metadata['file_writer_info_string_input'] = file_writer_info_string
+    czml_content.append(metadata)
 
 
     # write to file
@@ -406,11 +404,11 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
 
     json_content['renderMapping'] = renderMapping
 
-    timetags = {}
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    timetags['sim_output_updated'] = sim_output_time
-    timetags['file_writer_info_string_input'] = file_writer_info_string
-    json_content['timetags'] = timetags
+    metadata = collections.OrderedDict()
+    metadata['sim_output_updated'] = sim_output_time
+    metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    metadata['file_writer_info_string_input'] = file_writer_info_string
+    json_content['metadata'] = metadata
 
     fd = open(renderer_description_file, "w")
     json.dump(json_content,fd,indent=2,sort_keys=False)
@@ -446,11 +444,11 @@ def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../
 
     json_content['callbacks'] = callbacks
 
-    timetags = {}
-    timetags['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
-    timetags['sim_output_updated'] = sim_output_time
-    timetags['file_writer_info_string_input'] = file_writer_info_string
-    json_content['timetags'] = timetags
+    metadata = collections.OrderedDict()
+    metadata['sim_output_updated'] = sim_output_time
+    metadata['json_updated'] = datetime.datetime.now().strftime('%Y %m %d %H:%M:%S')
+    metadata['file_writer_info_string_input'] = file_writer_info_string
+    json_content['metadata'] = metadata
 
     fd = open(vizobj_file, "w")
     json.dump(json_content,fd,indent=2,sort_keys=False)
