@@ -14,7 +14,9 @@ else
 end
 
 
+
 final_czml_file_name = strcat(final_czml_file_name_pre,num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'_',num2str(num_sats_orbit_3),'.czml');
+
 
 startdatevec = datevec(start_time_str);
 mJDEpoch = mjuliandate(startdatevec);
@@ -22,7 +24,7 @@ mJDEpoch = mjuliandate(startdatevec);
 addpath(strcat(base_directory,'/SatPosFileIO'));
 addpath(strcat(base_directory,'/czml'));
 
-sat_file_names = {};
+sat_file_names = cell(num_sats,1);
 
 %% Specify orbit for 10:30 LTAN, write position file, part of czml file
 
@@ -41,7 +43,7 @@ arg_perigee = 0;
 
 info_string = [info_string,', 10:30 LTAN ',num2str(num_sats_orbit_1)];
 
-for sat_num = 1:num_sats_orbit_1
+parfor sat_num = 1:num_sats_orbit_1
     satname = strcat('sat',num2str(sat_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
@@ -57,7 +59,7 @@ for sat_num = 1:num_sats_orbit_1
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num} = sat_output_file_name;
 end
 
 
@@ -78,7 +80,7 @@ sat_name_base_num = num_sats_orbit_1;
 
 info_string = [info_string,', 14:30 LTAN ',num2str(num_sats_orbit_2)];
 
-for sat_num = 1:num_sats_orbit_2
+parfor sat_num = 1:num_sats_orbit_2
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
@@ -94,12 +96,12 @@ for sat_num = 1:num_sats_orbit_2
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num+sat_name_base_num} = sat_output_file_name;
 end
 
 %% Specify equatorial orbit, write position file, part of czml file
 
-% angles should be in degrees below
+% angles should be in degrees belowc
 Re = 6378.0088;
 altitude = 600;  % km
 e = 0;
@@ -112,7 +114,7 @@ sat_name_base_num = num_sats_orbit_1+num_sats_orbit_2;
 
 info_string = [info_string,', equatorial ',num2str(num_sats_orbit_3)];
 
-for sat_num = 1:num_sats_orbit_3
+parfor sat_num = 1:num_sats_orbit_3
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
@@ -128,9 +130,8 @@ for sat_num = 1:num_sats_orbit_3
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num+sat_name_base_num} = sat_output_file_name;
 end
-
 
 %% Combine all czml file parts into a single file
 
@@ -152,4 +153,5 @@ system('rm *_pos.czml.part.txt');  % remove intermediate files
 % Update epoch times in file
 startdatenum = datenum(start_time_str);
 enddatenum = startdatenum + end_time_sec/86400;
+['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
 system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);

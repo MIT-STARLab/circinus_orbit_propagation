@@ -53,9 +53,24 @@ disp('read in sat files');
 
 addpath(strcat(base_directory,'/SatPosFileIO'));
 
-sat_times = [];
 
-for sat_num = 1:num_sats
+% Read in sat 1 first to get num timepoints
+sat_num = 1
+    
+satname = strcat('sat',num2str(sat_num));
+pos_file_name = strcat(satname,'_delkep_pos.txt');
+
+num_header_lines = 6;
+[sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
+sat_times = sat_time; % store times for all sats
+
+num_timepoints = size(sat_times,1);
+
+sat_locations_all_sats = zeros(num_timepoints,3,num_sats);  % preallocate
+sat_locations_all_sats(:,:,sat_num) = sat_locations;  % note this does not currently have velocity in it.
+
+% now the other sats
+parfor sat_num = 2:num_sats
     sat_num
     
     satname = strcat('sat',num2str(sat_num));
@@ -63,34 +78,29 @@ for sat_num = 1:num_sats
 
     num_header_lines = 6;
     [sat_time, sat_locations] = import_sat_pos_file(pos_file_name,num_header_lines);
-  
-    if sat_num == 1
-        sat_times = [sat_times; sat_time];
-    end
     
     sat_locations_all_sats(:,:,sat_num) = sat_locations;  % note this does not currently have velocity in it.
 end
-
-num_timepoints = size(sat_times,1);
 
 %% Calculate eclipse times
 
 disp('calculate eclipse times');
 
 addpath(strcat(base_directory,'/Libraries/Solar_Ephmeris/demo_sun2'));
-% initialize sun ephemeris  (kinda dumb...)
+% initialize sun ephemeris globals for sun2 below (holy cow that library is hacky AF)
 global suncoef
 suncoef = 1;
 
 sun_locations = [];
 
+rsun = zeros(num_timepoints,3);
 for timepoint_num=1:num_timepoints
     jdate = juliandate(sat_times(timepoint_num,:));
     [rasc, decl, rsun(timepoint_num,:)] = sun2 (jdate);  % rsun in km
 end
 
 sunecl = cell(1,num_sats);
-for sat_num = 1:num_sats
+parfor sat_num = 1:num_sats
     sat_num
     
     eclipse_times = find_eclipse_times(sat_times,sat_locations_all_sats(:,:,sat_num),rsun);
@@ -105,27 +115,39 @@ addpath(strcat(base_directory,'/Libraries/PROPAT/propat_code'));
 
 % Determine obs coordinates in ECEF. Only one point because doesn't change
 target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
-for target_num=1:num_obs
+target_ecef_xyz = zeros(num_obs,3);
+parfor target_num=1:num_obs
+    % target_lat_lon_rad is a "broadcast variable", but it's so small of an 
+    % array it doesn't really matter
     target_ecef_xyz(target_num,:) = sph_geodetic_to_geocentric([target_lat_lon_rad(target_num,2),target_lat_lon_rad(target_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
 end
 
 % get ECI positions of targets as function of time
 target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
 target_eci_xyz = zeros(num_timepoints,3,num_obs);
+gwst = zeros(num_timepoints,1);
 for timepoint_num=1:num_timepoints
     dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
     mjdi = djm(day(dt), month(dt), year(dt));  % get modified julian day for ECEF -> ECI conversion
     dayf = mod(datenum(dt),1)*86400;  % get fraction of day in seconds
-    gwst = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
+    gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
+end
     
-    for target_num=1:num_obs
-        temp = terrestrial_to_inertial (gwst, [target_ecef_xyz(target_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
+disp('calc eci');
+parfor target_num=1:num_obs
+    target_num
+    
+    for timepoint_num=1:num_timepoints
+        temp = terrestrial_to_inertial (gwst(timepoint_num), [target_ecef_xyz(target_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
         target_eci_xyz(timepoint_num,:,target_num) = temp(1:3);  % km
     end
 end
 
+
+disp('calc obs, obs aer');
 obs = cell(num_sats,num_obs);
-for sat_num = 1:num_sats
+obsaer = cell(num_sats,num_obs);
+parfor sat_num = 1:num_sats
     
     sat_num
     
@@ -160,28 +182,38 @@ disp('calculate downlink times');
 
 % Determine gs coordinates in ECEF. Only one point because doesn't change
 gs_lat_lon_rad = gs_in_a(:,2:3)*pi/180;
-for gs_num=1:num_gs
+gs_ecef_xyz = zeros(num_gs,3);
+parfor gs_num=1:num_gs
+    % gs_lat_lon_rad is a "broadcast variable", but it's so small of an 
+    % array it doesn't really matter
     gs_ecef_xyz(gs_num,:) = sph_geodetic_to_geocentric([gs_lat_lon_rad(gs_num,2),gs_lat_lon_rad(gs_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
 end
 
 % get ECI positions of gs as function of time
 gs_lat_lon_rad = gs_in_a(:,3:4)*pi/180;
 gs_eci_xyz = zeros(num_timepoints,3,num_gs);
+gwst = zeros(num_timepoints,1);
 for timepoint_num=1:num_timepoints
     dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
     mjdi = djm(day(dt), month(dt), year(dt));  % get modified julian day for ECEF -> ECI conversion
     dayf = mod(datenum(dt),1)*86400;  % get fraction of day in seconds
-    gwst = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
+    gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
+end
+   
+disp('calc eci');
+parfor gs_num=1:num_gs
+    gs_num
     
-    for gs_num=1:num_gs
-        temp = terrestrial_to_inertial (gwst, [gs_ecef_xyz(gs_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
+    for timepoint_num=1:num_timepoints
+        temp = terrestrial_to_inertial (gwst(timepoint_num), [gs_ecef_xyz(gs_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
         gs_eci_xyz(timepoint_num,:,gs_num) = temp(1:3);  % km
     end
 end
 
+disp('calc gslink, gsaer');
 gslink = cell(num_sats,num_gs);
 gsaer = cell(num_sats,num_gs);
-for sat_num = 1:num_sats
+parfor sat_num = 1:num_sats
     
     sat_num
     
@@ -215,20 +247,22 @@ if yes_crosslinks
 
     disp('calculate crosslink times');
 
-    xlink = cell(num_sats,num_gs);
-    xrange = cell(num_sats,num_gs);
+    xlink = cell(num_sats,num_sats);
+    xrange = cell(num_sats,num_sats);
     for sat_num = 1:num_sats
 
         sat_num
+        
+        sat_locations_sat = sat_locations_all_sats(:,:,sat_num); % do this before the parfor so that sat_locations_sat is slicable below and we don't have to send the whole array!
 
-        for other_sat_num=1:num_sats
+        parfor other_sat_num=1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
 
             if sat_num == other_sat_num
                 continue
             end
 
             % find obs target overpasses, and then turn into windows
-            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_all_sats(:,:,sat_num),sat_locations_all_sats(:,:,other_sat_num));
+            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_sat,sat_locations_all_sats(:,:,other_sat_num));
             [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
 
             % save AER of all the accesses
@@ -242,7 +276,7 @@ if yes_crosslinks
                 sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
             end
 
-            xlink{sat_num,other_sat_num} = xlnk_windows;
+            xlink{sat_num,other_sat_num} = xlnk_windows;  % Note: had a problem earlier where I declared 'xlink' to be the wrong size, and kept on getting abstruse "you can't index this way!!1" errors from matlab. Super helpful right debug message (not). To be on the lookout for in future... 
             xrange{sat_num,other_sat_num} = sats_xlnks_range;
         end
 
