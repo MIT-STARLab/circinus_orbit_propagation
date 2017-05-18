@@ -255,11 +255,7 @@ if yes_crosslinks
         
         sat_locations_sat = sat_locations_all_sats(:,:,sat_num); % do this before the parfor so that sat_locations_sat is slicable below and we don't have to send the whole array!
 
-        parfor other_sat_num=1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
-
-            if sat_num == other_sat_num
-                continue
-            end
+        parfor other_sat_num=sat_num+1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
 
             % find obs target overpasses, and then turn into windows
             [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_sat,sat_locations_all_sats(:,:,other_sat_num));
