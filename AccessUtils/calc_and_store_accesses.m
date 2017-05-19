@@ -22,6 +22,7 @@ tic
 if exist('automated_generation') && automated_generation == 1
     % No-op
 else
+    % DEPRECATED!!!
     clear
     num_sats = 20;
     
@@ -244,40 +245,52 @@ end
 %% Calculate Crosslink Times and Ranges
 
 if yes_crosslinks
-
-    disp('calculate crosslink times');
-
-    xlink = cell(num_sats,num_sats);
-    xrange = cell(num_sats,num_sats);
-    for sat_num = 1:num_sats
-
-        sat_num
+    if use_prexisting_xlnk_file 
+        if exist(xlnks_file_name, 'file')     
+            disp(['load crosslink times from: ',xlnks_file_name]);
+            load(xlnks_file_name);
+        else
+            disp(['couldnt load crosslink file: ',xlnks_file_name]);
+            use_prexisting_xlnk_file = 0;
+        end
+    end
         
-        sat_locations_sat = sat_locations_all_sats(:,:,sat_num); % do this before the parfor so that sat_locations_sat is slicable below and we don't have to send the whole array!
+    if ~use_prexisting_xlnk_file
 
-        parfor other_sat_num=sat_num+1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
+        disp('calculate crosslink times');
 
-            % find obs target overpasses, and then turn into windows
-            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_sat,sat_locations_all_sats(:,:,other_sat_num));
-            [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
+        xlink = cell(num_sats,num_sats);
+        xrange = cell(num_sats,num_sats);
+        for sat_num = 1:num_sats
 
-            % save AER of all the accesses
-            sats_xlnks_range = {};
-            for i=1:size(indices,1)
-                start_indx = indices(i,1);
-                end_indx = indices(i,2);
-                access_times_slice = access_times(start_indx:end_indx,:);
-                range_slice = range(start_indx:end_indx,:);
-                alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
-                sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
+            sat_num
+
+            sat_locations_sat = sat_locations_all_sats(:,:,sat_num); % do this before the parfor so that sat_locations_sat is slicable below and we don't have to send the whole array!
+
+            parfor other_sat_num=sat_num+1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
+
+                % find obs target overpasses, and then turn into windows
+                [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_locations_sat,sat_locations_all_sats(:,:,other_sat_num));
+                [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
+
+                % save AER of all the accesses
+                sats_xlnks_range = {};
+                for i=1:size(indices,1)
+                    start_indx = indices(i,1);
+                    end_indx = indices(i,2);
+                    access_times_slice = access_times(start_indx:end_indx,:);
+                    range_slice = range(start_indx:end_indx,:);
+                    alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
+                    sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
+                end
+
+                xlink{sat_num,other_sat_num} = xlnk_windows;  % Note: had a problem earlier where I declared 'xlink' to be the wrong size, and kept on getting abstruse "you can't index this way!!1" errors from matlab. Super helpful right debug message (not). To be on the lookout for in future... 
+                xrange{sat_num,other_sat_num} = sats_xlnks_range;
             end
 
-            xlink{sat_num,other_sat_num} = xlnk_windows;  % Note: had a problem earlier where I declared 'xlink' to be the wrong size, and kept on getting abstruse "you can't index this way!!1" errors from matlab. Super helpful right debug message (not). To be on the lookout for in future... 
-            xrange{sat_num,other_sat_num} = sats_xlnks_range;
         end
 
     end
-
 end
 %% Save relevant info for running sim_constellation to file
 
@@ -286,10 +299,10 @@ startdatestr = sat_times(1,:);
 enddatestr = sat_times(end,:);
 
 if yes_crosslinks
-    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
 else
 % or no crosslinks
-    save(strcat(filename_pre_string,num2str(num_sats),filename_post_string),'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
+    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
 end
 
 

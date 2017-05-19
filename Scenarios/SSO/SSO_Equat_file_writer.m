@@ -15,7 +15,7 @@ end
 
 
 
-final_czml_file_name = strcat(final_czml_file_name_pre,num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'_',num2str(num_sats_orbit_3),'.czml');
+final_czml_file_name = strcat(out_file_pre,'.czml');
 
 
 startdatevec = datevec(start_time_str);
