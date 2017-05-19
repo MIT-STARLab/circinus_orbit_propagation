@@ -2,12 +2,6 @@
 % includes sats in 2 different SSO orbits and an equatorial orbit,
 % currently
 
-% gs=1 SFN
-% gs=2 KSAT
-% gs=4 LCRD
-% gs=5 equatorial alternative
-% gs=6 bridgesat
-
 clear
 
 automated_generation = 1;
@@ -25,14 +19,21 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 %% file inputs
 
 % gs inputs
-header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
+header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
 
-gs_network = 5;
+% gs=1 SFN
+% gs=2 KSAT
+% gs=4 LCRD
+% gs=5 equatorial alternative
+% gs=6 bridgesat
+
+gs_network = 2;
 
 % orbit inputs
-num_sats_orbit_1 = 10;  % SSO @ 10:30
-num_sats_orbit_2 = 10;   % SSO @ 14:30
+num_sats_orbit_1 = 20;  % SSO @ 10:30
+num_sats_orbit_2 = 0;   % SSO @ 14:30
 num_sats_orbit_3 = 10;  % equatorial
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
