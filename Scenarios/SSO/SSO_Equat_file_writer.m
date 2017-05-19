@@ -140,18 +140,33 @@ copyfile(header_file,final_czml_file_name);
 
 for i=1:size(sat_file_names,1)  
     sat_file_name = sat_file_names{i};
-    system(['cat ',sat_file_name,' >> ', final_czml_file_name]);
+   
+    if ispc
+        system(['type ',sat_file_name,' >> ',final_czml_file_name]);
+    else
+        system(['cat ',sat_file_name,' >> ', final_czml_file_name]);
+    end
 end
 
 fileID = fopen(final_czml_file_name,'a+');
 fprintf(fileID,['\n  { "metadata_file_writer":"dummy_string",\n"file_writer_info_string":','"',info_string,'"','}\n]']);  %print helpful info string
 fclose(fileID);
 
+if ispc
+    system('del *_pos.czml.part.txt')
+else
+    system('rm *_pos.czml.part.txt');  % remove intermediate files
+end
 
-system('rm *_pos.czml.part.txt');  % remove intermediate files
 
 % Update epoch times in file
 startdatenum = datenum(start_time_str);
 enddatenum = startdatenum + end_time_sec/86400;
-['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
-system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+
+if ispc
+    ['c:\python27\python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
+    system(['c:\python27\python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+else
+    ['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
+    system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+end

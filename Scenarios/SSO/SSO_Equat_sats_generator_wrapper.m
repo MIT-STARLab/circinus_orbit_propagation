@@ -2,6 +2,8 @@
 % includes sats in 2 different SSO orbits and an equatorial orbit,
 % currently
 
+% gs=6 bridgesat
+
 clear
 
 automated_generation = 1;
@@ -13,12 +15,12 @@ sat_headers_loc = '/czml/sat_headers/';
 
 % header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
-final_czml_file_name_pre = 'sats_file_ssoequat_3day_bridgesat_';
+final_czml_file_name_pre = 'sats_file_ssoequat_10000sec_bridgesat_';
 
 % inputs
-num_sats_orbit_1 = 15;
-num_sats_orbit_2 = 15;
-num_sats_orbit_3 = 15;
+num_sats_orbit_1 = 30;
+num_sats_orbit_2 = 0;
+num_sats_orbit_3 = 0;
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
@@ -33,7 +35,7 @@ num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3;
 gs_network = 6;
 targets_parameters_sheetname = '33_targ';
 yes_crosslinks = 1;
-filename_pre_string = 'Sat_ssoequat_3day_bridgesat_';
+filename_pre_string = 'sats_file_ssoequat_10000sec_bridgesat_';
 filename_post_string = '_gs6_matlabprop.mat';
 
 targets_parameters_filename = '../parameters_targets.xlsx';
