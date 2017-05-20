@@ -19,8 +19,10 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 %% file inputs
 
 % gs inputs
-header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
-% header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_lcrd.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
+ header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
 
 % gs=1 SFN
@@ -32,9 +34,9 @@ header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
 gs_network = 2;
 
 % orbit inputs
-num_sats_orbit_1 = 10;  % SSO @ 10:30
-num_sats_orbit_2 = 10;   % SSO @ 14:30
-num_sats_orbit_3 = 10;  % equatorial
+num_sats_orbit_1 = 10;  % RAAN 0
+num_sats_orbit_2 = 10;  % RAAN 120
+num_sats_orbit_3 = 10;  % RAAN 240
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
@@ -48,7 +50,7 @@ yes_crosslinks = 1;
 
 %% Build File Names
 
-out_file_string2 = ['_orb',num2str(num_sats_orbit_1),'-',num2str(num_sats_orbit_2),'-',num2str(num_sats_orbit_3)];
+out_file_string2 = ['_orb',num2str(3),'-',num2str(num_sats)];  % 3 planes
 out_file_string3 = ['_gs',num2str(gs_network)];
 out_file_string4 = ['_t',num2str(end_time_sec),'-',num2str(10)];
 

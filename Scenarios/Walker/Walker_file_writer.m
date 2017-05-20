@@ -82,6 +82,8 @@ arg_perigee = 0;
 
 info_string = [info_string,', Walker RAAN 120 ',num2str(num_sats_orbit_2)];
 
+sat_name_base_num = num_sats_orbit_1;
+
 parfor sat_num = 1:num_sats_orbit_2
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
     pos_file_name = strcat(satname,'_delkep_pos.txt');
@@ -113,6 +115,8 @@ RAAN = 240;
 arg_perigee = 0;
 
 info_string = [info_string,', Walker RAAN 240 ',num2str(num_sats_orbit_3)];
+
+sat_name_base_num = num_sats_orbit_1+num_sats_orbit_2;
 
 parfor sat_num = 1:num_sats_orbit_3
     satname = strcat('sat',num2str(sat_num+sat_name_base_num));
