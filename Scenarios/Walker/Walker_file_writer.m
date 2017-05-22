@@ -80,8 +80,6 @@ i = 60;
 RAAN = 120;
 arg_perigee = 0;
 
-info_string = [info_string,', Walker RAAN 120 ',num2str(num_sats_orbit_2)];
-
 sat_name_base_num = num_sats_orbit_1;
 
 parfor sat_num = 1:num_sats_orbit_2
@@ -113,8 +111,6 @@ a = Re + altitude;  % km
 i = 60;
 RAAN = 240;
 arg_perigee = 0;
-
-info_string = [info_string,', Walker RAAN 240 ',num2str(num_sats_orbit_3)];
 
 sat_name_base_num = num_sats_orbit_1+num_sats_orbit_2;
 
