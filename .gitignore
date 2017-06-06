@@ -4,6 +4,9 @@ sats_file.czml
 *~
 ~$*
 *.mat
+!*_xlnk.mat
 *_pos.czml.part.txt
 out.txt
 out.json
+*.asv
+*.orig
