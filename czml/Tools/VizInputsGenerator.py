@@ -44,17 +44,14 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     xlnk_rate_history = mat['xlnk_rate_history']
     startdatestr = str(mat['startdatestr'][0])
     enddatestr = str(mat['enddatestr'][0])
+    num_sats = mat['num_satellites'][0][0]
+
+    # print num_sats
 
     if 'info_string' in mat.keys():
         file_writer_info_string = str(mat['info_string'][0])
     else:
         file_writer_info_string = 'no file writer info string found'
-
-
-    # print t_o
-    # print o_locations
-    num_sats = len(t_o)
-
 
     ########################################
     # Import data
@@ -63,6 +60,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # import downlinks
     downlink_times_datetime = [[[]  for j in range(num_gs)] for k in range(num_sats)]
     for sat_indx in xrange(0,num_sats):
+        if not len(t_d) > 0:
+            break
+
         dlnk_list = t_d[sat_indx]
 
         for dlnk_indx, dlnk in enumerate(dlnk_list):
@@ -88,6 +88,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # import crosslinks
     crosslink_times_datetime = [[[]  for j in range(num_sats)] for k in range(num_sats)]
     for sat_indx in xrange(0,num_sats):
+        if not len(t_x) > 0:
+            break
+
         xlnk_list = t_x[sat_indx]
 
         for xlnk_indx, xlnk in enumerate(xlnk_list):
@@ -113,6 +116,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # import observations
     observation_times_datetime = [[] for k in range(num_sats)]
     for sat_indx in xrange(0,num_sats):
+        if not len(t_o) > 0:
+            break
+
         obs_list = t_o[sat_indx]
 
         for obs_indx, obs in enumerate(obs_list):
@@ -137,6 +143,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # import gs availability windows
     gsavail_times_datetime = [[] for k in range(num_gs)]
     for gs_indx in xrange(0,num_gs):
+        if not len(gs_availability_windows) > 0:
+            break
+
         gs_avail_list = gs_availability_windows[gs_indx]
 
         for avail_wind_indx, avail_wind in enumerate(gs_avail_list):
@@ -161,6 +170,9 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # import eclipse times
     eclipse_times_datetime = [[] for k in range(num_sats)]
     for sat_indx in xrange(0,num_sats):
+        if not len(t_eclipse) > 0:
+            break
+
         eclipse_list = t_eclipse[sat_indx]
 
         for eclipse_wind_indx, eclipse_wind in enumerate(eclipse_list):
@@ -208,138 +220,147 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     gs_pos_ref_pre ='Facility/'
 
     # create downlinks
-    dlnk_color = [0,0,255,255]
-    i = 0
-    for sat_indx in xrange(num_sats):
-        for gs_indx in xrange(num_gs):
-            name = 'downlink '+str(i)
+    if len(t_d) > 0:
+        dlnk_color = [0,0,255,255]
+        i = 0
+        for sat_indx in xrange(num_sats):
+            for gs_indx in xrange(num_gs):
+                name = 'downlink '+str(i)
 
-            dlnks_datetime = downlink_times_datetime[sat_indx][gs_indx]
+                dlnks_datetime = downlink_times_datetime[sat_indx][gs_indx]
 
-            # print dlnks_datetime
-            ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
+                # print dlnks_datetime
+                ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
 
-            gs_name = GS_names_choice[gs_indx][0][0]
-            czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = dlnks_datetime, color=dlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=gs_pos_ref_pre+gs_name+pos_ref_post))
+                gs_name = GS_names_choice[gs_indx][0][0]
+                czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = dlnks_datetime, color=dlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=gs_pos_ref_pre+gs_name+pos_ref_post))
 
-            i+=1
+                i+=1
 
     # create crosslinks
-    xlnk_color = [255,0,0,255]
-    i = 0
-    for sat_indx in xrange(num_sats):
-        for other_sat_indx in xrange(sat_indx+1,num_sats):
-            name = 'crosslink '+str(i)
+    if len(t_x) > 0:
+        xlnk_color = [255,0,0,255]
+        i = 0
+        for sat_indx in xrange(num_sats):
+            for other_sat_indx in xrange(sat_indx+1,num_sats):
+                name = 'crosslink '+str(i)
 
-            xlnks_datetime = crosslink_times_datetime[sat_indx][other_sat_indx]
+                xlnks_datetime = crosslink_times_datetime[sat_indx][other_sat_indx]
 
-            # print dlnks_datetime
-            ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
+                # print dlnks_datetime
+                ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
 
-            czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = xlnks_datetime, color=xlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=sat_pos_ref_pre+str(other_sat_indx+1)+pos_ref_post))
+                czml_content.append(cztl.createLinkPacket(ID,name,start_avail,end_avail, polyline_show_times = xlnks_datetime, color=xlnk_color,reference1=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,reference2=sat_pos_ref_pre+str(other_sat_indx+1)+pos_ref_post))
 
-            i+=1
+                i+=1
 
     # create observations
-    for sat_indx in xrange(num_sats):
-        name = 'observation sensor 1 for satellite '+str(sat_indx+1)
+    if len(t_o) > 0:
+        for sat_indx in xrange(num_sats):
+            name = 'observation sensor 1 for satellite '+str(sat_indx+1)
 
-        obs_datetime = observation_times_datetime[sat_indx]
+            obs_datetime = observation_times_datetime[sat_indx]
 
-        # print dlnks_datetime
-        ID = 'Satellite/CubeSat'+str(sat_indx+1)+'/Sensor/Sensor1'
+            # print dlnks_datetime
+            ID = 'Satellite/CubeSat'+str(sat_indx+1)+'/Sensor/Sensor1'
 
-        parent = 'Satellite/CubeSat'+str(sat_indx+1)
+            parent = 'Satellite/CubeSat'+str(sat_indx+1)
 
-        czml_content.append(cztl.createObsPacket(ID,name,parent,start_avail,end_avail, sensor_show_times = obs_datetime, lateral_color=[0,255,0,51],intersection_color=[0,255,0,255],position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,orientation_ref=sat_pos_ref_pre+str(sat_indx+1)+orient_ref_post))
+            czml_content.append(cztl.createObsPacket(ID,name,parent,start_avail,end_avail, sensor_show_times = obs_datetime, lateral_color=[0,255,0,51],intersection_color=[0,255,0,255],position_ref=sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post,orientation_ref=sat_pos_ref_pre+str(sat_indx+1)+orient_ref_post))
 
     # create q_o_sizes_history
-    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
-    for sat_indx in xrange(num_sats):
+    if len(q_o_sizes_history) > 0:
+        epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+        for sat_indx in xrange(num_sats):
 
-        name = 'q_o_sizes_history for satellite '+str(sat_indx+1)
+            name = 'q_o_sizes_history for satellite '+str(sat_indx+1)
 
-        ID = 'Satellite/CubeSat'+str(sat_indx+1)
+            ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-        czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'datavol',history_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+            czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'datavol',history_epoch, q_o_sizes_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
 
     # create gs_avail_windows
-    for gs_indx in xrange(num_gs):
-        name = 'gs avail windows gs num '+str(gs_indx+1)
+    if len(gs_availability_windows) > 0:
+        for gs_indx in xrange(num_gs):
+            name = 'gs avail windows gs num '+str(gs_indx+1)
 
-        gsavail_datetime = gsavail_times_datetime[gs_indx]
+            gsavail_datetime = gsavail_times_datetime[gs_indx]
 
-        # print dlnks_datetime
-        gs_name = GS_names_choice[gs_indx][0][0]
-        ID = 'Facility/'+gs_name
+            # print dlnks_datetime
+            gs_name = GS_names_choice[gs_indx][0][0]
+            ID = 'Facility/'+gs_name
 
-        czml_content.append(cztl.createShowIntervalsPacket(ID,name,'gs_availability',show_times = gsavail_datetime))
+            czml_content.append(cztl.createShowIntervalsPacket(ID,name,'gs_availability',show_times = gsavail_datetime))
 
     # create batt_stored_history
-    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
-    for sat_indx in xrange(num_sats):
+    if len(batt_stored_history) > 0:
+        epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+        for sat_indx in xrange(num_sats):
 
-        name = 'batt_stored_history for satellite '+str(sat_indx+1)
+            name = 'batt_stored_history for satellite '+str(sat_indx+1)
 
-        ID = 'Satellite/CubeSat'+str(sat_indx+1)
+            ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-        czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'battery',history_epoch, batt_stored_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+            czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'battery',history_epoch, batt_stored_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
 
     # create eclipse "availability" windows
-    for sat_indx in xrange(num_sats):
-        name = 'eclipse times sat num '+str(sat_indx+1)
+    if len(t_eclipse) > 0:
+        for sat_indx in xrange(num_sats):
+            name = 'eclipse times sat num '+str(sat_indx+1)
 
-        eclipse_datetime = eclipse_times_datetime[sat_indx]
+            eclipse_datetime = eclipse_times_datetime[sat_indx]
 
-        # print dlnks_datetime
-        ID = 'Satellite/CubeSat'+str(sat_indx+1)
+            # print dlnks_datetime
+            ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-        czml_content.append(cztl.createShowIntervalsPacket(ID,name,'eclipse',show_times = eclipse_datetime))
+            czml_content.append(cztl.createShowIntervalsPacket(ID,name,'eclipse',show_times = eclipse_datetime))
 
 
     # create dlnk_rate_history
-    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
-    i = 0
-    for sat_indx in xrange(num_sats):
-        for gs_indx in xrange(num_gs):
+    if len(dlnk_rate_history) > 0:
+        epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+        i = 0
+        for sat_indx in xrange(num_sats):
+            for gs_indx in xrange(num_gs):
 
-            name = 'dlnk_rate_history for downlink '+str(i)+', satellite '+str(sat_indx+1)+' and GS '+str(gs_indx+1)
+                name = 'dlnk_rate_history for downlink '+str(i)+', satellite '+str(sat_indx+1)+' and GS '+str(gs_indx+1)
 
-            # needs to have same ID as original downlink to work
-            ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
+                # needs to have same ID as original downlink to work
+                ID = 'Dlnk/Sat'+str(sat_indx+1)+'-GS'+str(gs_indx+1)
 
-            if dlnk_rate_history[sat_indx][gs_indx].any():
-                pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
+                if dlnk_rate_history[sat_indx][gs_indx].any():
+                    pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
 
-                # attach a proxy position for displaying data rate text
-                gs_name = GS_names_choice[gs_indx][0][0]
-                pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
+                    # attach a proxy position for displaying data rate text
+                    gs_name = GS_names_choice[gs_indx][0][0]
+                    pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
 
-                czml_content.append(pkt)
+                    czml_content.append(pkt)
 
-            i+=1
+                i+=1
 
 
     # create xlnk_rate_history
-    epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
-    i = 0
-    for sat_indx in xrange(num_sats):
-        for other_sat_indx in xrange(sat_indx+1,num_sats):
+    if len(xlnk_rate_history) > 0:
+        epoch = datetime.datetime(2017, 3, 15, 10, 0, 0)
+        i = 0
+        for sat_indx in xrange(num_sats):
+            for other_sat_indx in xrange(sat_indx+1,num_sats):
 
-            name = 'xlnk_rate_history for crosslink '+str(i)+', satellite '+str(sat_indx+1)+' and xsat '+str(other_sat_indx+1)
+                name = 'xlnk_rate_history for crosslink '+str(i)+', satellite '+str(sat_indx+1)+' and xsat '+str(other_sat_indx+1)
 
-            # needs to have same ID as original crosslink to work
-            ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
+                # needs to have same ID as original crosslink to work
+                ID = 'Xlnk/Sat'+str(sat_indx+1)+'-Sat'+str(other_sat_indx+1)
 
-            if xlnk_rate_history[sat_indx][other_sat_indx].any():
-                pkt = cztl.createSampledPropertyHistory(ID,name,'datarate',history_epoch, xlnk_rate_history[sat_indx][other_sat_indx], filter_seconds_beg=0,filter_seconds_end=86400)
+                if xlnk_rate_history[sat_indx][other_sat_indx].any():
+                    pkt = cztl.createSampledPropertyHistory(ID,name,'datarate',history_epoch, xlnk_rate_history[sat_indx][other_sat_indx], filter_seconds_beg=0,filter_seconds_end=86400)
 
-                # attach a proxy position for displaying data rate text
-                pkt['position_proxy'] = {"reference": sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post}
+                    # attach a proxy position for displaying data rate text
+                    pkt['position_proxy'] = {"reference": sat_pos_ref_pre+str(sat_indx+1)+pos_ref_post}
 
-                czml_content.append(pkt)
+                    czml_content.append(pkt)
 
-            i+=1
+                i+=1
 
 
 
@@ -363,7 +384,7 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     gs_network = mat['gs_network'][0][0]
     GS_names_choice = GS_names[gs_network][0]
     t_o = mat['t_o']
-    num_sats = len(t_o)
+    num_sats = mat['num_satellites'][0][0]
     sim_output_time = str(mat['creation_time'][0])
     num_gs = mat['num_gs'][0][0]
     dlnk_rate_history = mat['dlnk_rate_history']
@@ -390,13 +411,13 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
             gs_name = name[0][0]
             renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
 
-    if 'Dlnk' in renderer_mapping.keys():
+    if 'Dlnk' in renderer_mapping.keys() and len(dlnk_rate_history)>0:
         for i in xrange(num_sats):
             for j in xrange(num_gs):
                 if dlnk_rate_history[i][j].any():
                     renderMapping['Dlnk/Sat'+str(i+1)+'-GS'+str(j+1)] = renderer_mapping['Dlnk']
 
-    if 'Xlnk' in renderer_mapping.keys():
+    if 'Xlnk' in renderer_mapping.keys() and len(xlnk_rate_history)>0:
         for i in xrange(num_sats):
             for j in xrange(i+1,num_sats):
                 if xlnk_rate_history[i][j].any():
@@ -418,7 +439,7 @@ def writeVizObjectsFile(file_from_sim = './timing_output.mat',vizobj_file = '../
     mat = scipy.io.loadmat(file_from_sim)
 
     t_o = mat['t_o']
-    num_sats = len(t_o)
+    num_sats = mat['num_satellites'][0][0]
     sim_output_time = str(mat['creation_time'][0])
 
     if 'info_string' in mat.keys():
