@@ -15,23 +15,25 @@ def getBooleanShowIntervals(show_times, start_avail, end_avail):
     if len(show_times) > 0:
         last_time = start_avail
 
-        for i, times  in enumerate(show_times):
+        for i, window  in enumerate(show_times):
+            start = window.start
+            end = window.end
 
             # check case where window is before start_avail
-            if times[0] < last_time and times[1] < last_time:
+            if start < last_time and end < last_time:
                 continue
-            elif times[0] < last_time:
+            elif start < last_time:
                 start_time = last_time
             else:
-                start_time = times[0]
+                start_time = start
 
             # check case where window is after end_avail
-            if times[0] > end_avail and times[1] > end_avail:
+            if start > end_avail and end > end_avail:
                 continue
-            elif times[1] > end_avail:
+            elif end > end_avail:
                 end_time = end_avail
             else:
-                end_time = times[1]
+                end_time = end
 
             # add a "not show" up to the current window
             if not last_time == start_time:

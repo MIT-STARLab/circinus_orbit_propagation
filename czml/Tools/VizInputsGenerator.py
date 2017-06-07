@@ -20,6 +20,8 @@ import json
 import collections
 import datetime
 
+import ActivityWindow
+
 def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file = './viz_out.json'):
 
     mat = scipy.io.loadmat(file_from_sim)
@@ -83,7 +85,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
                 start_dlnk_datetime = datetime.datetime(start_dlnk[0],start_dlnk[1],start_dlnk[2],int(start_dlnk_hours),int(start_dlnk_minutes),int(start_dlnk_seconds))
                 end_dlnk_datetime = datetime.datetime(end_dlnk[0],end_dlnk[1],end_dlnk[2],int(end_dlnk_hours),int(end_dlnk_minutes),int(end_dlnk_seconds))
 
-                downlink_times_datetime[sat_indx][gs_num-1].append([start_dlnk_datetime,end_dlnk_datetime])
+                downlink_times_datetime[sat_indx][gs_num-1].append(ActivityWindow(start_dlnk_datetime,end_dlnk_datetime))
 
     # import crosslinks
     crosslink_times_datetime = [[[]  for j in range(num_sats)] for k in range(num_sats)]
@@ -111,7 +113,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
                 start_xlnk_datetime = datetime.datetime(start_xlnk[0],start_xlnk[1],start_xlnk[2],int(start_xlnk_hours),int(start_xlnk_minutes),int(start_xlnk_seconds))
                 end_xlnk_datetime = datetime.datetime(end_xlnk[0],end_xlnk[1],end_xlnk[2],int(end_xlnk_hours),int(end_xlnk_minutes),int(end_xlnk_seconds))
 
-                crosslink_times_datetime[sat_indx][other_sat_num-1].append([start_xlnk_datetime,end_xlnk_datetime])
+                crosslink_times_datetime[sat_indx][other_sat_num-1].append(ActivityWindow(start_xlnk_datetime,end_xlnk_datetime))
 
     # import observations
     observation_times_datetime = [[] for k in range(num_sats)]
@@ -138,7 +140,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
                 start_obs_datetime = datetime.datetime(start_obs[0],start_obs[1],start_obs[2],int(start_obs_hours),int(start_obs_minutes),int(start_obs_seconds))
                 end_obs_datetime = datetime.datetime(end_obs[0],end_obs[1],end_obs[2],int(end_obs_hours),int(end_obs_minutes),int(end_obs_seconds))
 
-                observation_times_datetime[sat_indx].append([start_obs_datetime,end_obs_datetime])
+                observation_times_datetime[sat_indx].append(ActivityWindow(start_obs_datetime,end_obs_datetime))
 
     # import gs availability windows
     gsavail_times_datetime = [[] for k in range(num_gs)]
@@ -165,7 +167,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
                 start_gs_avail_datetime = datetime.datetime(start_gs_avail[0],start_gs_avail[1],start_gs_avail[2],int(start_gs_avail_hours),int(start_gs_avail_minutes),int(start_gs_avail_seconds))
                 end_gs_avail_datetime = datetime.datetime(end_gs_avail[0],end_gs_avail[1],end_gs_avail[2],int(end_gs_avail_hours),int(end_gs_avail_minutes),int(end_gs_avail_seconds))
 
-                gsavail_times_datetime[gs_indx].append([start_gs_avail_datetime,end_gs_avail_datetime])
+                gsavail_times_datetime[gs_indx].append(ActivityWindow(start_gs_avail_datetime,end_gs_avail_datetime))
 
     # import eclipse times
     eclipse_times_datetime = [[] for k in range(num_sats)]
@@ -192,7 +194,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
                 start_eclipse_datetime = datetime.datetime(start_eclipse[0],start_eclipse[1],start_eclipse[2],int(start_eclipse_hours),int(start_eclipse_minutes),int(start_eclipse_seconds))
                 end_eclipse_datetime = datetime.datetime(end_eclipse[0],end_eclipse[1],end_eclipse[2],int(end_eclipse_hours),int(end_eclipse_minutes),int(end_eclipse_seconds))
 
-                eclipse_times_datetime[sat_indx].append([start_eclipse_datetime,end_eclipse_datetime])
+                eclipse_times_datetime[sat_indx].append(ActivityWindow(start_eclipse_datetime,end_eclipse_datetime))
 
 
 
