@@ -20,7 +20,7 @@ import json
 import collections
 import datetime
 
-import ActivityWindow
+from ActivityWindow import ActivityWindow
 
 def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file = './viz_out.json'):
 
