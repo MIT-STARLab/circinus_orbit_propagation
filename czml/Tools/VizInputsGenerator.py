@@ -16,6 +16,7 @@ import CZMLtextTools as cztl
 import datetime
 import math
 import json
+import numpy as np
 
 import collections
 import datetime
@@ -88,7 +89,13 @@ def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names
 
             ID = 'Satellite/CubeSat'+str(sat_indx+1)
 
-            czml_content.append(cztl.createSampledPropertyHistory(ID,name, 'datavol',history_epoch, data_history[sat_indx][0], filter_seconds_beg=0,filter_seconds_end=86400))
+            # handle crappy import of .mat file. Note the [0] in the data history access
+            if type(data_history[sat_indx]) == np.ndarray:
+                czml_content.append(cztl.createSampledPropertyHistory(ID, name, 'datavol', history_epoch, data_history[sat_indx][0],filter_seconds_beg=0, filter_seconds_end=86400))
+
+            # if we're coming directly from python generated content
+            else:
+                czml_content.append(cztl.createSampledPropertyHistory(ID, name, 'datavol', history_epoch, data_history[sat_indx],filter_seconds_beg=0, filter_seconds_end=86400))
 
     # create gs_avail_windows
     if len(gs_avail_winds) > 0:
