@@ -19,12 +19,12 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 %% file inputs
 
 % gs inputs
-%  header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
+header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_lcrd.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
-header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 
 % gs=1 SFN
 % gs=2 KSAT
@@ -33,18 +33,18 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % gs=6 bridgesat
 % gs=6 wallops
 
-gs_network = 8;
+gs_network = 1;
 
 % orbit inputs
-num_sats_orbit_1 = 10;  % RAAN 0
-num_sats_orbit_2 = 10;  % RAAN 120
-num_sats_orbit_3 = 10;  % RAAN 240
+num_sats_orbit_1 = 20;  % RAAN 0
+num_sats_orbit_2 = 20;  % RAAN 120
+num_sats_orbit_3 = 20;  % RAAN 240
 num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3;
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
-end_time_sec = 86400*3;  % seconds
+end_time_sec = 86400;  % seconds
 
 targets_parameters_sheetname = '33_targ';
 yes_crosslinks = 1;
