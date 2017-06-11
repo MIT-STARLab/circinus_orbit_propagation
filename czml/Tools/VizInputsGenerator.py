@@ -126,7 +126,7 @@ def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names
             gsavail_winds_sat = gs_avail_winds[gs_indx]
 
             # print dlnks_winds
-            gs_name = gs_names[gs_indx][0][0]
+            gs_name = gs_names[gs_indx]
             ID = 'Facility/'+gs_name
 
             czml_content.append(cztl.createShowIntervalsPacket(ID,name,'gs_availability',show_times = gsavail_winds_sat))
@@ -171,7 +171,7 @@ def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names
                     pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
 
                     # attach a proxy position for displaying data rate text
-                    gs_name = gs_names[gs_indx][0][0]
+                    gs_name = gs_names[gs_indx]
                     pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
 
                     czml_content.append(pkt)
