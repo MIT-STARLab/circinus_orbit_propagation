@@ -24,6 +24,27 @@ import datetime
 from ActivityWindow import ActivityWindow
 
 def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names,xlnk_winds,obs_winds,gs_avail_winds,ecl_winds,history_epoch,data_history,batt_history,dlnk_rate_history,xlnk_rate_history):
+    '''
+    Dumps data from input structures to a data structure intended for output czml file for visualization in CesiumJS
+
+    :param datetime start_avail: start of analysis scenario
+    :param datetime end_avail: end of analysis scenario
+    :param int num_sats: number of satellites
+    :param int num_gs: number of ground stations
+    :param ActivityWindow[num_sats][num_gs] dlink_winds: matrix of window lists representing all the downlinks executed by the sats with each gs
+    :param string[num_gs] gs_names: list of gs names
+    :param ActivityWindow[num_sats][num_sats] xlnk_winds: matrix of window list representing all the crosslinks executed by each sat with each other sat. Note that only the upper triangular portion of this matrix is actually used, because crosslinks should be symmetric between sats (only need to display xlnk between sat 1 and 20, don't need "another" between 20 and 1)
+    :param ActivityWindow[num_sats] obs_winds: list of window lists representing all the obs executed by each sat
+    :param gs_avail_winds:
+    :param ecl_winds:
+    :param history_epoch:
+    :param data_history:
+    :param batt_history:
+    :param dlnk_rate_history:
+    :param xlnk_rate_history:
+    :return: czml content, a json-serializable data struct for export to czml file
+    '''
+
     czml_content = []
 
     sat_pos_ref_pre = 'Satellite/CubeSat'
@@ -105,7 +126,7 @@ def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names
             gsavail_winds_sat = gs_avail_winds[gs_indx]
 
             # print dlnks_winds
-            gs_name = gs_names[gs_indx][0][0]
+            gs_name = gs_names[gs_indx]
             ID = 'Facility/'+gs_name
 
             czml_content.append(cztl.createShowIntervalsPacket(ID,name,'gs_availability',show_times = gsavail_winds_sat))
@@ -150,7 +171,7 @@ def createCZMLcontent(start_avail,end_avail,num_sats,num_gs,dlink_winds,gs_names
                     pkt = cztl.createSampledPropertyHistory(ID,name, 'datarate',history_epoch, dlnk_rate_history[sat_indx][gs_indx], filter_seconds_beg=0,filter_seconds_end=86400)
 
                     # attach a proxy position for displaying data rate text
-                    gs_name = gs_names[gs_indx][0][0]
+                    gs_name = gs_names[gs_indx]
                     pkt['position_proxy'] = {"reference": gs_pos_ref_pre+gs_name+pos_ref_post}
 
                     czml_content.append(pkt)
