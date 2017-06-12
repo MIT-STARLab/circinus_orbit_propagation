@@ -417,7 +417,7 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # write to file
     json.dump(czml_content,all_fd,indent=2,sort_keys=False)
 
-def createRendererDescriptionContent(renderers_list,renderer_mapping,gs_names,dlnk_rate_history,xlnk_rate_history):
+def createRendererDescriptionContent(renderers_list,renderer_mapping,num_sats,num_gs,gs_names,dlnk_rate_history,xlnk_rate_history):
     json_content = collections.OrderedDict()
 
     json_content['renderers'] = renderers_list
@@ -472,7 +472,7 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     for gs_indx in range(num_gs):
         gs_names.append(GS_names_choice[gs_indx][0][0])
 
-    json_content = createRendererDescriptionContent(renderers_list,renderer_mapping,gs_names,dlnk_rate_history,xlnk_rate_history)
+    json_content = createRendererDescriptionContent(renderers_list,renderer_mapping,num_sats,num_gs,gs_names,dlnk_rate_history,xlnk_rate_history)
 
 
     metadata = collections.OrderedDict()
