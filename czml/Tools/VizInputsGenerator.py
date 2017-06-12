@@ -417,6 +417,37 @@ def generateVizInputs(file_from_sim = './timing_output.mat',output_viz_czml_file
     # write to file
     json.dump(czml_content,all_fd,indent=2,sort_keys=False)
 
+def createRendererDescriptionContent(renderers_list,renderer_mapping,num_sats,num_gs,gs_names,dlnk_rate_history,xlnk_rate_history):
+    json_content = collections.OrderedDict()
+
+    json_content['renderers'] = renderers_list
+
+    renderMapping = collections.OrderedDict()
+
+    if 'Satellite' in renderer_mapping.keys():
+        for i in xrange(num_sats):
+            renderMapping['Satellite/CubeSat'+str(i+1)] = renderer_mapping['Satellite']
+
+    if 'Facility' in renderer_mapping.keys():
+        for name in gs_names:
+            renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
+
+    if 'Dlnk' in renderer_mapping.keys() and len(dlnk_rate_history)>0:
+        for i in xrange(num_sats):
+            for j in xrange(num_gs):
+                if dlnk_rate_history[i][j].any():
+                    renderMapping['Dlnk/Sat'+str(i+1)+'-GS'+str(j+1)] = renderer_mapping['Dlnk']
+
+    if 'Xlnk' in renderer_mapping.keys() and len(xlnk_rate_history)>0:
+        for i in xrange(num_sats):
+            for j in xrange(i+1,num_sats):
+                if xlnk_rate_history[i][j].any():
+                    renderMapping['Xlnk/Sat'+str(i+1)+'-Sat'+str(j+1)] = renderer_mapping['Xlnk']
+
+    json_content['renderMapping'] = renderMapping
+
+    return json_content
+
 def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_description_file = '../renderers/description.json', renderers_list = ['/Apps/MATLAB_SatViz/renderers/test.js'], renderer_mapping = {'Satellite':['Test'],'Facility':['Test']}):
 
     mat = scipy.io.loadmat(file_from_sim)
@@ -436,35 +467,13 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
     else:
         file_writer_info_string = 'no file writer info string found'
 
+    # reshape gs names because loading from .mat files is dumb
+    gs_names = []
+    for gs_indx in range(num_gs):
+        gs_names.append(GS_names_choice[gs_indx][0][0])
 
-    json_content = collections.OrderedDict()
+    json_content = createRendererDescriptionContent(renderers_list,renderer_mapping,num_sats,num_gs,gs_names,dlnk_rate_history,xlnk_rate_history)
 
-    json_content['renderers'] = renderers_list
-
-    renderMapping = collections.OrderedDict()
-
-    if 'Satellite' in renderer_mapping.keys():
-        for i in xrange(num_sats):
-            renderMapping['Satellite/CubeSat'+str(i+1)] = renderer_mapping['Satellite']
-
-    if 'Facility' in renderer_mapping.keys():
-        for name in GS_names_choice:
-            gs_name = name[0][0]
-            renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
-
-    if 'Dlnk' in renderer_mapping.keys() and len(dlnk_rate_history)>0:
-        for i in xrange(num_sats):
-            for j in xrange(num_gs):
-                if dlnk_rate_history[i][j].any():
-                    renderMapping['Dlnk/Sat'+str(i+1)+'-GS'+str(j+1)] = renderer_mapping['Dlnk']
-
-    if 'Xlnk' in renderer_mapping.keys() and len(xlnk_rate_history)>0:
-        for i in xrange(num_sats):
-            for j in xrange(i+1,num_sats):
-                if xlnk_rate_history[i][j].any():
-                    renderMapping['Xlnk/Sat'+str(i+1)+'-Sat'+str(j+1)] = renderer_mapping['Xlnk']
-
-    json_content['renderMapping'] = renderMapping
 
     metadata = collections.OrderedDict()
     metadata['sim_output_updated'] = sim_output_time
