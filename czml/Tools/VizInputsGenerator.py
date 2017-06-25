@@ -429,7 +429,7 @@ def createRendererDescriptionContent(renderers_list,renderer_mapping,num_sats,nu
             renderMapping['Satellite/CubeSat'+str(i+1)] = renderer_mapping['Satellite']
 
     if 'Facility' in renderer_mapping.keys():
-        for name in gs_names:
+        for gs_name in gs_names:
             renderMapping['Facility/'+str(gs_name)] = renderer_mapping['Facility']
 
     if 'Dlnk' in renderer_mapping.keys() and len(dlnk_rate_history)>0:
@@ -466,6 +466,8 @@ def writeRendererDescription(file_from_sim = './timing_output.mat',renderer_desc
         file_writer_info_string = str(mat['info_string'][0])
     else:
         file_writer_info_string = 'no file writer info string found'
+
+    print 'info string from sim output file (should match czml_header_file): ' + file_writer_info_string
 
     # reshape gs names because loading from .mat files is dumb
     gs_names = []

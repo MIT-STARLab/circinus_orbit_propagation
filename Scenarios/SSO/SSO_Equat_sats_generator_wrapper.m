@@ -36,14 +36,14 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 gs_network = 8;
 
 % orbit inputs
-num_sats_orbit_1 = 20;  % SSO @ 10:30
+num_sats_orbit_1 = 10;  % SSO @ 10:30
 num_sats_orbit_2 = 0;   % SSO @ 14:30
-num_sats_orbit_3 = 10;  % equatorial
+num_sats_orbit_3 = 0;  % equatorial
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
-end_time_sec = 86400*3;  % seconds
+end_time_sec = 86400;  % seconds
 
 targets_parameters_sheetname = '33_targ';
 yes_crosslinks = 1;

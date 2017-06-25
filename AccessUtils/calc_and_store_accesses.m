@@ -299,10 +299,10 @@ startdatestr = sat_times(1,:);
 enddatestr = sat_times(end,:);
 
 if yes_crosslinks
-    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange');
+    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','xlink','xrange','gs_network');
 else
 % or no crosslinks
-    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl');
+    save([out_file_pre,'.mat'],'info_string','num_timepoints','tstep_dayf','startdatestr','enddatestr','gs_in_a','gs_in_b','target_in_a','target_in_b','obs','obsaer','gslink','gsaer','sunecl','gs_network');
 end
 
 

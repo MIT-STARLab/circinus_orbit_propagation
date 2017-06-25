@@ -31,9 +31,9 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % gs=4 LCRD
 % gs=5 equatorial alternative
 % gs=6 bridgesat
-% gs=7 wallops
+% gs=8 wallops
 
-gs_network = 7;
+gs_network = 8;
 
 % orbit inputs
 num_planes = 3;
