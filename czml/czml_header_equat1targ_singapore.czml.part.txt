@@ -1,0 +1,599 @@
+[
+  {
+    "id": "document",
+    "name": "simple",
+    "version": "1.0",
+    "clock": {
+      "interval": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+      "currentTime": "2017-03-15T10:00:00Z",
+      "multiplier": 60,
+      "range": "LOOP_STOP",
+      "step": "SYSTEM_CLOCK_MULTIPLIER"
+    }
+  },
+  {
+    "id": "Facility/Singapore 1",
+    "name": "Singapore 1",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 2.0,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACvSURBVDhPrZDRDcMgDAU9GqN0lIzijw6SUbJJygUeNQgSqepJTyHG91LVVpwDdfxM3T9TSl1EXZvDwii471fivK73cBFFQNTT/d2KoGpfGOpSIkhUpgUMxq9DFEsWv4IXhlyCnhBFnZcFEEuYqbiUlNwWgMTdrZ3JbQFoEVG53rd8ztG9aPJMnBUQf/VFraBJeWnLS0RfjbKyLJA8FkT5seDYS1Qwyv8t0B/5C2ZmH2/eTGNNBgMmAAAAAElFTkSuQmCC",
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Singapore",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [103.8024025, 1.3309905, 0]
+    }
+  },
+  {
+    "id": "Target/Galapagos 1",
+    "name": "Galapagos 1",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Galapagos",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [91.222371, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Ecuador 2",
+    "name": "Ecuador 2",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Ecuador",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [-79.053278, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Colombia 3",
+    "name": "Colombia 3",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Colombia",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [-72.134137, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Brazil_A 4",
+    "name": "Brazil_A 4",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Brazil_A",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [-63.573218, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Brazil_B 5",
+    "name": "Brazil_B 5",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Brazil_B",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [-54.888228, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Gabon 6",
+    "name": "Gabon 6",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Gabon",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [11.979442, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Congo 7",
+    "name": "Congo 7",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Congo",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [21.56979, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Uganda 8",
+    "name": "Uganda 8",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Uganda",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [31.148284, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Kenya 9",
+    "name": "Kenya 9",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Kenya",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [39.514179, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Indonesia_A 10",
+    "name": "Indonesia_A 10",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Indonesia_A",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [101.016609, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Indonesia_B 11",
+    "name": "Indonesia_B 11",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Indonesia_B",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [113.497076, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Indonesia_C 12",
+    "name": "Indonesia_C 12",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Indonesia_C",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [127.911138, 0, 0]
+    }
+  },
+  {
+    "id": "Target/Kiribati 13",
+    "name": "Kiribati 13",
+    "availability": "2017-03-15T10:00:00Z/2017-03-16T10:00:00Z",
+    "description": "<!--HTML--><p>no description</p>",
+    "billboard": {
+      "scale": 0.1,
+      "horizontalOrigin": "CENTER",
+      "show": true,
+      "image": {
+        "uri": "target.jpg"
+      },
+      "eyeOffset": {
+        "cartesian": [0, 0, 0]
+      },
+      "pixelOffset": {
+        "cartesian2": [0, 0]
+      },
+      "verticalOrigin": "CENTER"
+    },
+    "label": {
+      "pixelOffset": {
+        "cartesian2": [12, 0]
+      },
+      "verticalOrigin": "CENTER",
+      "fillColor": {
+        "rgba": [0, 255, 255, 255]
+      },
+      "horizontalOrigin": "LEFT",
+      "show": true,
+      "text": "Kiribati",
+      "outlineWidth": 2,
+      "font": "10pt Lucida Console",
+      "style": "FILL_AND_OUTLINE",
+      "outlineColor": {
+        "rgba": [0, 0, 0, 255]
+      }
+    },
+    "position": {
+      "cartographicDegrees": [-157.311491, 0, 0]
+    }
+  },
