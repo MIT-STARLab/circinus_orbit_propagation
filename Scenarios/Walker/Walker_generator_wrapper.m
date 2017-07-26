@@ -19,7 +19,7 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 %% file inputs
 
 % gs inputs
-%  header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_lcrd.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
@@ -31,20 +31,28 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % gs=4 LCRD
 % gs=5 equatorial alternative
 % gs=6 bridgesat
-% gs=6 wallops
+% gs=8 wallops
 
 gs_network = 8;
 
 % orbit inputs
+num_planes = 3;
 num_sats_orbit_1 = 10;  % RAAN 0
 num_sats_orbit_2 = 10;  % RAAN 120
 num_sats_orbit_3 = 10;  % RAAN 240
 num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3;
 
+% num_planes = 4;
+% num_sats_orbit_1 = 25;  % RAAN 0
+% num_sats_orbit_2 = 25;  % RAAN 90
+% num_sats_orbit_3 = 25;  % RAAN 180
+% num_sats_orbit_4 = 25;  % RAAN 270
+% num_sats = num_sats_orbit_1 + num_sats_orbit_2 + num_sats_orbit_3+num_sats_orbit_4;
+
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
-end_time_sec = 86400*3;  % seconds
+end_time_sec = 86400;  % seconds
 
 targets_parameters_sheetname = '33_targ';
 yes_crosslinks = 1;
@@ -53,7 +61,7 @@ yes_crosslinks = 1;
 
 %% Build File Names
 
-out_file_string2 = ['_orb',num2str(3),'-',num2str(num_sats)];  % 3 planes
+out_file_string2 = ['_orb',num2str(num_planes),'-',num2str(num_sats)];  % 3 planes
 out_file_string3 = ['_gs',num2str(gs_network)];
 out_file_string4 = ['_t',num2str(end_time_sec),'-',num2str(10)];
 
@@ -71,7 +79,11 @@ info_string = [info_string,', Walker RAAN 0 - ',num2str(num_sats_orbit_1)];
 info_string = [info_string,', Walker RAAN 120 - ',num2str(num_sats_orbit_2)];
 info_string = [info_string,', Walker RAAN 240 - ',num2str(num_sats_orbit_3)];
 
-Walker_file_writer
+if num_planes == 3
+    Walker_file_writer_3plane
+elseif num_planes == 4
+    Walker_file_writer_4plane
+end
 
 addpath(strcat(base_directory,'/AccessUtils'))
 

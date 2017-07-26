@@ -297,6 +297,7 @@ def createObsPacket(ID='Satellite/CubeSatN/Sensor/SensorM',name='observation sen
     obs_sensor['availability'] = start_avail.strftime('%Y-%m-%dT%H:%M:%SZ')+'/'+end_avail.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     # Figure out intervals for showing and not showing
+    # print sensor_show_times
     show_intervals = getBooleanShowIntervals(sensor_show_times, start_avail, end_avail)
     show_intervals = show_intervals if show_intervals else False
 

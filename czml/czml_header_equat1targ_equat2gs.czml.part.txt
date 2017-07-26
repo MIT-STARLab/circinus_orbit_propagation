@@ -170,7 +170,7 @@
       }
     },
     "position": {
-      "cartographicDegrees": [91.222371, 0, 0]
+      "cartographicDegrees": [-91.222371, 0, 0]
     }
   },
   {
