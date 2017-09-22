@@ -119,11 +119,14 @@ def createGS(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail
 
     return gs
 
-def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, target_pic = 'target.jpg'):
+def createObsTarget(name,start_avail=datetime.datetime(2017, 3, 15, 10, 0, 0),end_avail=datetime.datetime(2017, 3, 16, 10, 0, 0),latitude=0.0,longitude=0.0,include_billboard = True, name_with_num = False, target_pic = 'target.jpg'):
 
     obs_targ = collections.OrderedDict()
 
-    name_without_num = ' '.join(name.split(' ')[:-1])
+    if name_with_num:
+        name_without_num = name
+    else:
+        name_without_num = ' '.join(name.split(' ')[:-1])
 
     obs_targ['id'] = 'Target/'+name
     obs_targ['name'] = name

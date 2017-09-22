@@ -14,7 +14,7 @@ else
     final_czml_file_name_pre = 'sats_file_single_';
 end
 
-final_czml_file_name = strcat(final_czml_file_name_pre,num2str(num_sats_orbit_1),'_',num2str(num_sats_orbit_2),'_',num2str(num_sats_orbit_3),'.czml');
+final_czml_file_name = strcat(out_file_pre,'.czml');
 
 startdatevec = datevec(start_time_str);
 mJDEpoch = mjuliandate(startdatevec);
@@ -22,7 +22,7 @@ mJDEpoch = mjuliandate(startdatevec);
 addpath(strcat(base_directory,'/SatPosFileIO'));
 addpath(strcat(base_directory,'/czml'));
 
-sat_file_names = {};
+sat_file_names = cell(num_sats,1);
 
 %% Specify orbit for 10:30 LTAN, write position file, part of czml file
 
@@ -57,7 +57,7 @@ for sat_num = 1:num_sats_orbit_1
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num} = sat_output_file_name;
 end
 
 
@@ -97,7 +97,7 @@ for sat_num = 1:num_sats_orbit_2
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num+sat_name_base_num} = sat_output_file_name;
 end
 
 
@@ -132,7 +132,7 @@ for sat_num = 1:num_sats_orbit_3
     sat_output_file_name = strcat(satname,'_pos.czml.part.txt');
     sat_locations_to_czml_file(sat_output_file_name,sat_header_file_name,sat_locations,delta_t_sec,decimation);  % note the czml file currently assumes a day long scenario.
     
-    sat_file_names = [sat_file_names; sat_output_file_name];
+    sat_file_names{sat_num+sat_name_base_num} = sat_output_file_name;
 end
 
 
@@ -143,18 +143,35 @@ end
 delete(final_czml_file_name)
 copyfile(header_file,final_czml_file_name);
 
-for i=1:size(sat_file_names,1)
+for i=1:size(sat_file_names,1)  
     sat_file_name = sat_file_names{i};
-    system(['cat ',sat_file_name,' >> ', final_czml_file_name]);
+   
+    if ispc
+        system(['type ',sat_file_name,' >> ',final_czml_file_name]);
+    else
+        system(['cat ',sat_file_name,' >> ', final_czml_file_name]);
+    end
 end
 
 fileID = fopen(final_czml_file_name,'a+');
 fprintf(fileID,['\n  { "metadata_file_writer":"dummy_string",\n"file_writer_info_string":','"',info_string,'"','}\n]']);  %print helpful info string
 fclose(fileID);
 
-system('rm *_pos.czml.part.txt');  % remove intermediate files
+if ispc
+    system('del *_pos.czml.part.txt')
+else
+    system('rm *_pos.czml.part.txt');  % remove intermediate files
+end
+
 
 % Update epoch times in file
 startdatenum = datenum(start_time_str);
 enddatenum = startdatenum + end_time_sec/86400;
-system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+
+if ispc
+    ['c:\python27\python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
+    system(['c:\python27\python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+else
+    ['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']
+    system(['python ../../czml/Tools/CZMLEpochUpdater.py ',final_czml_file_name,' "',start_time_str,'" "',datestr(enddatenum,'dd mmm yyyy HH:MM:SS.FFF'),'"']);
+end
