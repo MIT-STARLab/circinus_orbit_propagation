@@ -30,10 +30,11 @@ header_file = '../../czml/czml_header_33targ_sfn2.czml.part.txt'
 % gs=5 equatorial alternative
 % gs=6 bridgesat
 % gs=8 wallops
-% gs=9 (sfn+antarctica, gs xlsx 1; equatorial 2 ... gs xlsx 2)
+% gs=9 (equatorial 2 ... gs xlsx 2)
 % gs=10 (singapore ... gs xlsx 2)
+% gs=11 (sfn+antarctica, gs xlsx 1)
 
-gs_network = 9;
+gs_network = 11;
 
 % final_czml_file_name_pre = 'sats_file_single_sfn_';
 % final_czml_file_name_pre = 'sats_file_single_bridgesat_';
