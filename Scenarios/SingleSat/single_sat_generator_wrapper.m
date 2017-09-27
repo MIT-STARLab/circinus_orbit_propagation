@@ -17,12 +17,12 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 
 %% file inputs
 % header_file = '../czml/czml_header_single_sat_sfn.czml.part.txt';
-header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
 % header_file = '../czml/czml_header_single_sat_ksat.czml.part.txt';
 %  header_file = '../../czml/czml_header_single_sat_lcrd.czml.part.txt';
 % header_file = '../../czml/czml_header_single_sat_wallops.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
-% header_file = '../../czml/czml_header_33targ_sfn2.czml.part.txt'
+header_file = '../../czml/czml_header_33targ_sfn2.czml.part.txt'
 
 % gs=1 SFN
 % gs=2 KSAT
@@ -33,23 +33,23 @@ header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
 % gs=9 (sfn+antarctica, gs xlsx 1; equatorial 2 ... gs xlsx 2)
 % gs=10 (singapore ... gs xlsx 2)
 
-gs_network = 6;
+gs_network = 9;
 
 % final_czml_file_name_pre = 'sats_file_single_sfn_';
-final_czml_file_name_pre = 'sats_file_single_bridgesat_';
+% final_czml_file_name_pre = 'sats_file_single_bridgesat_';
 % final_czml_file_name_pre = 'sats_file_single_ksat_';
 % final_czml_file_name_pre = 'sats_file_single_equatalt_';
-% final_czml_file_name_pre = 'sats_file_single_sfn2_';
+final_czml_file_name_pre = 'sats_file_single_sfn2_';
 
-num_sats_orbit_1 = 0;  % SSO 1030 LTAN
-num_sats_orbit_2 = 1;  % ISS
+num_sats_orbit_1 = 1;  % SSO 1030 LTAN
+num_sats_orbit_2 = 0;  % ISS
 num_sats_orbit_3 = 0;  % Equatorial
 
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
-end_time_sec = 86400*1;  % seconds
+end_time_sec = 86400*3;  % seconds
 
 targets_parameters_sheetname = '33_targ';  %(target xlsx 1)
 % targets_parameters_sheetname = 'equat_targets_1'; %(target xlsx 2)
