@@ -21,10 +21,10 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 % gs inputs
 % header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_lcrd.czml.part.txt';
-%  header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
+ header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
-header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 
 % gs=1 SFN
 % gs=2 KSAT
@@ -33,7 +33,7 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % gs=6 bridgesat
 % gs=8 wallops
 
-gs_network = 8;
+gs_network = 2;
 
 % orbit inputs
 num_planes = 3;
