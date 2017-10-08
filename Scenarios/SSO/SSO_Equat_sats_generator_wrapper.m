@@ -12,8 +12,8 @@ sat_headers_loc = '/czml/sat_headers/';
 
 out_file_string1 = 'orbitprop_ssoequat';
 
-targets_parameters_filename = '../parameters_targets_2.xlsx';
-gs_parameters_filename = '../parameters_gs_network_2.xlsx'; % Change to 'parameters_descope.xlsx'
+targets_parameters_filename = '../parameters_targets.xlsx';
+gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameters_descope.xlsx'
 
 
 %% file inputs
@@ -24,8 +24,8 @@ gs_parameters_filename = '../parameters_gs_network_2.xlsx'; % Change to 'paramet
 %  header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
-% header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
-header_file = '../../czml/czml_header_equat1targ_singapore.czml.part.txt';
+header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
+% header_file = '../../czml/czml_header_equat1targ_singapore.czml.part.txt';
 
 % gs=1 SFN
 % gs=2 KSAT
@@ -36,20 +36,20 @@ header_file = '../../czml/czml_header_equat1targ_singapore.czml.part.txt';
 % gs=9 (equatorial 2 ... gs xlsx 2)
 % gs=10 (singapore ... gs xlsx 2)
 
-gs_network = 10;
+gs_network = 8;
 
 % orbit inputs
-num_sats_orbit_1 = 0;  % SSO @ 10:30
+num_sats_orbit_1 = 30;  % SSO @ 10:30
 num_sats_orbit_2 = 0;   % SSO @ 14:30
-num_sats_orbit_3 = 10;  % equatorial
+num_sats_orbit_3 = 0;  % equatorial
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
 delta_t_sec = 10;  % seconds
 end_time_sec = 86400*1;  % seconds
 
-% targets_parameters_sheetname = '33_targ';  %(target xlsx 1)
-targets_parameters_sheetname = 'equat_targets_1'; %(target xlsx 2)
+targets_parameters_sheetname = '33_targ';  %(target xlsx 1)
+% targets_parameters_sheetname = 'equat_targets_1'; %(target xlsx 2)
 yes_crosslinks = 1;
 
 
