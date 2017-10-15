@@ -107,7 +107,7 @@ e = 0.8345;
 a = 42168;  % km
 i = 63.4;
 RAAN = 0;
-arg_perigee = 270;
+arg_perigee = 90;
 
 sat_name_base_num = num_sats_orbit_1+num_sats_orbit_2;
 
@@ -118,6 +118,7 @@ parfor sat_num = 1:num_sats_orbit_3
     pos_file_name = strcat(satname,'_delkep_pos.txt');
     
     mean_anom = 360/num_sats_orbit_3*(sat_num-1);
+    RAAN = 80 - 360/num_sats_orbit_3*(sat_num-1);
     
     delkep_file_writer_wrapper(satname, pos_file_name, start_time_str, delta_t_sec, end_time_sec, a, e, i, RAAN, arg_perigee, mean_anom, base_directory);
 

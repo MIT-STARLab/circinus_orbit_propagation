@@ -10,7 +10,7 @@ use_prexisting_xlnk_file = 0;
 base_directory = '../..';
 sat_headers_loc = '/czml/sat_headers/';
 
-out_file_string1 = 'orbitprop_tundra270';
+out_file_string1 = 'orbitprop_tundra_distRAAN';
 
 targets_parameters_filename = '../parameters_targets.xlsx';
 gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameters_descope.xlsx'
@@ -41,7 +41,7 @@ gs_network = 8;
 % orbit inputs
 num_sats_orbit_1 = 0;  % SSO @ 10:30
 num_sats_orbit_2 = 0;   % SSO @ 14:30
-num_sats_orbit_3 = 10;  % tundra
+num_sats_orbit_3 = 100;  % tundra
 
 start_time_str = '15 Mar 2017 10:00:00.000';  % make sure to include the milliseconds! That's necessary to make python epoch updater script work
 
