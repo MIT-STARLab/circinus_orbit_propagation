@@ -22,9 +22,10 @@ gs_parameters_filename = '../parameters_gs_network.xlsx'; % Change to 'parameter
 %  header_file = '../../czml/czml_header_33targ_sfn.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_lcrd.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_ksat.czml.part.txt';
+header_file = '../../czml/czml_header_33targ_ksatgsn11.czml.part.txt';
 %  header_file = '../../czml/czml_header_33targ_equatalt.czml.part.txt';
 % header_file = '../../czml/czml_header_33targ_bridgesat.czml.part.txt';
-header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
+% header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % header_file = '../../czml/czml_header_equat1targ_singapore.czml.part.txt';
 
 % gs=1 SFN
@@ -35,8 +36,9 @@ header_file = '../../czml/czml_header_33targ_wallops.czml.part.txt';
 % gs=8 wallops
 % gs=9 (equatorial 2 ... gs xlsx 2)
 % gs=10 (singapore ... gs xlsx 2)
+% gs=11 KSAT + Antarctica
 
-gs_network = 8;
+gs_network = 11;
 
 % orbit inputs
 num_sats_orbit_1 = 30;  % SSO @ 10:30
