@@ -1,0 +1,19 @@
+{
+    "version": "0.1",
+    "num_satellites": 20,
+    "scenario_time_params": {
+        "start_utc": "2018-01-18T11:39:50.52Z"
+    },
+    "orbit_params": { 
+        "kepler_meananom": {
+            "propagation_method": "matlab_delkep",
+            "a_km":  6978,
+            "e": 0,
+            "i_deg": 0,
+            "RAAN_deg": 0,
+            "arg_per_deg": 0,
+            "M": 0
+        }
+    },
+    "gs_params": {}
+}
