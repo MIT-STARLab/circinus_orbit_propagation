@@ -10,3 +10,10 @@ out.txt
 out.json
 *.asv
 *.orig
+
+# pycharm project directory
+.idea
+
+# compiled python
+__pycache__
+

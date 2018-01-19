@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Orbit input params",
+    "title": "Satellite orbit input params",
     "description": "set of choices for orbit input params",
     "type": "object",
     "definitions": {
@@ -12,6 +12,7 @@
         }
     },
     "properties": {
+        ""
         "kepler_meananom": {                
             "type": "object",
             "required": ["a_km","e","i_deg","RAAN_deg","arg_per_deg","M"],

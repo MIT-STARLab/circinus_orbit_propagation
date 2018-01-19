@@ -1,19 +1,36 @@
 {
     "version": "0.1",
-    "num_satellites": 20,
+    "num_satellites": 2,
     "scenario_time_params": {
-        "start_utc": "2018-01-18T11:39:50.52Z"
+        "start_utc": "2018-01-18T11:39:50.52Z",
+        "end_utc": "2018-01-18T11:40:50.52Z",
+        "timestep_s": 5.0
     },
-    "orbit_params": { 
-        "kepler_meananom": {
-            "propagation_method": "matlab_delkep",
-            "a_km":  6978,
-            "e": 0,
-            "i_deg": 0,
-            "RAAN_deg": 0,
-            "arg_per_deg": 0,
-            "M": 0
+    "sat_orbit_params": [
+        {
+            "sat_indx": 0,
+            "kepler_meananom": {
+                "a_km":  6978,
+                "e": 0,
+                "i_deg": 0,
+                "RAAN_deg": 0,
+                "arg_per_deg": 0,
+                "M": 0    
+            },
+            "propagation_method": "matlab_delkep"
+        },
+        {
+            "sat_indx": 1,
+            "kepler_meananom": {
+                "a_km":  6978,
+                "e": 0,
+                "i_deg": 30,
+                "RAAN_deg": 90,
+                "arg_per_deg": 0,
+                "M": 10    
+            },
+            "propagation_method": "matlab_delkep"
         }
-    },
+    ],
     "gs_params": {}
 }
