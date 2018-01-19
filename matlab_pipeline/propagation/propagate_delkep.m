@@ -1,4 +1,4 @@
-function [t_hist, r_hist, v_hist] = propagate_delkep(end_time_s, delta_t_s, a, e, inc, RAAN, arg_perigee, mean_anom)
+function [t_hist, r_hist, v_hist] = propagate_delkep(end_time_s, delta_t_s, a, e, inc, RAAN, arg_perigee, mean_anom, base_directory)
 
 % Uses delkep.m from the PROPAT toolbox from INPE
 % This file is explained in detail in PROPAT_Summary_paper.pdf
@@ -12,6 +12,10 @@ function [t_hist, r_hist, v_hist] = propagate_delkep(end_time_s, delta_t_s, a, e
 % notes: if delta_t_sec does not divide evenly into end_time_sec, the very
 % last timestep (end_time_sec) will be truncated to make sure the
 % propagation history has constant timesteps.
+
+%% Set up Path
+
+addpath(strcat(base_directory,'/libraries/PROPAT/propat_code'));
 
 %% Parse Inputs
 
