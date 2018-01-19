@@ -8,9 +8,6 @@
 import time
 import os.path
 
-# For matlab setup, see http://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html?refresh=true
-import matlab
-from matlab import engine
 
 from run_tools import istring2dt,mlarray_to_list
 
@@ -19,23 +16,6 @@ MATLAB_PIPELINE_ENTRY = os.path.join(REPO_BASE,'matlab_pipeline','pipeline_entry
 
 
 class PipelineRunner:
-
-	def __init__(self):
-		self.matlab_eng = None
-
-	def get_matlab_engine(self):
-		"""
-		Get the matlab engine, starting it if it hasn't been started yet
-
-		:return:
-		"""
-
-		if not self.matlab_eng:
-			self.matlab_eng = engine.start_matlab()
-			self.matlab_eng.addpath(MATLAB_PIPELINE_ENTRY)
-
-		return self.matlab_eng
-
 
 	def run(self,data):
 		"""
