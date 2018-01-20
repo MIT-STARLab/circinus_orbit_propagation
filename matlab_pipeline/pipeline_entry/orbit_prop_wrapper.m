@@ -13,7 +13,7 @@ base_directory = strcat(file_dir,'/..');
 
 % add path to other code we'll be using
 addpath(strcat(base_directory,'/propagation'))
-    
+
 a = kepler_elems_init(1);
 e = kepler_elems_init(2);
 inc = kepler_elems_init(3);

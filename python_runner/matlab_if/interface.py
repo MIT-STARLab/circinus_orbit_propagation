@@ -34,7 +34,6 @@ class MatlabIF:
         if paths:
             self.add_paths(paths)
 
-
     def add_paths(self,paths):
         """
         Add paths in which matlab engine should search for scripts
@@ -105,6 +104,34 @@ class MatlabIF:
         else:
             raise NotImplementedError
 
+    @staticmethod
+    def mlarray_to_list(m_arr):
+        """
+        Convert matlab array to python list
+
+        :param m_arr: matlab array to convert
+        :return: python list
+        """
+
+        # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
+        if isinstance(m_arr, int):
+            return [m_arr]
+        if isinstance(m_arr, float):
+            return [m_arr]
+
+        else:
+            # get length
+            height = m_arr.size[0]
+            width = m_arr.size[1]
+
+            stuff = [[0 for i in range(width)] for j in range(height)]
+
+            for i in range(height):
+                for j in range(width):
+                    stuff[i][j] = m_arr[i][j]
+
+            return stuff
+
     def get_matlab_bin_path(self):
         from sys import platform
 
@@ -169,6 +196,35 @@ class MatlabIF:
                 self.eng_name = None # to be explicit
 
         self.eng_deleted = False
+
+    def call_mfunc(self,mfunc_name,*args, **kwargs):
+        """
+        Call a matlab function, passing *args to it as the standard matlab function arguments
+
+        Return values (for now, unfortunately) have to be left as matlab types because there's no clear one-to-one mapping of returned matlab values to python values (because 1-element arrays are return as a basic data type, not an array).
+
+        % TODO: someday it would be good to add better validation of *args to make sure they match what matlab expects...I don't think matlab does this very elegantly. Would also fix the non one-to-one output type mapping
+
+        :param mfunc_name: name of the function. Should be in the paths already added to self
+        :param args: the pythonic arguments to pass to with the function call in matlab. Converted to necessary matlab types before the call
+        :param kwargs: kwargs to pass to the MatlabFunc interface (matlabengine.py in matlab.engine package)
+        :return: tuple of values returned from matlab, in matlab format.
+        """
+
+        if not type(mfunc_name) == str:
+            raise TypeError('mfunc_name should be of type string')
+
+        matlab_args = []
+
+        # matlab-ify the args
+        for arg in args:
+            if type(arg) == list:
+                matlab_args.append(matlab.double(arg))
+            if type(arg) == int or type(arg) == float:
+                matlab_args.append(matlab.double([arg]))
+
+        return self.eng.feval(mfunc_name,*matlab_args,**kwargs)
+
 
 if __name__ == "__main__":
     mif = MatlabIF(use_existing=True)
