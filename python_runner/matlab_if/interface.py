@@ -13,6 +13,8 @@ class MatlabIF:
 
     Tested with MATLAB 2017a, Python 3.5.4
 
+    Note that if new persistent matlab instances are created, clean_up_persistent_engines() should eventually be called to close them. Can be called either in the same python kernel instance, or a subsequent instance. These instances can also be accessed from outside python through the interface of the daemon being used. e.g., "screen -ls; screen -r MATLAB_INSTANCE_NAME"
+
     See here for general matlab-python usage details: https://www.mathworks.com/help/matlab/matlab-engine-for-python.html
     See here for info about handling data returned from matlab: https://www.mathworks.com/help/matlab/matlab_external/handle-data-returned-from-matlab-to-python.html
     """
@@ -59,7 +61,7 @@ class MatlabIF:
                 item.eng_deleted = True
 
     @staticmethod
-    def clean_up_shared_engines(MatlabIF_instances, daemon='screen'):
+    def clean_up_persistent_engines(MatlabIF_instances=[], daemon='screen'):
         """
         Get rid of shared matlab engine instances after greping for their presence in ps -e
 
@@ -174,5 +176,5 @@ if __name__ == "__main__":
 
     # del mif
     # mif = MatlabIF(connect=False)
-    # mif.clean_up_shared_engines()
+    # mif.clean_up_persistent_engines()
 
