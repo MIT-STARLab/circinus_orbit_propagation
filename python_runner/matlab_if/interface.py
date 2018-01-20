@@ -203,13 +203,13 @@ class MatlabIF:
 
         Return values (for now, unfortunately) have to be left as matlab types because there's no clear one-to-one mapping of returned matlab values to python values (because 1-element arrays are return as a basic data type, not an array).
 
-        % TODO: someday it would be good to add better validation of *args to make sure they match what matlab expects...I don't think matlab does this very elegantly. Would also fix the non one-to-one output type mapping
-
         :param mfunc_name: name of the function. Should be in the paths already added to self
         :param args: the pythonic arguments to pass to with the function call in matlab. Converted to necessary matlab types before the call
         :param kwargs: kwargs to pass to the MatlabFunc interface (matlabengine.py in matlab.engine package)
         :return: tuple of values returned from matlab, in matlab format.
         """
+
+        # TODO: someday it would be good to add better validation of *args to make sure they match what matlab expects...I don't think matlab does this very elegantly. Would also fix the non one-to-one output type mapping
 
         if not type(mfunc_name) == str:
             raise TypeError('mfunc_name should be of type string')

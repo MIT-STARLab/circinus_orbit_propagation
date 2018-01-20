@@ -89,10 +89,10 @@ class PipelineRunner:
 
 		if data['version'] == "0.1":
 			sat_orbit_data = []
-			time_params = data['scenario_time_params']
-			end_time_s = ( istring2dt(time_params['end_utc']) -
-						  istring2dt(time_params['start_utc']) ).total_seconds()
-			timestep_s = time_params['timestep_s']
+			scenario_params = data['scenario_params']
+			end_time_s = ( istring2dt(scenario_params['end_utc']) -
+						  istring2dt(scenario_params['start_utc']) ).total_seconds()
+			timestep_s = scenario_params['timestep_s']
 
 			sat_orbit_params_flat = self.grok_orbit_params(data['sat_orbit_params'],data['version'])
 			for orb_params in sat_orbit_params_flat:
@@ -104,6 +104,16 @@ class PipelineRunner:
 				sat_orbit_data.append(single_orbit_data)
 
 			return sat_orbit_data
+
+	def process_accesses(self,data):
+		"""
+
+		:param data: highest-level input json object
+		:return: output json with raw orbit prop data
+		"""
+		pass
+
+
 
 	def run(self,data):
 		"""
@@ -119,7 +129,7 @@ class PipelineRunner:
 			output_json = {}
 			output_json['version'] = OUTPUT_JSON_VER
 			output_json['num_satellites'] = data['num_satellites']
-			output_json['scenario_time_params'] = data['scenario_time_params']
+			output_json['scenario_params'] = data['scenario_params']
 			output_json['sat_orbit_data'] = []
 
 			output_json['sat_orbit_data'] = self.process_orbits(data)
