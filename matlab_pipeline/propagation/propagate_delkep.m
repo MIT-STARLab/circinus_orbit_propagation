@@ -39,8 +39,8 @@ rv = kepel_statvec(kep_elem);
 indx = 1;
 while time <= end_time_s
     t_hist(indx) = time;
-    r_hist(indx,1:3) = rv(1:3);
-    v_hist(indx,1:3) = rv(4:6);
+    r_hist(indx,1:3) = rv(1:3)/1000; % store in km
+    v_hist(indx,1:3) = rv(4:6)/1000; % store in km
     
     deltakep = delkep(kep_elem);
     

@@ -4,27 +4,37 @@ function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_
 % Adapted from calc_and_store_accesses to remove file io, and enable
 % wrapping from python
 
+% all_sats_t_r_eci is matrix of:
+% | t (sec) | x_eci (km) | y_eci (km) | z_eci (km) |
+% |  0.0    | 3000.0000  | 4000.0000  | -100.0000  |
+% |  1.0    | 3004.0000  | 4002.0000  |  -99.0000  |
+% |  ...    | ...        | ...        | ...        |
+
+
 %% Fix parameters
 
-% TODO: update
+% t = 0 for the time column (col 1) of all_sats_t_r_eci
+addpath(strcat(base_directory,'/matlab_tools'));
+start_time_dt = parse_iso_datestr(params.scenario_start_utc);
+
+Fix this, and then also do the outputs...
+all_sats_t_r_eci
+
+num_sats = params.num_sats;
+num_timepoints = size(all_sats_t_r_eci,1);
 num_obs_targets = params.num_obs_targets;
-num_gs = params.num_gs;
-el_cutoff = params.el_cutuff_gs; % elevation cutoff for finding ground accesses. (deg)
-el_cutoff_obs = params.el_cutuff_obs; % elevation cutoff for finding obs times. (deg)
-yes_crosslinks = params.use_crosslinks;
+num_gs = params.num_gs;   % num ground stations
+el_cutoff = params.el_cutuff_gs_deg; % elevation cutoff for finding ground accesses.
+el_cutoff_obs = params.el_cutuff_obs_deg; % elevation cutoff for finding obs times. 
+yes_crosslinks = params.use_crosslinks;  % calculate crosslink accesses or not
 
-target_lat_lon_rad = target_in_a(:,3:4)*pi/180;
-gs_lat_lon_rad = gs_in_a(:,2:3)*pi/180;
+% sat orbit data
+sat_times_s = all_sats_t_r_eci(:,1);
+sat_positions_eci_km = all_sats_t_r_eci(:,2:4);
 
-% addpath(strcat(base_directory,'/access_utils'));
-
-%% Fix orbit data
-
-% TODO: update
-sat_times = 0;  % <- these are assumed to be strings below TODO update
-sat_positions_eci = 0;
-num_sats = 0;
-num_timepoints = 0;
+% lists of obs and gs latitudes and longitudes
+target_lat_lon_rad = params.target_id_lat_lon_deg(:,3:4)*pi/180;
+gs_lat_lon_rad = params.gs_id_lat_lon_deg(:,2:3)*pi/180;
 
 %% Set up Path
 
@@ -40,7 +50,7 @@ suncoef = 1;
 
 rsun = zeros(num_timepoints,3);
 for timepoint_num=1:num_timepoints
-    jdate = juliandate(sat_times(timepoint_num,:));
+    jdate = juliandate(start_time_dt + seconds(sat_times_s(timepoint_num)));
     [rasc, decl, rsun(timepoint_num,:)] = sun2 (jdate);  % rsun in km
 end
 
@@ -48,7 +58,7 @@ sunecl = cell(1,num_sats);
 parfor sat_num = 1:num_sats
     sat_num
     
-    eclipse_times = find_eclipse_times(sat_times,sat_positions_eci(:,:,sat_num),rsun);
+    eclipse_times = find_eclipse_times(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),rsun);
     sunecl{1,sat_num} = change_to_windows(eclipse_times,5/60/24);  % make eclipse windows, with a spaceing of at least 5 minutes between windows
 end
 
@@ -66,7 +76,7 @@ end
 target_eci_xyz = zeros(num_timepoints,3,num_obs_targets);
 gwst = zeros(num_timepoints,1);
 for timepoint_num=1:num_timepoints
-    dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
+    dt = start_time_dt + seconds(sat_times_s(timepoint_num));
     mjdi = djm(day(dt), month(dt), year(dt));  % get modified julian day for ECEF -> ECI conversion
     dayf = mod(datenum(dt),1)*86400;  % get fraction of day in seconds
     gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
@@ -91,7 +101,7 @@ parfor sat_num = 1:num_sats
     for target_num=1:num_obs_targets
         
         % find obs target overpasses, and then turn into windows
-        [access_times, az_el_range] = find_accesses_from_ground(sat_times,sat_positions_eci(:,:,sat_num),target_eci_xyz(:,:,target_num),el_cutoff_obs);
+        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),target_eci_xyz(:,:,target_num),el_cutoff_obs);
         [obs_windows,indices] = change_to_windows(access_times,5/60/24);
         
         % save AER of all the accesses
@@ -126,7 +136,7 @@ end
 gs_eci_xyz = zeros(num_timepoints,3,num_gs);
 gwst = zeros(num_timepoints,1);
 for timepoint_num=1:num_timepoints
-    dt = datetime(sat_times(timepoint_num,:),'InputFormat','dd MMM yyyy HH:mm:ss.sss');
+    dt = start_time_dt + seconds(sat_times_s(timepoint_num));
     mjdi = djm(day(dt), month(dt), year(dt));  % get modified julian day for ECEF -> ECI conversion
     dayf = mod(datenum(dt),1)*86400;  % get fraction of day in seconds
     gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
@@ -150,7 +160,7 @@ parfor sat_num = 1:num_sats
     for gs_num=1:num_gs
         
         % find obs target overpasses, and then turn into windows
-        [access_times, az_el_range] = find_accesses_from_ground(sat_times,sat_positions_eci(:,:,sat_num),gs_eci_xyz(:,:,gs_num),el_cutoff);
+        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),gs_eci_xyz(:,:,gs_num),el_cutoff);
         [dlnk_windows,indices] = change_to_windows(access_times,5/60/24);
         
         % save AER of all the accesses
@@ -186,7 +196,7 @@ if yes_crosslinks
         parfor other_sat_num=sat_num+1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
 
             % find obs target overpasses, and then turn into windows
-            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(sat_times,sat_positions_sat,sat_positions_eci(:,:,other_sat_num));
+            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(start_time_dt,sat_times_s,sat_positions_sat,sat_positions_eci(:,:,other_sat_num));
             [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
 
             % save AER of all the accesses

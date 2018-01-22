@@ -1,11 +1,12 @@
-function [access_times, az_el_range] = find_accesses_from_ground(times,sat_locations,ground_locations,el_cutoff)
+function [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,times_s,sat_locations,ground_locations,el_cutoff)
 % Author: Kit Kennedy
 
 % finds access times and azimuth, elevation, range for a satellite as
 % viewed from a ground location.
 
 % Inputs:
-% times - Length N array of time strings
+% start_time_dt - matlab datetime corresponding to start of times_s
+% times_s - Length N array of times in seconds
 % sat_locations - N x 3 array of satellite locations in ECI ref frame (km)
 % ground_locations - N x 3 array of ground locations in ECI ref frame (km)
 % el_cutoff - elevation cutoff angle for accesses (deg)
@@ -17,7 +18,7 @@ function [access_times, az_el_range] = find_accesses_from_ground(times,sat_locat
 % corresponding to access_times
 
 
-num_timepoints = size(times,1);
+num_timepoints = size(times_s,1);
 
 access_times = [];
 el = [];
@@ -60,7 +61,7 @@ for timepoint_num=1:num_timepoints
         
         az = [az; temp_az];
        
-        access_times = [access_times ; times(timepoint_num,:)];
+        access_times = [access_times ;  make_iso_datestr(start_time_dt + seconds(times_s(timepoint_num)))];
     end
     
 end

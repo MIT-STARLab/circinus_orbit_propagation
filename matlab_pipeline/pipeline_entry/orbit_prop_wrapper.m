@@ -14,12 +14,12 @@ base_directory = strcat(file_dir,'/..');
 % add path to other code we'll be using
 addpath(strcat(base_directory,'/propagation'))
 
-a = kepler_elems_init(1);
+a = kepler_elems_init(1);  % km
 e = kepler_elems_init(2);
-inc = kepler_elems_init(3);
-RAAN = kepler_elems_init(4);
-arg_perigee = kepler_elems_init(5);
-mean_anom = kepler_elems_init(6);
+inc = kepler_elems_init(3);  % deg
+RAAN = kepler_elems_init(4);  % deg
+arg_perigee = kepler_elems_init(5);  % deg 
+mean_anom = kepler_elems_init(6);   % deg 
 
 [t_hist, r_eci_hist, v_eci_hist] = propagate_delkep(end_time_s, delta_t_s, a, e, inc, RAAN, arg_perigee, mean_anom, base_directory);
 

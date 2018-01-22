@@ -53,7 +53,10 @@ class OrbitPropWrapper:
 
 			time_pos = MatlabIF.mlarray_to_list(t_r)
 
-			return time_pos
+			# can add other key value pairs to this dict, to put in final out file
+			other_kwout = {}
+
+			return time_pos,other_kwout
 
 		else:
 			raise NotImplementedError
@@ -96,11 +99,13 @@ class PipelineRunner:
 
 			sat_orbit_params_flat = self.grok_orbit_params(data['sat_orbit_params'],data['version'])
 			for orb_params in sat_orbit_params_flat:
-				orbit_data = opw.propagate_orbit(orb_params, end_time_s, timestep_s)
+				orbit_data, other_kwout  = opw.propagate_orbit(orb_params, end_time_s, timestep_s)
 
 				single_orbit_data = {}
 				single_orbit_data['sat_indx'] = orb_params['sat_indx']
-				single_orbit_data['position'] = orbit_data
+				single_orbit_data['time_s_pos_km'] = orbit_data
+				single_orbit_data.update(other_kwout)  # add any additional keyword fields to this dict
+
 				sat_orbit_data.append(single_orbit_data)
 
 			return sat_orbit_data

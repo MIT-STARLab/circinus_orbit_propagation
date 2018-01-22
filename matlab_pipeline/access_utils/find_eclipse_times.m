@@ -1,4 +1,4 @@
-function eclipse_times = find_eclipse_times(times,sat_locations,sun_locations)
+function eclipse_times = find_eclipse_times(start_time_dt,times_s,sat_locations,sun_locations)
 % Author: Kit Kennedy
 
 % simple first order approximation to find eclipse times for a satellite in
@@ -8,6 +8,8 @@ function eclipse_times = find_eclipse_times(times,sat_locations,sun_locations)
 
 % Inputs:
 % Length N array of time strings
+% start_time_dt - matlab datetime corresponding to start of times_s
+% times_s - Length N array of times in seconds
 % N x 3 array of satellite locations in ECI ref frame
 % N x 3 array of sun locations in ECI ref frame
 
@@ -30,7 +32,7 @@ for i=1:size(sat_locations,1)
     if norm(p) <= R_e 
         if dot(o,sunlight_unit_vec) > 0
             % then there is an eclipse
-            eclipse_times = [eclipse_times; times(i,:)]; 
+            eclipse_times = [eclipse_times; make_iso_datestr(start_time_dt + seconds(times_s(i)))]; 
         end
     end
 end
