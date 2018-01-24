@@ -1,11 +1,19 @@
 {
-    "kepler_meananom": {
-        "propagation_method": "matlab_delkep",
-        "a_km":  6978,
-        "e": 0,
-        "i_deg": 0,
-        "RAAN_deg": 0,
-        "arg_per_deg": 0,
-        "M": 0
-    }
+    "sat_orbit_params": [
+        {
+            "sat_indx": 0,
+            "kepler_meananom": {
+                "a_km":  6978,
+                "e": 0,
+                "i_deg": 0,
+                "RAAN_deg": 0,
+                "arg_per_deg": 0,
+                "M": 0
+            },
+            "propagation_method": "matlab_delkep"
+        },
+        {
+            "walker": {}
+        }
+    ]  
 }

@@ -20,11 +20,7 @@
                 }
             }
         },
-        "orbit_params": { 
-            "oneOf": [
-                {"kepler_meananom": {"$ref": "schema_orbit_params.json#/properties/kepler_meananom"}}
-            ]
-        },
+        "sat_orbit_params": {"$ref": "schema_orbit_params.json#/properties/sat_orbit_params"},
         "gs_params": {}
     }
 }

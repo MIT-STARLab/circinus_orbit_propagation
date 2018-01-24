@@ -55,12 +55,13 @@ class MatlabIF:
     @staticmethod
     def delete_matlab_engines(vars_dict):
         for item in vars_dict.items():
-            if type(item[1]) == MatlabIF:
-                del item.eng
-                item.eng_deleted = True
+            mif = item[1]
+            if type(mif) == MatlabIF:
+                del mif.eng
+                mif.eng_deleted = True
 
     @staticmethod
-    def clean_up_persistent_engines(MatlabIF_instances=[], daemon='screen'):
+    def clean_up_persistent_engines(MatlabIF_instances={}, daemon='screen'):
         """
         Get rid of shared matlab engine instances after greping for their presence in ps -e
 
@@ -69,7 +70,7 @@ class MatlabIF:
 
         Note: tried to play nice and use eng.exit() or eng.quit(), but that doesn't seem to work...
 
-        :param list MatlabIF_instances: list with all the MatlabIF instances that have been created in the current python kernel
+        :param list MatlabIF_instances: dict with all the MatlabIF instances that have been created in the current python kernel. Usually easiest to pass globals() here
         :param daemon: daemon used in this interface
         :return:
         """

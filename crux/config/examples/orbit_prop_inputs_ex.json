@@ -16,7 +16,7 @@
                 "i_deg": 0,
                 "RAAN_deg": 0,
                 "arg_per_deg": 0,
-                "M": 0    
+                "M": 0
             },
             "propagation_method": "matlab_delkep"
         },
@@ -24,11 +24,11 @@
             "sat_indx": 1,
             "kepler_meananom": {
                 "a_km":  6978,
-                "e": 0,
+                "e": 0.2,
                 "i_deg": 30,
-                "RAAN_deg": 90,
+                "RAAN_deg": 0,
                 "arg_per_deg": 0,
-                "M": 10    
+                "M": 0   
             },
             "propagation_method": "matlab_delkep"
         }

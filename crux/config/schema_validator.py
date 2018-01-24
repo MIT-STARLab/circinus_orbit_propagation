@@ -46,8 +46,10 @@ with open(instance_file,'r') as f:
 with open(schema_file,'r') as f:
 	schema = json.load(f)
 
+passed = False
 try:
 	validate(instance, schema, resolver=resolver)
+	passed = True
 except ve as e:
 	print('saw jsonschema.exceptions.ValidationError')
 	print('e.message')
@@ -62,5 +64,6 @@ except ve as e:
 		print(e.cause)
 		print('e.context')
 		print(e.context)
-finally:
+
+if passed:
 	print('Passed')
