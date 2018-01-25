@@ -1,10 +1,10 @@
-function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_t_r_eci, params, base_directory)
+function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_t_r_eci, params, base_directory,verbose)
 
 % Author: Kit Kennedy
 % Adapted from calc_and_store_accesses to remove file io, and enable
 % wrapping from python
 
-% all_sats_t_r_eci is matrix of:
+% all_sats_t_r_eci is cell array of matrices for every sat that look like this:
 % | t (sec) | x_eci (km) | y_eci (km) | z_eci (km) |
 % |  0.0    | 3000.0000  | 4000.0000  | -100.0000  |
 % |  1.0    | 3004.0000  | 4002.0000  |  -99.0000  |
@@ -13,15 +13,10 @@ function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_
 
 %% Fix parameters
 
-% t = 0 for the time column (col 1) of all_sats_t_r_eci
 addpath(strcat(base_directory,'/matlab_tools'));
 start_time_dt = parse_iso_datestr(params.scenario_start_utc);
 
-Fix this, and then also do the outputs...
-all_sats_t_r_eci
-
 num_sats = params.num_sats;
-num_timepoints = size(all_sats_t_r_eci,1);
 num_obs_targets = params.num_obs_targets;
 num_gs = params.num_gs;   % num ground stations
 el_cutoff = params.el_cutuff_gs_deg; % elevation cutoff for finding ground accesses.
@@ -29,12 +24,17 @@ el_cutoff_obs = params.el_cutuff_obs_deg; % elevation cutoff for finding obs tim
 yes_crosslinks = params.use_crosslinks;  % calculate crosslink accesses or not
 
 % sat orbit data
-sat_times_s = all_sats_t_r_eci(:,1);
-sat_positions_eci_km = all_sats_t_r_eci(:,2:4);
+if params.all_sats_same_time_system
+    sat_times_s = all_sats_t_r_eci{1}(:,1);
+else
+   error('calc_accesses.m: Disimilar time systems across sats not yet implemented!');
+end
+
+num_timepoints = size(sat_times_s,1);
 
 % lists of obs and gs latitudes and longitudes
-target_lat_lon_rad = params.target_id_lat_lon_deg(:,3:4)*pi/180;
-gs_lat_lon_rad = params.gs_id_lat_lon_deg(:,2:3)*pi/180;
+obs_lat_lon_rad = params.obs_lat_lon_deg*pi/180;
+gs_lat_lon_rad = params.gs_lat_lon_deg*pi/180;
 
 %% Set up Path
 
@@ -43,6 +43,9 @@ addpath(strcat(base_directory,'/libraries/PROPAT/propat_code'));
 
 %% Calculate eclipse times
 
+if verbose
+    disp('calculate eclipse times');
+end
 
 % initialize sun ephemeris globals for sun2 below (holy cow that library is hacky AF)
 global suncoef
@@ -56,20 +59,26 @@ end
 
 sunecl = cell(1,num_sats);
 parfor sat_num = 1:num_sats
-    sat_num
+    if verbose
+        sat_num
+    end
     
-    eclipse_times = find_eclipse_times(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),rsun);
+    eclipse_times = find_eclipse_times(start_time_dt,sat_times_s,all_sats_t_r_eci{sat_num},rsun);
     sunecl{1,sat_num} = change_to_windows(eclipse_times,5/60/24);  % make eclipse windows, with a spaceing of at least 5 minutes between windows
 end
 
 %% Calculate Observation Times and AER
+
+if verbose
+    disp('calculate observation times');
+end
 
 % Determine obs coordinates in ECEF. Only one point because doesn't change
 target_ecef_xyz = zeros(num_obs_targets,3);
 parfor target_num=1:num_obs_targets
     % target_lat_lon_rad is a "broadcast variable", but it's so small of an 
     % array it doesn't really matter
-    target_ecef_xyz(target_num,:) = sph_geodetic_to_geocentric([target_lat_lon_rad(target_num,2),target_lat_lon_rad(target_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
+    target_ecef_xyz(target_num,:) = sph_geodetic_to_geocentric([obs_lat_lon_rad(target_num,2),obs_lat_lon_rad(target_num,1),0])/1000; % long, lat, alt (assuming zero for all targets). Output in km.
 end
 
 % get ECI positions of targets as function of time
@@ -82,8 +91,13 @@ for timepoint_num=1:num_timepoints
     gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
 end
     
+if verbose
+    disp('calc eci');
+end
 parfor target_num=1:num_obs_targets
-    target_num
+    if verbose
+        target_num
+    end
     
     for timepoint_num=1:num_timepoints
         temp = terrestrial_to_inertial (gwst(timepoint_num), [target_ecef_xyz(target_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
@@ -91,17 +105,21 @@ parfor target_num=1:num_obs_targets
     end
 end
 
+if verbose
+    disp('calc obs, obs aer');
+end
 
 obs = cell(num_sats,num_obs_targets);
 obsaer = cell(num_sats,num_obs_targets);
 parfor sat_num = 1:num_sats
-    
-    sat_num
+    if verbose
+        sat_num
+    end
     
     for target_num=1:num_obs_targets
         
         % find obs target overpasses, and then turn into windows
-        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),target_eci_xyz(:,:,target_num),el_cutoff_obs);
+        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,all_sats_t_r_eci{sat_num},target_eci_xyz(:,:,target_num),el_cutoff_obs);
         [obs_windows,indices] = change_to_windows(access_times,5/60/24);
         
         % save AER of all the accesses
@@ -112,7 +130,7 @@ parfor sat_num = 1:num_sats
             access_times_slice = access_times(start_indx:end_indx,:);
             az_el_range_slice = az_el_range(start_indx:end_indx,:);
             
-            aer = [aer; mjuliandate(access_times_slice) az_el_range_slice];
+            aer = [aer; mjuliandate(parse_iso_datestr(access_times_slice)) az_el_range_slice];
         end
         
         obs{sat_num,target_num} = obs_windows;
@@ -123,6 +141,10 @@ end
 
 
 %% Calculate Downlink Times and AER
+
+if verbose
+    disp('calculate downlink times');
+end
 
 % Determine gs coordinates in ECEF. Only one point because doesn't change
 gs_ecef_xyz = zeros(num_gs,3);
@@ -142,8 +164,13 @@ for timepoint_num=1:num_timepoints
     gwst(timepoint_num) = gst(mjdi,dayf);  % get greenwhich sidereal time in radians
 end
    
+if verbose
+    disp('calc eci');
+end
 parfor gs_num=1:num_gs
-    gs_num
+    if verbose
+        gs_num
+    end
     
     for timepoint_num=1:num_timepoints
         temp = terrestrial_to_inertial (gwst(timepoint_num), [gs_ecef_xyz(gs_num,:),0,0,0]);  % zeros because the function also requires a velocity input, but we don't care about that.
@@ -151,16 +178,21 @@ parfor gs_num=1:num_gs
     end
 end
 
+if verbose
+    disp('calc gslink, gsaer');
+end
+
 gslink = cell(num_sats,num_gs);
 gsaer = cell(num_sats,num_gs);
 parfor sat_num = 1:num_sats
-    
-    sat_num
+    if verbose
+        sat_num
+    end
     
     for gs_num=1:num_gs
         
         % find obs target overpasses, and then turn into windows
-        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,sat_positions_eci(:,:,sat_num),gs_eci_xyz(:,:,gs_num),el_cutoff);
+        [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,sat_times_s,all_sats_t_r_eci{sat_num},gs_eci_xyz(:,:,gs_num),el_cutoff);
         [dlnk_windows,indices] = change_to_windows(access_times,5/60/24);
         
         % save AER of all the accesses
@@ -171,7 +203,7 @@ parfor sat_num = 1:num_sats
             access_times_slice = access_times(start_indx:end_indx,:);
             az_el_range_slice = az_el_range(start_indx:end_indx,:);
             
-            aer = [aer; mjuliandate(access_times_slice) az_el_range_slice];
+            aer = [aer; mjuliandate(parse_iso_datestr(access_times_slice)) az_el_range_slice];
         end
         
         gslink{sat_num,gs_num} = dlnk_windows;
@@ -183,6 +215,10 @@ end
 
 %% Calculate Crosslink Times and Ranges
 
+if verbose
+    disp('calculate crosslink times');
+end
+
 % TODO: incorporate usage of cached xlnk data again?
 
 if yes_crosslinks
@@ -190,13 +226,16 @@ if yes_crosslinks
     xlink = cell(num_sats,num_sats);
     xrange = cell(num_sats,num_sats);
     for sat_num = 1:num_sats
+        if verbose
+            sat_num
+        end
 
-        sat_positions_sat = sat_positions_eci(:,:,sat_num); % do this before the parfor so that sat_positions_sat is slicable below and we don't have to send the whole array!
+        sat_positions_sat = all_sats_t_r_eci{sat_num}; % do this before the parfor so that sat_positions_sat is slicable below and we don't have to send the whole array!
 
         parfor other_sat_num=sat_num+1:num_sats  % need the parfor on the second level so that e.g. xlink{sat_num,other_sat_num} call below is slicable
 
             % find obs target overpasses, and then turn into windows
-            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(start_time_dt,sat_times_s,sat_positions_sat,sat_positions_eci(:,:,other_sat_num));
+            [access_times, range, alt_of_closest_point] = find_crosslink_accesses(start_time_dt,sat_times_s,sat_positions_sat,all_sats_t_r_eci{other_sat_num});
             [xlnk_windows,indices] = change_to_windows(access_times,5/60/24);
 
             % save AER of all the accesses
@@ -207,7 +246,7 @@ if yes_crosslinks
                 access_times_slice = access_times(start_indx:end_indx,:);
                 range_slice = range(start_indx:end_indx,:);
                 alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
-                sats_xlnks_range = [sats_xlnks_range; mjuliandate(access_times_slice) range_slice alt_of_closest_point_slice];
+                sats_xlnks_range = [sats_xlnks_range; mjuliandate(parse_iso_datestr(access_times_slice)) range_slice alt_of_closest_point_slice];
             end
 
             xlink{sat_num,other_sat_num} = xlnk_windows;  % Note: had a problem earlier where I declared 'xlink' to be the wrong size, and kept on getting abstruse "you can't index this way!!1" errors from matlab. Super helpful  debug message (not). To be on the lookout for in future... 

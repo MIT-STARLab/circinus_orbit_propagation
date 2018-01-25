@@ -1,11 +1,13 @@
 {
     "version": "0.1",
-    "num_satellites": 2,
+    "num_satellites": 1,
     "scenario_params": {
         "start_utc": "2018-01-18T11:39:50.520000Z",
-        "end_utc": "2018-01-18T11:40:50.520000Z",
+        "end_utc": "2018-01-19T11:39:50.520000Z",
         "timestep_s": 5.0,
-        "use_crosslinks": true
+        "use_crosslinks": true,
+        "all_sats_same_time_system": true,
+        "matlab_verbose": true
     },
     "sat_orbit_params": [
         {
@@ -17,18 +19,6 @@
                 "RAAN_deg": 0,
                 "arg_per_deg": 0,
                 "M": 0
-            },
-            "propagation_method": "matlab_delkep"
-        },
-        {
-            "sat_indx": 1,
-            "kepler_meananom": {
-                "a_km":  6978,
-                "e": 0.2,
-                "i_deg": 30,
-                "RAAN_deg": 0,
-                "arg_per_deg": 0,
-                "M": 0   
             },
             "propagation_method": "matlab_delkep"
         }

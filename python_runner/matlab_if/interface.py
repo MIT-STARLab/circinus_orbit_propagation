@@ -202,10 +202,12 @@ class MatlabIF:
         """
         Call a matlab function, passing *args to it as the standard matlab function arguments
 
-        Return values (for now, unfortunately) have to be left as matlab types because there's no clear one-to-one mapping of returned matlab values to python values (because 1-element arrays are return as a basic data type, not an array).
+        See here: https://www.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-python.html
+        and here: https://www.mathworks.com/help/matlab/matlab_external/handle-data-returned-from-matlab-to-python.html
+        for info on converting between python and matlab data types.
 
         :param mfunc_name: name of the function. Should be in the paths already added to self
-        :param args: the pythonic arguments to pass to with the function call in matlab. Converted to necessary matlab types before the call
+        :param args: the arguments to pass to with the function call in matlab. Can be either matlab or python format, depends on context.
         :param kwargs: kwargs to pass to the MatlabFunc interface (matlabengine.py in matlab.engine package)
         :return: tuple of values returned from matlab, in matlab format.
         """
@@ -215,16 +217,7 @@ class MatlabIF:
         if not type(mfunc_name) == str:
             raise TypeError('mfunc_name should be of type string')
 
-        matlab_args = []
-
-        # matlab-ify the args
-        for arg in args:
-            if type(arg) == list:
-                matlab_args.append(matlab.double(arg))
-            if type(arg) == int or type(arg) == float:
-                matlab_args.append(matlab.double([arg]))
-
-        return self.eng.feval(mfunc_name,*matlab_args,**kwargs)
+        return self.eng.feval(mfunc_name,*args,**kwargs)
 
 
 if __name__ == "__main__":

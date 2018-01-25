@@ -1,4 +1,4 @@
-function [access_times, range, alt_of_closest_point] = find_crosslink_accesses(start_time_dt,times_s,sat_locations,other_sat_locations)
+function [access_times, range, alt_of_closest_point] = find_crosslink_accesses(start_time_dt,times_s,sat_t_r_eci,other_sat_locations)
 % Author: Kit Kennedy
 
 % finds crosslink access times between satellites in earth orbit. It is
@@ -29,12 +29,12 @@ alt_of_closest_point = [];
 
 for timepoint_num=1:num_timepoints
     
-    closest_dist = point_to_line_distance([0,0,0], sat_locations(timepoint_num,:), other_sat_locations(timepoint_num,:)); % find closest distance of earth center to the LOS_vec
+    closest_dist = point_to_line_distance([0,0,0], sat_t_r_eci(timepoint_num,2:4), other_sat_locations(timepoint_num,:)); % find closest distance of earth center to the LOS_vec
     
     if closest_dist > R_e
         access_times = [access_times ; make_iso_datestr(start_time_dt + seconds(times_s(timepoint_num)))];
         
-        range = [range ; norm(other_sat_locations(timepoint_num,:)-sat_locations(timepoint_num,:))];
+        range = [range ; norm(other_sat_locations(timepoint_num,:)-sat_t_r_eci(timepoint_num,2:4))];
         
         alt_of_closest_point = [alt_of_closest_point; closest_dist-R_e];
     end

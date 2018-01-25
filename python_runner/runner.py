@@ -7,6 +7,7 @@
 
 import time
 import os.path
+import matlab
 from matlab_if import MatlabIF
 
 
@@ -17,12 +18,15 @@ MATLAB_PIPELINE_ENTRY = os.path.join(REPO_BASE,'matlab_pipeline','pipeline_entry
 
 OUTPUT_JSON_VER = '0.1'
 
-class OrbitPropWrapper:
+class PipelineRunner:
 
 	def __init__(self):
-		self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
+		self.matlabif = None
 
 	def propagate_orbit(self,orb_params,end_time_s,timestep_s):
+
+		if not self.matlabif:
+			self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
 		orb_elems_flat = []
 		if 'kepler_meananom' in orb_params:
@@ -41,12 +45,17 @@ class OrbitPropWrapper:
 		else:
 			raise NotImplementedError
 
+		# matlab-ify the args
+		orb_elems_flat_ml =  matlab.double(orb_elems_flat)
+		end_time_s_ml =  matlab.double([end_time_s])
+		timestep_s_ml =  matlab.double([timestep_s])
+
 		if orb_params['propagation_method'] == 'matlab_delkep':
 			(t_r) = self.matlabif.call_mfunc(
 				'orbit_prop_wrapper',
-				orb_elems_flat,
-				end_time_s,
-				timestep_s,
+				orb_elems_flat_ml,
+				end_time_s_ml,
+				timestep_s_ml,
 				nargout=1)
 
 			#  convert matlab output types to python types
@@ -60,10 +69,6 @@ class OrbitPropWrapper:
 
 		else:
 			raise NotImplementedError
-
-
-
-class PipelineRunner:
 
 	def grok_orbit_params(self,sat_orbit_params,version):
 		"""
@@ -88,7 +93,8 @@ class PipelineRunner:
 		:return: output json with raw orbit prop data
 		"""
 
-		opw = OrbitPropWrapper()
+		if not self.matlabif:
+			self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
 		if data['version'] == "0.1":
 			sat_orbit_data = []
@@ -99,7 +105,7 @@ class PipelineRunner:
 
 			sat_orbit_params_flat = self.grok_orbit_params(data['sat_orbit_params'],data['version'])
 			for orb_params in sat_orbit_params_flat:
-				orbit_data, other_kwout  = opw.propagate_orbit(orb_params, end_time_s, timestep_s)
+				orbit_data, other_kwout  = self.propagate_orbit(orb_params, end_time_s, timestep_s)
 
 				single_orbit_data = {}
 				single_orbit_data['sat_indx'] = orb_params['sat_indx']
@@ -110,13 +116,55 @@ class PipelineRunner:
 
 			return sat_orbit_data
 
-	def process_accesses(self,data):
+	def process_accesses(self,data,sat_orbit_data):
 		"""
 
 		:param data: highest-level input json object
 		:return: output json with raw orbit prop data
 		"""
-		pass
+
+		# matlab-ify the args
+		params_ml = {}
+		if data['version'] == "0.1":
+			params_ml['scenario_start_utc'] = data['scenario_params']['start_utc']
+			params_ml['num_sats'] = matlab.double([data['num_satellites']])
+			params_ml['use_crosslinks'] = matlab.logical([data['scenario_params']['use_crosslinks']])
+			params_ml['all_sats_same_time_system'] = matlab.logical([data['scenario_params']['all_sats_same_time_system']])
+			params_ml['verbose'] = matlab.logical([data['scenario_params']['matlab_verbose']])
+
+			obs_params = data['obs_params']
+			params_ml['el_cutuff_obs_deg'] = matlab.double([obs_params['elevation_cutoff_deg']])
+			lat_lon_deg = matlab.double([[o['latitude_deg'],o['longitude_deg']] for o in obs_params['targets']])
+			params_ml['obs_lat_lon_deg'] = matlab.double(lat_lon_deg)
+			params_ml['num_obs_targets'] = matlab.double([len(lat_lon_deg)])
+
+			gs_params = data['gs_params']
+			params_ml['el_cutuff_gs_deg'] = matlab.double([gs_params['elevation_cutoff_deg']])
+			lat_lon_deg = matlab.double([[g['latitude_deg'],g['longitude_deg']] for g in gs_params['stations']])
+			params_ml['gs_lat_lon_deg'] = matlab.double(lat_lon_deg)
+			params_ml['num_gs'] = matlab.double([len(lat_lon_deg)])
+
+		time_s_pos_km_flat_ml = []
+		if OUTPUT_JSON_VER == "0.1":
+			for elem in sat_orbit_data:
+				time_s_pos_km_flat_ml.append(matlab.double(elem['time_s_pos_km']))
+
+		if not self.matlabif:
+			self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
+
+		(obs,obsaer,gslink,gsaer,sunecl,xlink,xrange) = self.matlabif.call_mfunc(
+				'accesses_wrapper',
+				time_s_pos_km_flat_ml,
+				params_ml,
+				nargout=7)
+
+		# TODO: do stuff with outputs
+
+		print(obs)
+
+		return 12
+
+
 
 
 
@@ -138,6 +186,8 @@ class PipelineRunner:
 			output_json['sat_orbit_data'] = []
 
 			output_json['sat_orbit_data'] = self.process_orbits(data)
+
+			output_json['accesses_data'] = self.process_accesses(data,output_json['sat_orbit_data'])
 
 			return output_json
 

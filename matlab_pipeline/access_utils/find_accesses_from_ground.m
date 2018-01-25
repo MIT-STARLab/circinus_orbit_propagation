@@ -1,4 +1,4 @@
-function [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,times_s,sat_locations,ground_locations,el_cutoff)
+function [access_times, az_el_range] = find_accesses_from_ground(start_time_dt,times_s,sat_t_r_eci,ground_locations,el_cutoff)
 % Author: Kit Kennedy
 
 % finds access times and azimuth, elevation, range for a satellite as
@@ -29,7 +29,7 @@ for timepoint_num=1:num_timepoints
     ground_vec = ground_locations(timepoint_num,:);
     
     % calculate vector from ground to satellite
-    vec_gr_sat = sat_locations(timepoint_num,:)-ground_vec;
+    vec_gr_sat = sat_t_r_eci(timepoint_num,2:4)-ground_vec;
     
     % figure out angle between that vector and the ground_location vector,
     % get elevation
