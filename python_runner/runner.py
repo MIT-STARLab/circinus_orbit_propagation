@@ -127,7 +127,7 @@ class PipelineRunner:
 		params_ml = {}
 		if data['version'] == "0.1":
 			params_ml['scenario_start_utc'] = data['scenario_params']['start_utc']
-			params_ml['num_sats'] = matlab.double([data['num_satellites']])
+			params_ml['num_sats'] = matlab.double([data['scenario_params']['num_satellites']])
 			params_ml['use_crosslinks'] = matlab.logical([data['scenario_params']['use_crosslinks']])
 			params_ml['all_sats_same_time_system'] = matlab.logical([data['scenario_params']['all_sats_same_time_system']])
 			params_ml['verbose'] = matlab.logical([data['scenario_params']['matlab_verbose']])
@@ -181,7 +181,6 @@ class PipelineRunner:
 			# define orbit prop outputs json
 			output_json = {}
 			output_json['version'] = OUTPUT_JSON_VER
-			output_json['num_satellites'] = data['num_satellites']
 			output_json['scenario_params'] = data['scenario_params']
 			output_json['sat_orbit_data'] = []
 

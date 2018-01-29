@@ -1,16 +1,6 @@
 {
-	"foo": {
-		"type": "json",
-		"schema": {}
-	},
-	"bar": {
-		"type": "csv",
-		"schema": ["col1", "col2", "col3"]
-	},
-	"baz": {
-		"type": "text"
-	},
-	"qux": {
-		"type": "binary"
-	}
+	"orbit_prop_data": {
+        "type": "json",
+        "schema": "schema_orbit_prop_data.json"
+    }
 }
