@@ -96,7 +96,7 @@ class PipelineRunner:
 		if not self.matlabif:
 			self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-		if data['version'] == "0.1":
+		if data['version'] == "0.2":
 			sat_orbit_data = []
 			scenario_params = data['scenario_params']
 			end_time_s = ( istring2dt(scenario_params['end_utc']) -
@@ -123,9 +123,11 @@ class PipelineRunner:
 		:return: output json with raw orbit prop data
 		"""
 
+		accesses_data = {}
+
 		# matlab-ify the args
 		params_ml = {}
-		if data['version'] == "0.1":
+		if data['version'] == "0.2":
 			params_ml['scenario_start_utc'] = data['scenario_params']['start_utc']
 			params_ml['num_sats'] = matlab.double([data['scenario_params']['num_satellites']])
 			params_ml['use_crosslinks'] = matlab.logical([data['scenario_params']['use_crosslinks']])
@@ -158,14 +160,15 @@ class PipelineRunner:
 				params_ml,
 				nargout=7)
 
-		# TODO: do stuff with outputs
+		accesses_data['obs_times'] = obs
+		accesses_data['obs_aer'] = obsaer
+		accesses_data['dlnk_times'] = gslink
+		accesses_data['dlnk_aer'] = gsaer
+		accesses_data['ecl_times'] = sunecl
+		accesses_data['xlnk_times'] = xlink
+		accesses_data['xlnk_range'] = xrange
 
-		print(obs)
-
-		return 12
-
-
-
+		return accesses_data
 
 
 	def run(self,data):
@@ -176,7 +179,7 @@ class PipelineRunner:
 		:return: output json per output.json schema
 		"""
 
-		if data['version'] == "0.1":
+		if data['version'] == "0.2":
 
 			# define orbit prop outputs json
 			output_json = {}

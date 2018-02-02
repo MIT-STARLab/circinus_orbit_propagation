@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Obs params",
     "description": "Observation target parameters",
@@ -51,9 +51,13 @@
     "properties": {
         "obs_params": {
             "type": "object",
-            "required":["target_set_name","target_set_version","elevation_cutoff_deg","targets"],
+            "required":["num_targets","target_set_name","target_set_version","elevation_cutoff_deg","targets"],
             "additionalProperties": false,
             "properties": {
+                "num_targets": {
+                    "type": "integer",
+                    "description": "Number of targets in this scenario",
+                },
                 "target_set_name": {
                     "type": "string",
                     "description": "Easy to use name for this set of observation targets",

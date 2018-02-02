@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "GS params",
     "description": "Ground station parameters",
@@ -58,9 +58,13 @@
     "properties": {
         "gs_params": {
             "type": "object",
-            "required":["gs_network_name","gs_network_version","elevation_cutoff_deg","stations"],
+            "required":["num_stations","gs_network_name","gs_network_version","elevation_cutoff_deg","stations"],
             "additionalProperties": false,
             "properties": {
+                "num_stations": {
+                    "type": "integer",
+                    "description": "Number of ground stations in this scenario",
+                },
                 "gs_network_name": {
                     "type": "string",
                     "description": "Easy to use name for this ground station network",

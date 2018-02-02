@@ -1,13 +1,15 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "scenario_params": {
-        "num_satellites": 1,
         "start_utc": "2018-01-18T11:39:50.520000Z",
         "end_utc": "2018-01-19T11:39:50.520000Z",
         "timestep_s": 5.0,
         "use_crosslinks": true,
         "all_sats_same_time_system": true,
         "matlab_verbose": true
+    },
+    "sat_params": {
+        "num_satellites": 3
     },
     "sat_orbit_params": [
         {
@@ -48,6 +50,7 @@
         }
     ],
     "obs_params": {
+        "num_targets": 33,
         "target_set_name": "MDO obs targets",
         "target_set_version": "1",
         "elevation_cutoff_deg":60,
@@ -88,6 +91,7 @@
         ]
     },
     "gs_params": {
+        "num_stations": 17,
         "gs_network_name": "Space Flight Networks 2017",
         "gs_network_version": "1",
         "elevation_cutoff_deg":10,
