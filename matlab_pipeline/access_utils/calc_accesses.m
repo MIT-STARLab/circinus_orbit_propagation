@@ -10,6 +10,7 @@ function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_
 % |  1.0    | 3004.0000  | 4002.0000  |  -99.0000  |
 % |  ...    | ...        | ...        | ...        |
 
+% TODO:  this code currently only uses modified Julian date for absolute output times.  ideally this should be configurable
 
 %% Fix parameters
 
@@ -184,7 +185,7 @@ end
 
 gslink = cell(num_sats,num_gs);
 gsaer = cell(num_sats,num_gs);
-parfor sat_num = 1:num_sats
+for sat_num = 1:num_sats
     if verbose
         sat_num
     end

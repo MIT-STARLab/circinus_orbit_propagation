@@ -133,6 +133,34 @@ class MatlabIF:
 
             return stuff
 
+    MATLAB_ARRAY_TYPES = [matlab.double]
+
+    @staticmethod
+    def deep_convert_matlab_to_python (ml_output):
+        """
+         convert a Matlab formatted data structure to Python formatting.
+          dig deep into the structure and convert Matlab numerical lists
+           to Python
+
+        :param ml_output:  Matlab struct to convert
+        :return: python list
+        """
+
+        # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
+        if isinstance(ml_output, int):
+            return [m_arr]
+        elif isinstance(ml_output, float):
+            return [m_arr]
+
+        elif type(ml_output) in MatlabIF.MATLAB_ARRAY_TYPES:
+            return MatlabIF.mlarray_to_list (ml_output)
+
+        elif isinstance(ml_output,list):
+            return [ MatlabIF.deep_convert_matlab_to_python (elem) for elem in ml_output]
+
+        else:
+            raise NotImplementedError
+
     def get_matlab_bin_path(self):
         from sys import platform
 

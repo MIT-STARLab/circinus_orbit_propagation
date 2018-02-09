@@ -19,3 +19,5 @@ addpath(strcat(base_directory,'/access_utils'))
 % save('test_in.mat','all_sats_t_r_eci','params');
 
 [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_t_r_eci, params, base_directory, params.verbose);
+
+[obs,obsaer,gslink,gsaer,sunecl,xlink,xrange ] =  reshape_outputs(obs,obsaer,gslink,gsaer,sunecl,xlink,xrange);
