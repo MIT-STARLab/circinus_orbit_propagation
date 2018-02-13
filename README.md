@@ -13,7 +13,7 @@ This code has been tested with Python 3.5.  I recommend running this in a Python
 
 ### Install Matlab Engine Api For Python
 
-Follow the instructions here: http://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html?refresh=true . Hgjkhk . Kljjkl
+Follow the instructions here: http://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html?refresh=true
 
 Note that this Matlab engine setup has only been tested by the author on an OS X system.
 
