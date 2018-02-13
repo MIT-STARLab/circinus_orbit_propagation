@@ -60,6 +60,8 @@ python runner_orbitprop.py
 
 For the time being feel free to make changes in the `if __name__ == "__main__":` block at the bottom of this Python script. Specifically change the json input file if you're testing a different case.
 
+Note that this is only really a temporary method for running the code. In future there will be a more crux-canonical executable.
+
 ## Work In Progress
 
 There's still some development that needs be done on this code, of course.
