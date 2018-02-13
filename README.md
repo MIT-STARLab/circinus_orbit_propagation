@@ -1,47 +1,72 @@
 Author: Kit Kennedy
-Last modified: 4/10/2017
+Last modified: 2/12/2018
 
 # OrbitPropagation
 Contains convenient code for simple orbit propagation tasks. Can use to produce input files for visualization in CesiumJS. Intended as an alternative to being dependent on STK for all orbit prop/visualization tasks.
 
+Most of the numbercrunching is done in Matlab, and there is a Python wrapper to facilitate calling Matlab and keeping instances of Matlab running.
+
 Please feel free to update this code! The more tools are here, the more useful it'll be for the whole lab. I want this to be the GOTO solution for any easy orbit propagation / analysis stuff. Try to respect the current organization though - if you have questions about changing things, please drop me a note: akennedy@mit.edu
+
+## Crux Component
+
+This code is meant to be run as a component within a Crux pipeline. That means inputs and outputs are specified in the config files stored in `./crux/config/`, with input and output schemas defined in `./crux/config/schema`. The Crux backend uses the schemas to verify the correctness of input and output files. Input and output can be JSON, CSV, or some other file types.
 
 ## Directories
 
-1. Scenarios
+1. `python_runner`
 
-   Contains subdirectories with scripts for generating output files for both satellite position and CZML input to the CesiumJS visualization tool (see below)
+   Entry point for Python code to run orbit propagation. `python_runner.py` is what you should call from the command line for quick execution.
 
-2. AccessUtils
+2. `matlab_pipeline`
 
-   Contains various Matlab utilities for calculating times of various events: dowlinks, crosslinks, eclipses
+   This contains the essential orbit propagation code, written in Matlab.
 
-3. czml
+3. `crux`
 
-   Contains stock czml header files for various constellation scenarios, as well as czml stubs for satellites with names sat1 to sat 40 (currently).
+   This contains the config files for using this repo as a Crux component.
 
-   Also contains the "Tools" subdirectory, which has all kinds of good python tools for generating CZML files for CesiumJS
+   * `crux/config/examples/orbit_prop_inputs_ex.json`
+      This file contains all the inputs used for orbit propagation. Duplicate this file and make changes for different scenarios
 
-4. Libraries
 
-   Contains libraies used for simple orbit propagation (PROPAT) and solar ephemeris generation (Solar_Ephemeris). Grabbed from the web, principally the MATLAB forums.
+4. `matlab_scenarios`
 
-5. SatPosFileIO
+   This directory contains some old code that was used for previous iteration of propagation. Keeping here for the time being.
 
-   Basically MATLAB utilies for writing and reading position files for satellites. These files were intended to LOOK like the files produced by STK, for ease of reading by humans.
+5. `misc_tools`
 
-## Scenarios
+   A place to store other tools for convenience
 
-These are various constellation scenarios that have already been set up for easy generation of files. Most of them allow parametric selection of the number of satellites in each orbit, e.g. SSO, equatorial, and ISS.
+## Installation
 
-The scenario directories are currently structured so that there's a single top-level file that can be run to produce files for the given scenario. For "SingleSat", this file is "single_sat_generator_wrapper.m". It would be HIGHLY PREFERED to abide by this structure for future scenario directories created.
+### Python
 
-There's also a bunch of other files in each scenario directory. These include the _file_writer.m file, which actually writes the files of interest, some python tools, a czml header file, and various other rifraf.
+This code has been tested with Python 3.5.  I recommend running this in a Python virtual environment.
 
-Specifically for SingleSat, I added "sat1_delkep_pos.txt" and "sats_file_single_sfn_0_0_1.czml" as an example of the produced position output file and czml file. The _pos.txt file contains the satellite's position as a function of time, and is self-explanatory. The .czml file is, again, an input file for CesiumJS. It's a subset of the JSON standard, and specifies properties of the visualization. For more info about how to use this file, see Kit's other repo, MATLAB_sat_viz (it's currently not in the STAR Lab github, but Kit may add it there. He's not sure why he didn't put it there. Dumb.)
+### Install Matlab Engine Api For Python
 
-So to run a scenario, simply:
+Follow the instructions here: http://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html?refresh=true . Hgjkhk . Kljjkl
 
-1. Open a _generator_wrapper.m file.
-2. At the top of the file, modify the number of sats in each orbit (and czml file names if desired)
-3. In the lower half of the file, modify any of the choices for ground station network, use of crosslinks, etc that you want. Note that you don't have to run this code if you're not looking for anything beyond the sat's orbit
+Note that this Matlab engine setup has only been tested by the author on an OS X system.
+
+## Running The Code
+
+From `OrbitPropagation/python_runner`, execute:
+
+```
+python runner_orbitprop.py
+```
+
+For the time being feel free to make changes in the `if __name__ == "__main__":` block at the bottom of this Python script. Specifically change the json input file if you're testing a different case.
+
+## Work In Progress
+
+There's still some development that needs be done on this code, of course.
+
+Currently the daemon that runs Matlab is `screen`, and has only been tested on a Darwin platform (OS X). For Windows, a different daemon tool will probably be needed. see the code in `matlab_if/interface.py`, `clean_up_persistent_engines()` and `_start_persistent_shared_matlab()`.
+
+Also currently only Kepler elements are implemented for orbit inputs. See `crux/config/examples/orbit_prop_inputs_ex.json` to see what these look like. It would be good to also have the capability to specify a full set of similar orbits as a single input in the array `sat_orbit_params`. For example it would be nice to specify an entire orbit with a set of cubesats separated at a regular spacing in true anomaly. Also would be good to have TLE inputs here. `grok_orbit_params()` in runner_orbitprop.py is where the necessary changes can be made.
+
+
+

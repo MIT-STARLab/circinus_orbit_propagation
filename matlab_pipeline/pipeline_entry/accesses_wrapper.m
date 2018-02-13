@@ -5,7 +5,7 @@
 
 % params is passed as a python dict, comes in as a struct
 
-function [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = accesses_wrapper(...
+function [obs_by_sat,obsaer_by_sat,gslink_by_sat,gsaer_by_sat,sunecl_by_sat,xlink_by_sat,xrange_by_sat] = accesses_wrapper(...
         all_sats_t_r_eci,...
         params)
    
@@ -14,10 +14,16 @@ file_dir = fileparts(mfilename('fullpath'));
 base_directory = strcat(file_dir,'/..');  % matlab base
 
 % add path to other code we'll be using
-addpath(strcat(base_directory,'/access_utils'))
-
-% save('test_in.mat','all_sats_t_r_eci','params');
+addpath(strcat(base_directory,'/access_utils'));
+addpath(strcat(base_directory,'/matlab_tools'));
 
 [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_t_r_eci, params, base_directory, params.verbose);
 
-[obs,obsaer,gslink,gsaer,sunecl,xlink,xrange ] =  reshape_outputs(obs,obsaer,gslink,gsaer,sunecl,xlink,xrange);
+obs_by_sat = reshape_outputs(obs);
+obsaer_by_sat = reshape_outputs(obsaer);
+gslink_by_sat = reshape_outputs(gslink);
+gsaer_by_sat = reshape_outputs(gsaer);
+sunecl_by_sat = reshape_outputs(sunecl);
+xlink_by_sat = reshape_outputs(xlink);
+xrange_by_sat =  reshape_outputs(xrange);
+

@@ -136,27 +136,57 @@ class MatlabIF:
     MATLAB_ARRAY_TYPES = [matlab.double]
 
     @staticmethod
-    def deep_convert_matlab_to_python (ml_output):
+    def deep_convert_matlab_to_python (ml_stuff):
         """
          convert a Matlab formatted data structure to Python formatting.
           dig deep into the structure and convert Matlab numerical lists
            to Python
 
-        :param ml_output:  Matlab struct to convert
+        :param ml_stuff:  Matlab struct to convert
         :return: python list
         """
 
         # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
-        if isinstance(ml_output, int):
-            return [m_arr]
-        elif isinstance(ml_output, float):
-            return [m_arr]
+        if isinstance(ml_stuff, int):
+            return [ml_stuff]
+        elif isinstance(ml_stuff, float):
+            return [ml_stuff]
 
-        elif type(ml_output) in MatlabIF.MATLAB_ARRAY_TYPES:
-            return MatlabIF.mlarray_to_list (ml_output)
+        elif type(ml_stuff) in MatlabIF.MATLAB_ARRAY_TYPES:
+            return MatlabIF.mlarray_to_list (ml_stuff)
 
-        elif isinstance(ml_output,list):
-            return [ MatlabIF.deep_convert_matlab_to_python (elem) for elem in ml_output]
+        elif isinstance(ml_stuff,list):
+            return [ MatlabIF.deep_convert_matlab_to_python (elem) for elem in ml_stuff]
+
+        else:
+            raise NotImplementedError
+
+    @staticmethod
+    def deep_convert_python_to_matlab (python_stuff):
+        """
+         convert a Matlab formatted data structure to Python formatting.
+          dig deep into the structure and convert Matlab numerical lists
+           to Python
+
+        :param python_stuff:  Matlab struct to convert
+        :return: python list
+        """
+
+        # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
+        if isinstance(python_stuff, int):
+            return python_stuff
+        elif isinstance(python_stuff, float):
+            return python_stuff
+
+
+        elif isinstance(python_stuff,list):
+            # check if it's a nested list
+            if any(isinstance(i, list) for i in a):
+                return [ MatlabIF.deep_convert_python_to_matlab(elem) for elem in python_stuff]
+            else:
+                return matlab.double(python_stuff)
+
+
 
         else:
             raise NotImplementedError
@@ -181,6 +211,8 @@ class MatlabIF:
             session_name = 'matlab_' + datetime.utcnow().isoformat()
             # start matlab in detached screen session and run command to share the session
             system('screen -dmS ' + session_name + ' ' + self.get_matlab_bin_path() + " " + MATLAB_OPTIONS)
+        else:
+            raise NotImplementedError
 
         # wait till we see a new shared matlab sesh
         new_sessions_tup = engine.find_matlab()
