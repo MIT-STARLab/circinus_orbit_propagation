@@ -252,7 +252,7 @@ if __name__ == "__main__":
     # output = pr. process_accesses(thejson_data, thejson_sat_data["sat_orbit_data"])
     b = time.time()
 
-    with open('out.json', 'w') as f:
+    with open('orbit_prop_inputs_ex_small.json', 'w') as f:
         json.dump(output, f)
 
     print('run time: %f' % (b - a))

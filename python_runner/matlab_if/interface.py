@@ -106,26 +106,45 @@ class MatlabIF:
             raise NotImplementedError
 
     @staticmethod
-    def mlarray_to_list(m_arr):
+    def mlarray_to_list(m_arr,override= None,  arrayicize_singletons= False) :
         """
         Convert matlab array to python list
+
+        important note: when an array with a single element is returned from  Matlab, it will not appear as an array in Python but rather as a single value. Obviously this behavior is frustrating, but that's life. This function assumes that such arrays should be left as singleton values      
+
+        this function will return empty Matlab matrices as an empty Python list (if you don't want empty list to appear in your output, make sure to filter them before providing them to this function)
 
         :param m_arr: matlab array to convert
         :return: python list
         """
 
-        # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
-        if isinstance(m_arr, int):
-            return [m_arr]
-        if isinstance(m_arr, float):
-            return [m_arr]
+        #  not  implementing this capability for the time being
+        if arrayicize_singletons:
+            raise NotImplementedError
+
+        elif isinstance(m_arr, int):
+            return m_arr
+        elif isinstance(m_arr, float):
+            return m_arr
+
+        elif override  and override=='flat_list':
+            # print (m_arr)
+            # get the size of the array/matrix
+            width = m_arr.size[1]
+
+            stuff = []
+
+            for j in range(width):
+                stuff.append (m_arr[0][j])
+
+            return stuff
 
         else:
-            # get length
+            # get the size of the array/matrix
             height = m_arr.size[0]
             width = m_arr.size[1]
 
-            stuff = [[0 for i in range(width)] for j in range(height)]
+            stuff = [[None for i in range(width)] for j in range(height)]
 
             for i in range(height):
                 for j in range(width):
@@ -133,42 +152,57 @@ class MatlabIF:
 
             return stuff
 
-    MATLAB_ARRAY_TYPES = [matlab.double]
+    MATLAB_ARRAY_TYPES = [ matlab.double]
 
     @staticmethod
-    def deep_convert_matlab_to_python (ml_stuff):
-        """
-         convert a Matlab formatted data structure to Python formatting.
-          dig deep into the structure and convert Matlab numerical lists
+    def deep_convert_matlab_to_python (ml_stuff,matlab_nesting=None):
+        """convert a Matlab formatted data structure to Python formatting.
+          
+        dig deep into the structure and convert Matlab numerical lists
            to Python
 
         :param ml_stuff:  Matlab struct to convert
+        :param matlab_nesting: specification of how structure is nested 
+            for conversion to Matlab. every pair of [] represents a cell 
+            array  (note: cell arrays are automatically converted to lists
+            when the data is passed from Matlab to Python)
         :return: python list
         """
 
         # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
-        if isinstance(ml_stuff, int):
+        if matlab_nesting and matlab_nesting  == 'value':
+            return MatlabIF.mlarray_to_list (ml_stuff, override='value')
+            # return ml_stuff
+        elif isinstance(ml_stuff, int):
             return [ml_stuff]
         elif isinstance(ml_stuff, float):
             return [ml_stuff]
 
+        # check first whether we're supposed to stop at this level of nesting and turn it into a Matlab matrix structure
+        elif matlab_nesting and matlab_nesting  == 'flat_list':
+            return MatlabIF.mlarray_to_list (ml_stuff, override='flat_list')
+
         elif type(ml_stuff) in MatlabIF.MATLAB_ARRAY_TYPES:
             return MatlabIF.mlarray_to_list (ml_stuff)
 
-        elif isinstance(ml_stuff,list):
-            return [ MatlabIF.deep_convert_matlab_to_python (elem) for elem in ml_stuff]
+        elif isinstance(ml_stuff,list):            
+            next_nesting= matlab_nesting[0] if matlab_nesting else None
+            return [ MatlabIF.deep_convert_matlab_to_python (elem,next_nesting) for elem in ml_stuff]
 
         else:
+            print (ml_stuff)
+            print ( type (ml_stuff))
             raise NotImplementedError
 
     @staticmethod
-    def deep_convert_python_to_matlab (python_stuff):
-        """
-         convert a Matlab formatted data structure to Python formatting.
-          dig deep into the structure and convert Matlab numerical lists
-           to Python
+    def deep_convert_python_to_matlab (python_stuff,matlab_nesting=None):
+        """convert a python  data structure to the correct formatting for Matlab
 
         :param python_stuff:  Matlab struct to convert
+        :param matlab_nesting: specification of how structure is nested 
+            for conversion to Matlab. every pair of [] represents a cell 
+            array  (note: lists are automatically converted to cell arrays  
+            when the data is given to Matlab)
         :return: python list
         """
 
@@ -180,9 +214,14 @@ class MatlabIF:
 
 
         elif isinstance(python_stuff,list):
-            # check if it's a nested list
-            if any(isinstance(i, list) for i in a):
-                return [ MatlabIF.deep_convert_python_to_matlab(elem) for elem in python_stuff]
+            # check first whether we're supposed to stop at this level of nesting and turn it into a Matlab matrix structure
+            if matlab_nesting and matlab_nesting  == matlab.double:
+                return matlab.double(python_stuff)
+            # check if it's a nested list, if yes continue deeper
+            elif any(isinstance(i, list) for i in python_stuff):
+                next_nesting= matlab_nesting[0] if matlab_nesting else None
+                return [ MatlabIF.deep_convert_python_to_matlab(elem,next_nesting) for elem in python_stuff]
+            # otherwise stop and convert straight to a Matlab array
             else:
                 return matlab.double(python_stuff)
 

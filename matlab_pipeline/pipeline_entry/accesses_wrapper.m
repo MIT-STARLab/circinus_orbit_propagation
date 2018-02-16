@@ -19,11 +19,12 @@ addpath(strcat(base_directory,'/matlab_tools'));
 
 [obs,obsaer,gslink,gsaer,sunecl,xlink,xrange] = calc_accesses(all_sats_t_r_eci, params, base_directory, params.verbose);
 
-obs_by_sat = reshape_outputs(obs);
-obsaer_by_sat = reshape_outputs(obsaer);
-gslink_by_sat = reshape_outputs(gslink);
-gsaer_by_sat = reshape_outputs(gsaer);
-sunecl_by_sat = reshape_outputs(sunecl);
-xlink_by_sat = reshape_outputs(xlink);
-xrange_by_sat =  reshape_outputs(xrange);
+trim_empty = false
+obs_by_sat = reshape_outputs(obs, trim_empty);
+obsaer_by_sat = reshape_outputs(obsaer, trim_empty);
+gslink_by_sat = reshape_outputs(gslink, trim_empty);
+gsaer_by_sat = reshape_outputs(gsaer, trim_empty);
+sunecl_by_sat = reshape_outputs(sunecl, trim_empty);
+xlink_by_sat = reshape_outputs(xlink, trim_empty);
+xrange_by_sat =  reshape_outputs(xrange, trim_empty);
 
