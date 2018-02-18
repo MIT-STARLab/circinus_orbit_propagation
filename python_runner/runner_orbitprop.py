@@ -17,7 +17,7 @@ REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(
     REPO_BASE, 'matlab_pipeline', 'pipeline_entry')
 
-OUTPUT_JSON_VER = '0.1'
+OUTPUT_JSON_VER = '0.2'
 
 
 class PipelineRunner:
@@ -89,7 +89,7 @@ class PipelineRunner:
         # TODO: add handling for meta orbit params, e.g. set of
         # satellites in orbit planes, or even whole constellations
 
-        if version == "0.2":
+        if version == "0.3":
             sat_orbit_params_flat = sat_orbit_params
 
             return sat_orbit_params_flat
@@ -109,7 +109,7 @@ class PipelineRunner:
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if data['version'] == "0.2":
+        if data['version'] == "0.3":
             sat_orbit_data = []
             scenario_params = data['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
@@ -124,7 +124,7 @@ class PipelineRunner:
                     orb_params, end_time_s, timestep_s)
 
                 single_orbit_data = {}
-                single_orbit_data['sat_indx'] = orb_params['sat_indx']
+                single_orbit_data['sat_id'] = orb_params['sat_id']
                 single_orbit_data['time_s_pos_km'] = orbit_data
                 # add any additional keyword fields to this dict
                 single_orbit_data.update(other_kwout)
@@ -147,7 +147,7 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if data['version'] == "0.2":
+        if data['version'] == "0.3":
             params_ml['scenario_start_utc'] = \
                 data['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
@@ -177,11 +177,19 @@ class PipelineRunner:
             params_ml['gs_lat_lon_deg'] = matlab.double(lat_lon_deg)
             params_ml['num_gs'] = matlab.double([len(lat_lon_deg)])
 
+            # todo: should really verify that sat_id_order is correctly formatted
+            sat_id_order= data['sat_params']['sat_id_order']
+
+        sort_func = lambda y: sat_id_order.index (str(y['sat_id']))
+        sat_orbit_data_sorted = sorted(sat_orbit_data, key= lambda x: sort_func(x))
+
         time_s_pos_km_flat_ml = []
-        if OUTPUT_JSON_VER == "0.1":
-            for elem in sat_orbit_data:
+        if OUTPUT_JSON_VER == "0.2":
+            for elem in sat_orbit_data_sorted:
                 time_s_pos_km_flat_ml.append(
                     matlab.double(elem['time_s_pos_km']))
+        else:
+            raise NotImplementedError
 
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
@@ -211,7 +219,8 @@ class PipelineRunner:
         :return: output json per output.json schema
         """
 
-        if data['version'] == "0.2":
+
+        if data['version'] == "0.3":
 
             # define orbit prop outputs json
             output_json = {}
@@ -239,7 +248,7 @@ if __name__ == "__main__":
     with open(
         os.path.join(
             REPO_BASE,
-            'crux/config/examples/orbit_prop_inputs_ex_small.json'), 'r') as f:
+            'crux/config/examples/orbit_prop_inputs.json'), 'r') as f:
         thejson_data = json.load(f)
     # with open(
     #     os.path.join(
@@ -252,7 +261,7 @@ if __name__ == "__main__":
     # output = pr. process_accesses(thejson_data, thejson_sat_data["sat_orbit_data"])
     b = time.time()
 
-    with open('orbit_prop_inputs_ex_small.json', 'w') as f:
+    with open('orbit_prop_data.json', 'w') as f:
         json.dump(output, f)
 
     print('run time: %f' % (b - a))
