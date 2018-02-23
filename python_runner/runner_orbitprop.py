@@ -9,7 +9,7 @@ import time
 import os.path
 import matlab
 from matlab_if import MatlabIF
-
+import argparse
 
 from run_tools import istring2dt
 
@@ -241,6 +241,14 @@ class PipelineRunner:
 
 if __name__ == "__main__":
 
+    ap = argparse.ArgumentParser(description='orbit propagation')
+    ap.add_argument('--prop_inputs_file',
+                    type=str,
+                    default='orbit_prop_inputs.json',
+                    help='specify orbit propagation inputs file')
+
+    args = ap.parse_args()
+
     pr = PipelineRunner()
 
     import json
@@ -248,7 +256,7 @@ if __name__ == "__main__":
     with open(
         os.path.join(
             REPO_BASE,
-            'crux/config/examples/orbit_prop_inputs.json'), 'r') as f:
+            args.prop_inputs_file), 'r') as f:
         thejson_data = json.load(f)
     # with open(
     #     os.path.join(
