@@ -5,6 +5,7 @@
 # @author Kit Kennedy
 #
 
+import sys
 import time
 import os.path
 import matlab
@@ -12,6 +13,10 @@ from matlab_if import MatlabIF
 import argparse
 
 from run_tools import istring2dt
+
+#  local repo includes. todo:  make this less hackey
+sys.path.append ('..')
+from  prop_tools  import orbits
 
 REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(
@@ -41,7 +46,7 @@ class PipelineRunner:
                 orb_elems['i_deg'],
                 orb_elems['RAAN_deg'],
                 orb_elems['arg_per_deg'],
-                orb_elems['M']
+                orb_elems['M_deg']
             ]
 
         else:
@@ -90,8 +95,20 @@ class PipelineRunner:
         # satellites in orbit planes, or even whole constellations
 
         if version == "0.3":
-            sat_orbit_params_flat = sat_orbit_params
+            sat_orbit_params_flat = []
+            # sat_id_order_default = []
 
+            for params in sat_orbit_params:
+                if "walker" in  params:
+                    flat_params = orbits.flatten_walker(params)
+                    sat_orbit_params_flat  += flat_params
+                    # sat_id_order_default  += sat_ids_str
+
+                if "kepler_meananom" in params:
+                    sat_orbit_params_flat.append(params)
+                    # sat_id_order_default.append (params['sat_id'])
+
+            # print(json.dumps (sat_orbit_params_flat))
             return sat_orbit_params_flat
 
         else:
@@ -179,6 +196,8 @@ class PipelineRunner:
 
             # todo: should really verify that sat_id_order is correctly formatted
             sat_id_order= data['sat_params']['sat_id_order']
+            if sat_id_order == 'default':
+                sat_id_order = [str (sat_indx) for sat_indx in range (data['sat_params']['num_satellites'])]
 
         sort_func = lambda y: sat_id_order.index (str(y['sat_id']))
         sat_orbit_data_sorted = sorted(sat_orbit_data, key= lambda x: sort_func(x))
