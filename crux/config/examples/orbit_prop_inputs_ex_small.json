@@ -9,7 +9,16 @@
         "matlab_verbose": true
     },
     "sat_params": {
-        "num_satellites": 2
+        "num_satellites": 2,
+        "sat_id_order": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+        ],
+        "payload_data_rate_Mbps": 127.5
     },
     "sat_orbit_params": [
         {
@@ -25,7 +34,7 @@
             "propagation_method": "matlab_delkep"
         },
         {
-            "sat_indx": 1,
+            "sat_indx": "yo",
             "kepler_meananom": {
                 "a_km":  8000,
                 "e": 0.2,
