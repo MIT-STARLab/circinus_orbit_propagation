@@ -136,6 +136,10 @@ class PipelineRunner:
 
             sat_orbit_params_flat = self.grok_orbit_params(
                 data['sat_orbit_params'], data['version'])
+
+            if len(sat_orbit_params_flat) !=  data['sat_params']['num_satellites']:
+                raise Exception ('Number of satellites is not equal to the length of satellite parameters list')
+
             for orb_params in sat_orbit_params_flat:
                 orbit_data, other_kwout = self.propagate_orbit(
                     orb_params, end_time_s, timestep_s)
@@ -185,6 +189,9 @@ class PipelineRunner:
             params_ml['obs_lat_lon_deg'] = matlab.double(lat_lon_deg)
             params_ml['num_obs_targets'] = matlab.double([len(lat_lon_deg)])
 
+            if len(lat_lon_deg) != obs_params['num_targets']:
+                raise Exception ('Number of observation targets is not equal to the length of observation target parameters list')
+
             gs_params = data['gs_params']
             params_ml['el_cutuff_gs_deg'] = matlab.double(
                 [gs_params['elevation_cutoff_deg']])
@@ -193,6 +200,9 @@ class PipelineRunner:
                  gs_params['stations']])
             params_ml['gs_lat_lon_deg'] = matlab.double(lat_lon_deg)
             params_ml['num_gs'] = matlab.double([len(lat_lon_deg)])
+
+            if len(lat_lon_deg) != gs_params['num_stations']:
+                raise Exception ('Number of ground stations is not equal to the length of ground station parameters list')
 
             # todo: should really verify that sat_id_order is correctly formatted
             sat_id_order= data['sat_params']['sat_id_order']
