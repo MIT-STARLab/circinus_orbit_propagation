@@ -1,50 +1,96 @@
 {
-    "version": "0.2",
+    "version": "0.3",
     "scenario_params": {
-        "start_utc": "2018-01-18T11:39:50.520000Z",
-        "end_utc": "2018-01-19T11:39:50.520000Z",
-        "timestep_s": 5.0,
+        "start_utc": "2018-01-18T00:00:00.000000Z",
+        "end_utc": "2018-01-18T04:00:00.000000Z",
+        "timestep_s": 10.0,
         "use_crosslinks": true,
         "all_sats_same_time_system": true,
         "matlab_verbose": true
     },
     "sat_params": {
-        "num_satellites": 3
+        "num_satellites": 32,
+        "sat_id_order": "default",
+        "payload_data_rate_Mbps": 127.5,
+        "power_params": [
+            {
+                "sat_ids": "duplicate,range_inclusive,0,31",
+                "base_option": "MiRaTA-like (JAIS 2016)",
+                "obs_option": "MiRaTA-like (JAIS 2016)",
+                "dlnk_option": "X-band (MDO 2018)",
+                "xlnk_option": "NODE 2.0 (MDO 2018)",
+                "charging_option": "MiRaTA-like (Smallsat 2014)",
+                "battery_option": "MiRaTA-like (JAIS 2016)",
+                "power_consumption_W": {
+                    "base": {
+                        "MiRaTA-like (JAIS 2016)": -6.4
+                    },
+                    "obs":  {
+                        "MiRaTA-like (JAIS 2016)": -7.7
+                    },
+                    "dlnk": {
+                       "X-band (MDO 2018)":  -10
+                    },
+                    "xlnk": {
+                        "NODE 2.0 (MDO 2018)": -12
+                    },
+                    "orbit_insunlight_average_charging": {
+                        "MiRaTA-like (Smallsat 2014)": 11.25
+                    }
+                },
+                "battery_storage_Wh": {
+                    "e_min": {
+                        "MiRaTA-like (JAIS 2016)": 14
+                    },
+                    "e_max": {
+                        "MiRaTA-like (JAIS 2016)": 20
+                    }
+                },
+                "_comment": "most of the power consumption and energy constraints were taken from the 2016 Kennedy, Cahoy JAIS paper. Xlnk and Dlnk power taken from the MDO paper, which as of March 2018 is not quite published. Orbit average charging was calculated from the 8.25 Wh figure (8.25 + 20% margin, all acquired over ~55 minutes of in-sunlight time in a 600 km orbit for 11.25 watts average during sunlight) from page 12 of Smallsat 2014 MiRaTA paper - Blackwell, W. J. et al, Microwave Radiometer Technology Acceleration Mission (MiRaTA): Advancing Weather Remote Sensing with Nanosatellites"
+            }
+        ],
+        "initial_state": [
+            {
+                "sat_ids": "duplicate,range_inclusive,0,31",
+                "batt_e_Wh": 0
+            }
+        ]
     },
     "sat_orbit_params": [
         {
-            "sat_indx": 0,
+            "sat_id": 0,
             "kepler_meananom": {
                 "a_km":  6978,
                 "e": 0,
-                "i_deg": 30,
-                "RAAN_deg": 0,
+                "i_deg": 60,
+                "RAAN_deg": 20,
                 "arg_per_deg": 0,
-                "M": 0
+                "M_deg": 50
             },
             "propagation_method": "matlab_delkep"
         },
         {
-            "sat_indx": 1,
+            "sat_id": 1,
             "kepler_meananom": {
-                "a_km":  8000,
+                "a_km":  8500,
                 "e": 0.2,
                 "i_deg": 98,
                 "RAAN_deg": 0,
                 "arg_per_deg": 270,
-                "M": 30
+                "M_deg": 30
             },
             "propagation_method": "matlab_delkep"
         },
         {
-            "sat_indx": 2,
-            "kepler_meananom": {
-                "a_km":  7278,
-                "e": 0.1,
-                "i_deg": -20,
-                "RAAN_deg": 10,
-                "arg_per_deg": 30,
-                "M": 120
+            "sat_ids": "synthesize,range_inclusive,2,31",
+            "walker": {
+                "num_sats": 30,
+                "i_deg": 30,
+                "num_planes": 3,
+                "f_relative_spacing": 1,
+                "a_km": 6978,
+                "RAAN_p1_deg": 0,
+                "M_p1_deg": 0
             },
             "propagation_method": "matlab_delkep"
         }

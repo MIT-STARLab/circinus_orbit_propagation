@@ -19,9 +19,12 @@ def flatten_walker(params):
     sat_ids_spec = params["sat_ids"]
     if type (sat_ids_spec)==str:
         tokens = sat_ids_spec.split (',')
-        if  tokens[0] == 'range_inclusive':
-            sat_ids =  range ( int(tokens[1]), int (tokens[2])+1)
+        if tokens[0] == 'synthesize':
+            if  tokens[1] == 'range_inclusive':
+                sat_ids =  range ( int(tokens[2]), int (tokens[3])+1)
             # sat_ids_str = [str(_id) for _id in sat_ids]
+            else:
+                raise NotImplementedError
         else:
             raise NotImplementedError
     else:

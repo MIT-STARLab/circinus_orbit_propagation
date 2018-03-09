@@ -100,6 +100,9 @@ class PipelineRunner:
 
             for params in sat_orbit_params:
                 if "walker" in  params:
+                    if not "synthesize" in params["sat_ids"]:
+                        raise Exception(" when forming orbit parameters from a Walker constellation, need a synthesize token in the sat_ids field")
+
                     flat_params = orbits.flatten_walker(params)
                     sat_orbit_params_flat  += flat_params
                     # sat_id_order_default  += sat_ids_str
