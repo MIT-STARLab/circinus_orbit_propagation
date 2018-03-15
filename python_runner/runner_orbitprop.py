@@ -207,13 +207,10 @@ class PipelineRunner:
             if len(lat_lon_deg) != gs_params['num_stations']:
                 raise Exception ('Number of ground stations is not equal to the length of ground station parameters list')
 
-            # todo: should really verify that sat_id_order is correctly formatted
             sat_id_order= data['sat_params']['sat_id_order']
-            if sat_id_order == 'default':
-                sat_id_order = [str (sat_indx) for sat_indx in range (data['sat_params']['num_satellites'])]
+            num_satellites = data['sat_params']['num_satellites']
 
-        sort_func = lambda y: sat_id_order.index (str(y['sat_id']))
-        sat_orbit_data_sorted = sorted(sat_orbit_data, key= lambda x: sort_func(x))
+        sort_input_params_by_sat_indcs(sat_orbit_data,sat_id_order,num_satellites)
 
         time_s_pos_km_flat_ml = []
         if OUTPUT_JSON_VER == "0.2":
@@ -237,7 +234,8 @@ class PipelineRunner:
         accesses_data['obs_aer'] = MatlabIF.deep_convert_matlab_to_python (obsaer)
         accesses_data['dlnk_times'] = MatlabIF.deep_convert_matlab_to_python (gslink)
         accesses_data['dlnk_aer'] = MatlabIF.deep_convert_matlab_to_python (gsaer)
-        accesses_data['ecl_times'] = MatlabIF.deep_convert_matlab_to_python (sunecl)
+        #  eclipse times came out with an inadvertent extra nesting layer.  get rid of that.
+        accesses_data['ecl_times'] = MatlabIF.deep_convert_matlab_to_python (sunecl)[0]
         accesses_data['xlnk_times'] = MatlabIF.deep_convert_matlab_to_python (xlink)
         accesses_data['xlnk_range'] = MatlabIF.deep_convert_matlab_to_python (x_range)
 
