@@ -17,6 +17,7 @@ from run_tools import istring2dt
 #  local repo includes. todo:  make this less hackey
 sys.path.append ('..')
 from  prop_tools  import orbits
+from circinus_tools import io_tools
 
 REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(
@@ -207,10 +208,16 @@ class PipelineRunner:
             if len(lat_lon_deg) != gs_params['num_stations']:
                 raise Exception ('Number of ground stations is not equal to the length of ground station parameters list')
 
-            sat_id_order= data['sat_params']['sat_id_order']
             num_satellites = data['sat_params']['num_satellites']
 
-        sort_input_params_by_sat_indcs(sat_orbit_data,sat_id_order,num_satellites)
+            sat_id_order= data['sat_params']['sat_id_order']
+            # in the case that this is default, then we need to grab a list of all the satellite IDs. We'll take this from all of the satellite IDs found in the orbit parameters
+            if sat_id_order == 'default':
+                dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  data['sat_orbit_params'],force_duplicate =  True)
+            #  make the satellite ID order. if the input ID order is default, then will assume that the order is the same as all of the IDs passed as argument
+            sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,num_satellites,all_sat_ids)
+
+        sat_orbit_data_sorted = io_tools.sort_input_params_by_sat_indcs(sat_orbit_data,sat_id_order)
 
         time_s_pos_km_flat_ml = []
         if OUTPUT_JSON_VER == "0.2":
