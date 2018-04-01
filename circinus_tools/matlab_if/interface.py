@@ -195,37 +195,60 @@ class MatlabIF:
             raise NotImplementedError
 
     @staticmethod
-    def deep_convert_python_to_matlab (python_stuff,matlab_nesting=None):
-        """convert a python  data structure to the correct formatting for Matlab
+    def deep_convert_python_to_matlab (python_stuff,matlab_nesting=None,blind_convert=False):
+        """convert a python  data structure to the correct formatting for Matlab. Essentially, it just converts numbers over to Matlab double matrices. The conversion of everything else the Matlab API will handle itself: dicts -> structs, strings -> matlab strings, lists -> matrices...
 
         :param python_stuff:  Matlab struct to convert
         :param matlab_nesting: specification of how structure is nested 
             for conversion to Matlab. every pair of [] represents a cell 
             array  (note: lists are automatically converted to cell arrays  
             when the data is given to Matlab)
+        :param blind_convert:  anything that we can convert to Matlab we'll do immediately. This should be used, for example, to convert a dict containing a number matrix (nested list of lists containing floats) to a matlab double.  if any other lists are present  that cannot be directly converted using matlab.double, conversion will break
         :return: python list
         """
 
-        # need to add these checks because...MATLAB. When it returns a one element int/double array, that "array" is in actuality just an integer/double basic data type.
-        if isinstance(python_stuff, int):
-            return python_stuff
-        elif isinstance(python_stuff, float):
-            return python_stuff
+        if matlab_nesting and blind_convert:
+            raise Exception('matlab_nesting and blind_convert options should not be used at the same time')
 
+        #  converting integers and floats
+        if isinstance(python_stuff, int) or isinstance(python_stuff, float):
+            return matlab.double([python_stuff])
+
+            # #  for blindly converting, return the Matlab double version
+            # if blind_convert_number: return matlab.double([python_stuff])
+            # #  otherwise return the Python version
+            # else: return python_stuff
+
+        elif isinstance(python_stuff, str) or isinstance(python_stuff, bool):
+            return python_stuff
 
         elif isinstance(python_stuff,list):
             # check first whether we're supposed to stop at this level of nesting and turn it into a Matlab matrix structure
-            if matlab_nesting and matlab_nesting  == matlab.double:
+            #  blind convert will always convert. We can handle  a nested list of lists of numbers
+            #  nesting will only convert if we've specified to convert at this level
+            if blind_convert or (matlab_nesting and matlab_nesting  == matlab.double):
                 return matlab.double(python_stuff)
             # check if it's a nested list, if yes continue deeper
-            elif any(isinstance(i, list) for i in python_stuff):
+            elif any(isinstance(i, list) or isinstance(i, dict) or isinstance(i, str) for i in python_stuff):
                 next_nesting= matlab_nesting[0] if matlab_nesting else None
                 return [ MatlabIF.deep_convert_python_to_matlab(elem,next_nesting) for elem in python_stuff]
-            # otherwise stop and convert straight to a Matlab array
+            
+            #  if we reach here then we have a plain list to convert
             else:
                 return matlab.double(python_stuff)
 
+        elif isinstance(python_stuff,dict):
+            if matlab_nesting:
+                raise NotImplementedError
 
+            def invalid_key(key):
+                if type(key) == str:
+                    if key[0] == '_':
+                        return True
+
+                return False
+
+            return {key: MatlabIF.deep_convert_python_to_matlab(value,blind_convert=blind_convert) for key, value in python_stuff.items() if not invalid_key(key)}
 
         else:
             raise NotImplementedError
@@ -252,6 +275,7 @@ class MatlabIF:
             system('screen -dmS ' + session_name + ' ' + self.get_matlab_bin_path() + " " + MATLAB_OPTIONS)
         else:
             raise NotImplementedError
+
 
         # wait till we see a new shared matlab sesh
         new_sessions_tup = engine.find_matlab()
@@ -317,6 +341,26 @@ class MatlabIF:
             raise TypeError('mfunc_name should be of type string')
 
         return self.eng.feval(mfunc_name,*args,**kwargs)
+
+    @staticmethod
+    def convert_matlab_indexing_to_python(mat):
+        """Convert a matrix with Matlab 1-based indexing to 0-based
+        
+        [description]
+        :param mat: [description]
+        :type mat: [type]
+        :returns: [description]
+        :rtype: {[type]}
+        :raises: NotImplementedError
+        """
+        if type (mat)==  list:
+            converted = [MatlabIF.convert_matlab_indexing_to_python(elem) for elem in mat]
+        elif  type (mat)== int:
+            converted = mat-1
+        else:
+            raise NotImplementedError    
+
+        return converted
 
 
 if __name__ == "__main__":

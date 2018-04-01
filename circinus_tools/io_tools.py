@@ -1,3 +1,9 @@
+#  uniform tools for doing I/O operations on parameter and data files in CIRCINUS pipeline
+# 
+# @author Kit Kennedy
+
+# TODO: need to cast integer IDs to string in this code
+
 import copy
 
 def duplicate_entry_for_sat_ids(params_entry,force_duplicate = False):
@@ -8,7 +14,7 @@ def duplicate_entry_for_sat_ids(params_entry,force_duplicate = False):
             tokens = sat_ids_spec.split (',')
             if tokens[0] == 'duplicate' or force_duplicate:
                 if  tokens[1] == 'range_inclusive':
-                    sat_ids =  range ( int(tokens[2]), int (tokens[3])+1)
+                    sat_ids = [str(ID) for ID in range ( int(tokens[2]), int (tokens[3])+1)]
                     return sat_ids
                 else:
                     raise NotImplementedError
@@ -96,11 +102,11 @@ def unpack_sat_entry_list(entry_list,force_duplicate = False):
         else:
             new_entries.append(entry)
 
-    sat_ids = [entry['sat_id'] for entry in new_entries]
+    sat_ids = [str (entry['sat_id']) for entry in new_entries]
 
     return new_entries, sat_ids
 
-def sort_input_params_by_sat_indcs(params_list,sat_id_order):
+def sort_input_params_by_sat_IDs(params_list,sat_id_order):
 
     sorted_params = []
     def sort_func(params_entry):
@@ -144,10 +150,10 @@ def make_and_validate_sat_id_order(sat_id_order_pre,num_satellites,all_sat_ids=N
     if sat_id_order_pre == 'default':
         #  if are provided a list of all the IDs, use that as the default
         if all_sat_ids:
-            sat_id_order = [sat_id for sat_id in all_sat_ids]
+            sat_id_order = [str(sat_id) for sat_id in all_sat_ids]
         #  if we are not provided a list of the all the IDs,  we assume that every ID is just an ordinal
         else:            
-            sat_id_order = [sat_indx for sat_indx in range (num_satellites)]
+            sat_id_order = [str(sat_indx) for sat_indx in range (num_satellites)]
 
     if len(sat_id_order) != num_satellites:
         raise Exception ("Number of satellite IDs is not equal to number of satellites specified in input file")
@@ -155,3 +161,18 @@ def make_and_validate_sat_id_order(sat_id_order_pre,num_satellites,all_sat_ids=N
         raise Exception ("Every satellite ID should be unique") 
 
     return sat_id_order
+
+def make_and_validate_gs_id_order(gs_params):
+    """ makes and validates the gs ID order specification list
+    
+    """
+
+    # if the default is specified, then we'll make a default list based on the order in which we find IDs
+    gs_id_order = [str(station['id']) for  station in gs_params['stations']]
+
+    if len(gs_id_order) != gs_params['num_stations']:
+        raise Exception ("Number of gs IDs is not equal to number of ground stations specified in input file")
+    if len(set(gs_id_order)) != len(gs_id_order):
+        raise Exception ("Every gs ID should be unique") 
+
+    return gs_id_order
