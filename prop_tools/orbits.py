@@ -7,6 +7,8 @@ import json
 import copy
 from collections import OrderedDict
 
+from circinus_tools import io_tools
+
 # should be 'prop_tools', the package name
 package_name = __name__.split('.')[0] 
 
@@ -17,19 +19,8 @@ def flatten_walker(params):
 
     propagation_method = params["propagation_method"]
     sat_ids_spec = params["sat_ids"]
-    if type (sat_ids_spec)==str:
-        tokens = sat_ids_spec.split (',')
-        if tokens[0] == 'synthesize':
-            if  tokens[1] == 'range_inclusive':
-                sat_ids =  range ( int(tokens[2]), int (tokens[3])+1)
-            # sat_ids_str = [str(_id) for _id in sat_ids]
-            else:
-                raise NotImplementedError
-        else:
-            raise NotImplementedError
-    else:
-        raise NotImplementedError
-    
+    sat_ids = io_tools.parse_sat_ids(sat_ids_spec)
+
     num_sats = params["walker"]["num_sats"]
     num_planes = params["walker"]["num_planes"]
     i_deg = params["walker"]["i_deg"]
@@ -67,6 +58,7 @@ def flatten_walker(params):
             sat_params["sat_id"]=sat_ids[plane_indx*sats_per_plane+sat_indx]
 
             params_flat.append(sat_params)
+
 
     return params_flat
 

@@ -59,13 +59,15 @@ for timepoint_num=1:num_timepoints
 end
 
 sunecl = cell(1,num_sats);
-parfor sat_num = 1:num_sats
-    if verbose
-        sat_num
+if ~params.use_cached_accesses
+    parfor sat_num = 1:num_sats
+        if verbose
+            sat_num
+        end
+        
+        eclipse_times = find_eclipse_times(start_time_dt,sat_times_s,all_sats_t_r_eci{sat_num},rsun);
+        sunecl{1,sat_num} = change_to_windows(eclipse_times,5/60/24);  % make eclipse windows, with a spaceing of at least 5 minutes between windows
     end
-    
-    eclipse_times = find_eclipse_times(start_time_dt,sat_times_s,all_sats_t_r_eci{sat_num},rsun);
-    sunecl{1,sat_num} = change_to_windows(eclipse_times,5/60/24);  % make eclipse windows, with a spaceing of at least 5 minutes between windows
 end
 
 %% Calculate Observation Times and AER
@@ -222,10 +224,9 @@ end
 
 % TODO: incorporate usage of cached xlnk data again?
 
-if yes_crosslinks
-
-    xlink = cell(num_sats,num_sats);
-    xrange = cell(num_sats,num_sats);
+xlink = cell(num_sats,num_sats);
+xrange = cell(num_sats,num_sats);
+if yes_crosslinks && ~params.use_cached_accesses
     for sat_num = 1:num_sats
         if verbose
             sat_num

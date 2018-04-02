@@ -6,21 +6,23 @@
 
 import copy
 
+sat_ids_spec_opts = ['duplicate','synthesize']
+
+def parse_sat_ids(sat_ids_spec,force_duplicate = False):
+    if type (sat_ids_spec)==str:
+        tokens = sat_ids_spec.split (',')
+        if (tokens[0] in sat_ids_spec_opts) or force_duplicate:
+            if  tokens[1] == 'range_inclusive':
+                sat_ids = [str(ID) for ID in range ( int(tokens[2]), int (tokens[3])+1)]
+                return sat_ids
+            else:
+                raise NotImplementedError
+        else:
+            raise  Exception ("Expected 'duplicate' as first token for sat_ids (%s)"%(sat_ids_spec))
+    raise NotImplementedError
+
 def duplicate_entry_for_sat_ids(params_entry,force_duplicate = False):
     new_entries = []
-
-    def parse_sat_ids(sat_ids_spec,force_duplicate = False):
-        if type (sat_ids_spec)==str:
-            tokens = sat_ids_spec.split (',')
-            if tokens[0] == 'duplicate' or force_duplicate:
-                if  tokens[1] == 'range_inclusive':
-                    sat_ids = [str(ID) for ID in range ( int(tokens[2]), int (tokens[3])+1)]
-                    return sat_ids
-                else:
-                    raise NotImplementedError
-            else:
-                raise  Exception ("Expected 'duplicate' as first token for sat_ids (%s)"%(sat_ids_spec))
-        raise NotImplementedError
 
     sat_ids = parse_sat_ids(params_entry['sat_ids'],force_duplicate)
 

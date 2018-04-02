@@ -9,7 +9,6 @@ import sys
 import time
 import os.path
 import matlab
-from matlab_if import MatlabIF
 import argparse
 
 from run_tools import istring2dt
@@ -18,6 +17,7 @@ from run_tools import istring2dt
 sys.path.append ('..')
 from  prop_tools  import orbits
 from circinus_tools import io_tools
+from circinus_tools.matlab_if import MatlabIF
 
 REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(
@@ -118,30 +118,30 @@ class PipelineRunner:
         else:
             raise NotImplementedError
 
-    def process_orbits(self, data):
+    def process_orbits(self, orbit_prop_inputs):
         """
         Handles the production of orbit propagation result data from the 
         parameters provided in json
 
-        :param data: highest-level input json object
+        :param orbit_prop_inputs: highest-level input json object
         :return: output json with raw orbit prop data
         """
 
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if data['version'] == "0.3":
+        if orbit_prop_inputs['version'] == "0.3":
             sat_orbit_data = []
-            scenario_params = data['scenario_params']
+            scenario_params = orbit_prop_inputs['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
                           istring2dt(scenario_params['start_utc']))\
                 .total_seconds()
             timestep_s = scenario_params['timestep_s']
 
             sat_orbit_params_flat = self.grok_orbit_params(
-                data['sat_orbit_params'], data['version'])
+                orbit_prop_inputs['sat_orbit_params'], orbit_prop_inputs['version'])
 
-            if len(sat_orbit_params_flat) !=  data['sat_params']['num_satellites']:
+            if len(sat_orbit_params_flat) !=  orbit_prop_inputs['sat_params']['num_satellites']:
                 raise Exception ('Number of satellites is not equal to the length of satellite parameters list')
 
             for orb_params in sat_orbit_params_flat:
@@ -149,7 +149,7 @@ class PipelineRunner:
                     orb_params, end_time_s, timestep_s)
 
                 single_orbit_data = {}
-                single_orbit_data['sat_id'] = orb_params['sat_id']
+                single_orbit_data['sat_id'] = str(orb_params['sat_id'])
                 single_orbit_data['time_s_pos_km'] = orbit_data
                 # add any additional keyword fields to this dict
                 single_orbit_data.update(other_kwout)
@@ -161,10 +161,10 @@ class PipelineRunner:
         else:
             raise NotImplementedError
 
-    def process_accesses(self, data, sat_orbit_data):
+    def process_accesses(self, orbit_prop_inputs, sat_orbit_data, cached_accesses_data):
         """
 
-        :param data: highest-level input json object
+        :param orbit_prop_inputs: highest-level input json object
         :return: output json with raw orbit prop data
         """
 
@@ -172,19 +172,19 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if data['version'] == "0.3":
+        if orbit_prop_inputs['version'] == "0.3":
             params_ml['scenario_start_utc'] = \
-                data['scenario_params']['start_utc']
+                orbit_prop_inputs['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
-                [data['sat_params']['num_satellites']])
+                [orbit_prop_inputs['sat_params']['num_satellites']])
             params_ml['use_crosslinks'] = matlab.logical(
-                [data['scenario_params']['use_crosslinks']])
+                [orbit_prop_inputs['scenario_params']['use_crosslinks']])
             params_ml['all_sats_same_time_system'] = matlab.logical(
-                [data['scenario_params']['all_sats_same_time_system']])
+                [orbit_prop_inputs['scenario_params']['all_sats_same_time_system']])
             params_ml['verbose'] = matlab.logical(
-                [data['scenario_params']['matlab_verbose']])
+                [orbit_prop_inputs['scenario_params']['matlab_verbose']])
 
-            obs_params = data['obs_params']
+            obs_params = orbit_prop_inputs['obs_params']
             params_ml['el_cutuff_obs_deg'] = matlab.double(
                 [obs_params['elevation_cutoff_deg']])
             lat_lon_deg = matlab.double(
@@ -196,7 +196,7 @@ class PipelineRunner:
             if len(lat_lon_deg) != obs_params['num_targets']:
                 raise Exception ('Number of observation targets is not equal to the length of observation target parameters list')
 
-            gs_params = data['gs_params']
+            gs_params = orbit_prop_inputs['gs_params']
             params_ml['el_cutuff_gs_deg'] = matlab.double(
                 [gs_params['elevation_cutoff_deg']])
             lat_lon_deg = matlab.double(
@@ -208,16 +208,19 @@ class PipelineRunner:
             if len(lat_lon_deg) != gs_params['num_stations']:
                 raise Exception ('Number of ground stations is not equal to the length of ground station parameters list')
 
-            num_satellites = data['sat_params']['num_satellites']
+            num_satellites = orbit_prop_inputs['sat_params']['num_satellites']
 
-            sat_id_order= data['sat_params']['sat_id_order']
+            sat_id_order= orbit_prop_inputs['sat_params']['sat_id_order']
             # in the case that this is default, then we need to grab a list of all the satellite IDs. We'll take this from all of the satellite IDs found in the orbit parameters
             if sat_id_order == 'default':
-                dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  data['sat_orbit_params'],force_duplicate =  True)
+                dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  orbit_prop_inputs['sat_orbit_params'],force_duplicate =  True)
             #  make the satellite ID order. if the input ID order is default, then will assume that the order is the same as all of the IDs passed as argument
             sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,num_satellites,all_sat_ids)
 
-        sat_orbit_data_sorted = io_tools.sort_input_params_by_sat_indcs(sat_orbit_data,sat_id_order)
+
+        sat_orbit_data_sorted = io_tools.sort_input_params_by_sat_IDs(sat_orbit_data,sat_id_order)
+
+        params_ml['use_cached_accesses'] = True if cached_accesses_data else False
 
         time_s_pos_km_flat_ml = []
         if OUTPUT_JSON_VER == "0.2":
@@ -241,10 +244,16 @@ class PipelineRunner:
         accesses_data['obs_aer'] = MatlabIF.deep_convert_matlab_to_python (obsaer)
         accesses_data['dlnk_times'] = MatlabIF.deep_convert_matlab_to_python (gslink)
         accesses_data['dlnk_aer'] = MatlabIF.deep_convert_matlab_to_python (gsaer)
-        #  eclipse times came out with an inadvertent extra nesting layer.  get rid of that.
-        accesses_data['ecl_times'] = MatlabIF.deep_convert_matlab_to_python (sunecl)[0]
-        accesses_data['xlnk_times'] = MatlabIF.deep_convert_matlab_to_python (xlink)
-        accesses_data['xlnk_range'] = MatlabIF.deep_convert_matlab_to_python (x_range)
+
+        if cached_accesses_data:
+            accesses_data['ecl_times'] = cached_accesses_data['ecl_times']
+            accesses_data['xlnk_times'] = cached_accesses_data['xlnk_times']
+            accesses_data['xlnk_range'] = cached_accesses_data['xlnk_range']
+        else:
+            #  eclipse times came out with an inadvertent extra nesting layer.  get rid of that.
+            accesses_data['ecl_times'] = MatlabIF.deep_convert_matlab_to_python (sunecl)[0]
+            accesses_data['xlnk_times'] = MatlabIF.deep_convert_matlab_to_python (xlink)
+            accesses_data['xlnk_range'] = MatlabIF.deep_convert_matlab_to_python (x_range)
 
         return accesses_data
 
@@ -256,19 +265,25 @@ class PipelineRunner:
         :return: output json per output.json schema
         """
 
+        orbit_prop_inputs = data['orbit_prop_inputs']
+        cached_accesses_data = data['cached_accesses_data']
 
-        if data['version'] == "0.3":
+        if cached_accesses_data:
+            if not cached_accesses_data['version'] == '0.2':
+                raise NotImplementedError
+
+        if orbit_prop_inputs['version'] == "0.3":
 
             # define orbit prop outputs json
             output_json = {}
             output_json['version'] = OUTPUT_JSON_VER
-            output_json['scenario_params'] = data['scenario_params']
+            output_json['scenario_params'] = orbit_prop_inputs['scenario_params']
             output_json['sat_orbit_data'] = []
 
-            output_json['sat_orbit_data'] = self.process_orbits(data)
+            output_json['sat_orbit_data'] = self.process_orbits(orbit_prop_inputs)
 
             output_json['accesses_data'] = self.process_accesses(
-                data, output_json['sat_orbit_data'])
+                orbit_prop_inputs, output_json['sat_orbit_data'], cached_accesses_data['accesses_data'])
 
             return output_json
 
@@ -284,25 +299,33 @@ if __name__ == "__main__":
                     default='orbit_prop_inputs.json',
                     help='specify orbit propagation inputs file')
 
+    ap.add_argument('--cached_accesses_file',
+                    type=str,
+                    default=None,
+                    help='file containing cached access data to use instead of recalculating it')
+
     args = ap.parse_args()
 
     pr = PipelineRunner()
 
     import json
 
-    with open(
-        os.path.join(
-            REPO_BASE,
-            args.prop_inputs_file), 'r') as f:
-        thejson_data = json.load(f)
-    # with open(
-    #     os.path.join(
-    #         REPO_BASE,
-    #         'crux/config/examples/prop_data_small.json'), 'r') as f:
-    #     thejson_sat_data = json.load(f)
+    with open(os.path.join(REPO_BASE,args.prop_inputs_file), 'r') as f:
+        orbit_prop_inputs = json.load(f)
+        
+    if args.cached_accesses_file:
+        with open(os.path.join(REPO_BASE,args.cached_accesses_file), 'r') as f:
+            cached_accesses_data = json.load(f)
+    else:
+        cached_accesses_data = None
+
+    data = {
+        "orbit_prop_inputs": orbit_prop_inputs,
+        "cached_accesses_data": cached_accesses_data,
+    }
 
     a = time.time()
-    output = pr.run(thejson_data)
+    output = pr.run(data)
     # output = pr. process_accesses(thejson_data, thejson_sat_data["sat_orbit_data"])
     b = time.time()
 
