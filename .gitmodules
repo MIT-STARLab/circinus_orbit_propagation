@@ -1,0 +1,3 @@
+[submodule "circinus_tools"]
+	path = circinus_tools
+	url = git@github.mit.edu:star-lab/CIRCINUS_tools.git
