@@ -267,10 +267,13 @@ class PipelineRunner:
 
         orbit_prop_inputs = data['orbit_prop_inputs']
         cached_accesses_data = data['cached_accesses_data']
+        cached_accesses = None
 
         if cached_accesses_data:
             if not cached_accesses_data['version'] == '0.2':
                 raise NotImplementedError
+
+            cached_accesses = cached_accesses_data['accesses_data']
 
         if orbit_prop_inputs['version'] == "0.3":
 
@@ -283,7 +286,7 @@ class PipelineRunner:
             output_json['sat_orbit_data'] = self.process_orbits(orbit_prop_inputs)
 
             output_json['accesses_data'] = self.process_accesses(
-                orbit_prop_inputs, output_json['sat_orbit_data'], cached_accesses_data['accesses_data'])
+                orbit_prop_inputs, output_json['sat_orbit_data'], cached_accesses)
 
             return output_json
 
