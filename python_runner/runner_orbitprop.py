@@ -23,7 +23,7 @@ REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(
     REPO_BASE, 'matlab_pipeline', 'pipeline_entry')
 
-OUTPUT_JSON_VER = '0.2'
+OUTPUT_JSON_VER = '0.3'
 
 
 class PipelineRunner:
@@ -31,7 +31,7 @@ class PipelineRunner:
     def __init__(self):
         self.matlabif = None
 
-    def propagate_orbit(self, orb_params, end_time_s, timestep_s):
+    def propagate_orbit(self, orb_params, end_time_s, timestep_s,include_ecef,scenario_start_utc):
 
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
@@ -57,24 +57,29 @@ class PipelineRunner:
         orb_elems_flat_ml = matlab.double(orb_elems_flat)
         end_time_s_ml = matlab.double([end_time_s])
         timestep_s_ml = matlab.double([timestep_s])
+        params_ml = {}
+        params_ml['scenario_start_utc'] = scenario_start_utc
+        params_ml['calc_ecef'] = matlab.logical([include_ecef])
 
         if orb_params['propagation_method'] == 'matlab_delkep':
-            (t_r) = self.matlabif.call_mfunc(
+            (t_r_eci,t_r_ecef) = self.matlabif.call_mfunc(
                 'orbit_prop_wrapper',
                 orb_elems_flat_ml,
                 end_time_s_ml,
                 timestep_s_ml,
-                nargout=1)
+                params_ml,
+                nargout=2)
 
             #  convert matlab output types to python types
 
-            time_pos = MatlabIF.mlarray_to_list(t_r)
+            time_pos_eci = MatlabIF.mlarray_to_list(t_r_eci)
+            time_pos_ecef = MatlabIF.mlarray_to_list(t_r_ecef)
 
             # can add other key value pairs to this dict, to put in
             # final out file
             other_kwout = {}
 
-            return time_pos, other_kwout
+            return time_pos_eci, time_pos_ecef, other_kwout
 
         else:
             raise NotImplementedError
@@ -95,7 +100,7 @@ class PipelineRunner:
         # TODO: add handling for meta orbit params, e.g. set of
         # satellites in orbit planes, or even whole constellations
 
-        if version == "0.3":
+        if version == "0.5":
             sat_orbit_params_flat = []
             # sat_id_order_default = []
 
@@ -130,7 +135,7 @@ class PipelineRunner:
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if orbit_prop_inputs['version'] == "0.3":
+        if orbit_prop_inputs['version'] == "0.5":
             sat_orbit_data = []
             scenario_params = orbit_prop_inputs['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
@@ -144,20 +149,23 @@ class PipelineRunner:
             if len(sat_orbit_params_flat) !=  orbit_prop_inputs['sat_params']['num_satellites']:
                 raise Exception ('Number of satellites is not equal to the length of satellite parameters list')
 
+            include_ecef = orbit_prop_inputs.get("general_orbit_prop_params",{}).get("include_ecef_output",False)
             for orb_params in sat_orbit_params_flat:
-                orbit_data, other_kwout = self.propagate_orbit(
-                    orb_params, end_time_s, timestep_s)
+                orbit_data_eci, orbit_data_ecef, other_kwout = self.propagate_orbit(
+                    orb_params, end_time_s, timestep_s, include_ecef,orbit_prop_inputs['scenario_params']['start_utc'])
 
                 single_orbit_data = {}
                 single_orbit_data['sat_id'] = str(orb_params['sat_id'])
-                single_orbit_data['time_s_pos_km'] = orbit_data
+                single_orbit_data['time_s_pos_eci_km'] = orbit_data_eci
+                if include_ecef:
+                    single_orbit_data['time_s_pos_ecef_km'] = orbit_data_ecef
+
                 # add any additional keyword fields to this dict
                 single_orbit_data.update(other_kwout)
 
                 sat_orbit_data.append(single_orbit_data)
 
             return sat_orbit_data
-
         else:
             raise NotImplementedError
 
@@ -172,7 +180,7 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if orbit_prop_inputs['version'] == "0.3":
+        if orbit_prop_inputs['version'] == "0.5":
             params_ml['scenario_start_utc'] = \
                 orbit_prop_inputs['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
@@ -216,6 +224,8 @@ class PipelineRunner:
                 dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  orbit_prop_inputs['sat_orbit_params'],force_duplicate =  True)
             #  make the satellite ID order. if the input ID order is default, then will assume that the order is the same as all of the IDs passed as argument
             sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,num_satellites,all_sat_ids)
+        else:
+            raise NotImplementedError
 
 
         sat_orbit_data_sorted = io_tools.sort_input_params_by_sat_IDs(sat_orbit_data,sat_id_order)
@@ -223,10 +233,10 @@ class PipelineRunner:
         params_ml['use_cached_accesses'] = True if cached_accesses_data else False
 
         time_s_pos_km_flat_ml = []
-        if OUTPUT_JSON_VER == "0.2":
+        if OUTPUT_JSON_VER == "0.3":
             for elem in sat_orbit_data_sorted:
                 time_s_pos_km_flat_ml.append(
-                    matlab.double(elem['time_s_pos_km']))
+                    matlab.double(elem['time_s_pos_eci_km']))
         else:
             raise NotImplementedError
 
@@ -275,7 +285,7 @@ class PipelineRunner:
 
             cached_accesses = cached_accesses_data['accesses_data']
 
-        if orbit_prop_inputs['version'] == "0.3":
+        if orbit_prop_inputs['version'] == "0.5":
 
             # define orbit prop outputs json
             output_json = {}
