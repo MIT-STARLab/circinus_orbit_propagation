@@ -100,7 +100,7 @@ class PipelineRunner:
         # TODO: add handling for meta orbit params, e.g. set of
         # satellites in orbit planes, or even whole constellations
 
-        if version == "0.5":
+        if version == "0.6":
             sat_orbit_params_flat = []
             # sat_id_order_default = []
 
@@ -135,7 +135,7 @@ class PipelineRunner:
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if orbit_prop_inputs['version'] == "0.5":
+        if orbit_prop_inputs['version'] == "0.6":
             sat_orbit_data = []
             scenario_params = orbit_prop_inputs['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
@@ -180,7 +180,7 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if orbit_prop_inputs['version'] == "0.5":
+        if orbit_prop_inputs['version'] == "0.6":
             params_ml['scenario_start_utc'] = \
                 orbit_prop_inputs['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
@@ -276,16 +276,20 @@ class PipelineRunner:
         """
 
         orbit_prop_inputs = data['orbit_prop_inputs']
-        cached_accesses_data = data['cached_accesses_data']
+        cached_accesses_inputs = data['cached_accesses_inputs']
         cached_accesses = None
 
-        if cached_accesses_data:
-            if not cached_accesses_data['version'] == '0.2':
+        if cached_accesses_inputs:
+            if not cached_accesses_inputs['version'] == '0.4':
                 raise NotImplementedError
 
-            cached_accesses = cached_accesses_data['accesses_data']
+            cached_accesses = {
+                "xlnk_range": cached_accesses_inputs['accesses_data']['xlnk_range'],
+                "xlnk_times": cached_accesses_inputs['accesses_data']['xlnk_times'],
+                "ecl_times": cached_accesses_inputs['accesses_data']['ecl_times'],
+            }
 
-        if orbit_prop_inputs['version'] == "0.5":
+        if orbit_prop_inputs['version'] == "0.6":
 
             # define orbit prop outputs json
             output_json = {}
@@ -328,13 +332,13 @@ if __name__ == "__main__":
         
     if args.cached_accesses_file:
         with open(os.path.join(REPO_BASE,args.cached_accesses_file), 'r') as f:
-            cached_accesses_data = json.load(f)
+            cached_accesses_inputs = json.load(f)
     else:
-        cached_accesses_data = None
+        cached_accesses_inputs = None
 
     data = {
         "orbit_prop_inputs": orbit_prop_inputs,
-        "cached_accesses_data": cached_accesses_data,
+        "cached_accesses_inputs": cached_accesses_inputs,
     }
 
     a = time.time()
