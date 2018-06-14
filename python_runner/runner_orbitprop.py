@@ -84,41 +84,38 @@ class PipelineRunner:
         else:
             raise NotImplementedError
 
-    def grok_orbit_params(self, sat_orbit_params, version):
+    def grok_orbit_params(self, sat_orbital_elems, version):
         """
         Here's where you can take orbit meta params like '60:30/3/1 
         Walker constellation' and turn it into a list of flattened 
         elements, e.g. a list of keplerian elements of epoch at scenaria 
         start for every satellite
 
-        :param sat_orbit_params: section of input json related to sat 
-        orbit params, possibly containing orbit meta params
-        :return: flattened orbit params, i.e. a list of orbit params for
+        :param sat_orbital_elems: section of input json related to sat 
+        orbit elems, possibly containing orbit meta elems
+        :return: flattened orbit elems, i.e. a list of orbit elems for
          each individual satellite
         """
 
-        # TODO: add handling for meta orbit params, e.g. set of
-        # satellites in orbit planes, or even whole constellations
-
-        if version == "0.6":
-            sat_orbit_params_flat = []
+        if version == "0.7":
+            sat_orbital_elems_flat = []
             # sat_id_order_default = []
 
-            for params in sat_orbit_params:
-                if "walker" in  params:
-                    if not "synthesize" in params["sat_ids"]:
+            for elems in sat_orbital_elems:
+                if "walker" in  elems:
+                    if not "synthesize" in elems["sat_ids"]:
                         raise Exception(" when forming orbit parameters from a Walker constellation, need a synthesize token in the sat_ids field")
 
-                    flat_params = orbits.flatten_walker(params)
-                    sat_orbit_params_flat  += flat_params
+                    flat_elems = orbits.flatten_walker(elems)
+                    sat_orbital_elems_flat  += flat_elems
                     # sat_id_order_default  += sat_ids_str
 
-                if "kepler_meananom" in params:
-                    sat_orbit_params_flat.append(params)
-                    # sat_id_order_default.append (params['sat_id'])
+                if "kepler_meananom" in elems:
+                    sat_orbital_elems_flat.append(elems)
+                    # sat_id_order_default.append (elems['sat_id'])
 
-            # print(json.dumps (sat_orbit_params_flat))
-            return sat_orbit_params_flat
+            # print(json.dumps (sat_orbital_elems_flat))
+            return sat_orbital_elems_flat
 
         else:
             raise NotImplementedError
@@ -135,7 +132,7 @@ class PipelineRunner:
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if orbit_prop_inputs['version'] == "0.6":
+        if orbit_prop_inputs['version'] == "0.7":
             sat_orbit_data = []
             scenario_params = orbit_prop_inputs['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
@@ -143,14 +140,14 @@ class PipelineRunner:
                 .total_seconds()
             timestep_s = scenario_params['timestep_s']
 
-            sat_orbit_params_flat = self.grok_orbit_params(
-                orbit_prop_inputs['sat_orbit_params'], orbit_prop_inputs['version'])
+            sat_orbital_elems_flat = self.grok_orbit_params(
+                orbit_prop_inputs['orbit_params']['sat_orbital_elems'], orbit_prop_inputs['version'])
 
-            if len(sat_orbit_params_flat) !=  orbit_prop_inputs['sat_params']['num_satellites']:
+            if len(sat_orbital_elems_flat) !=  orbit_prop_inputs['sat_params']['num_satellites']:
                 raise Exception ('Number of satellites is not equal to the length of satellite parameters list')
 
             include_ecef = orbit_prop_inputs.get("general_orbit_prop_params",{}).get("include_ecef_output",False)
-            for orb_params in sat_orbit_params_flat:
+            for orb_params in sat_orbital_elems_flat:
                 orbit_data_eci, orbit_data_ecef, other_kwout = self.propagate_orbit(
                     orb_params, end_time_s, timestep_s, include_ecef,orbit_prop_inputs['scenario_params']['start_utc'])
 
@@ -180,7 +177,7 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if orbit_prop_inputs['version'] == "0.6":
+        if orbit_prop_inputs['version'] == "0.7":
             params_ml['scenario_start_utc'] = \
                 orbit_prop_inputs['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
@@ -221,7 +218,7 @@ class PipelineRunner:
             sat_id_order= orbit_prop_inputs['sat_params']['sat_id_order']
             # in the case that this is default, then we need to grab a list of all the satellite IDs. We'll take this from all of the satellite IDs found in the orbit parameters
             if sat_id_order == 'default':
-                dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  orbit_prop_inputs['sat_orbit_params'],force_duplicate =  True)
+                dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  orbit_prop_inputs['orbit_params']['sat_orbital_elems'],force_duplicate =  True)
             #  make the satellite ID order. if the input ID order is default, then will assume that the order is the same as all of the IDs passed as argument
             sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,num_satellites,all_sat_ids)
         else:
@@ -289,7 +286,7 @@ class PipelineRunner:
                 "ecl_times": cached_accesses_inputs['accesses_data']['ecl_times'],
             }
 
-        if orbit_prop_inputs['version'] == "0.6":
+        if orbit_prop_inputs['version'] == "0.7":
 
             # define orbit prop outputs json
             output_json = {}
