@@ -97,7 +97,7 @@ class PipelineRunner:
          each individual satellite
         """
 
-        if version == "0.7":
+        if version == "0.8":
             sat_orbital_elems_flat = []
             # sat_id_order_default = []
 
@@ -132,7 +132,7 @@ class PipelineRunner:
         if not self.matlabif:
             self.matlabif = MatlabIF(paths=[MATLAB_PIPELINE_ENTRY])
 
-        if orbit_prop_inputs['version'] == "0.7":
+        if orbit_prop_inputs['version'] == "0.8":
             sat_orbit_data = []
             scenario_params = orbit_prop_inputs['scenario_params']
             end_time_s = (istring2dt(scenario_params['end_utc']) -
@@ -177,7 +177,7 @@ class PipelineRunner:
 
         # matlab-ify the args
         params_ml = {}
-        if orbit_prop_inputs['version'] == "0.7":
+        if orbit_prop_inputs['version'] == "0.8":
             params_ml['scenario_start_utc'] = \
                 orbit_prop_inputs['scenario_params']['start_utc']
             params_ml['num_sats'] = matlab.double(
@@ -214,13 +214,16 @@ class PipelineRunner:
                 raise Exception ('Number of ground stations is not equal to the length of ground station parameters list')
 
             num_satellites = orbit_prop_inputs['sat_params']['num_satellites']
+            sat_id_prefix = orbit_prop_inputs['sat_params']['sat_id_prefix']
 
             sat_id_order= orbit_prop_inputs['sat_params']['sat_id_order']
             # in the case that this is default, then we need to grab a list of all the satellite IDs. We'll take this from all of the satellite IDs found in the orbit parameters
             if sat_id_order == 'default':
                 dummy, all_sat_ids = io_tools.unpack_sat_entry_list(  orbit_prop_inputs['orbit_params']['sat_orbital_elems'],force_duplicate =  True)
             #  make the satellite ID order. if the input ID order is default, then will assume that the order is the same as all of the IDs passed as argument
-            sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,num_satellites,all_sat_ids)
+            sat_id_order = io_tools.make_and_validate_sat_id_order(sat_id_order,sat_id_prefix,num_satellites,all_sat_ids)
+            io_tools.validate_ids(validator=sat_id_order,validatee=all_sat_ids)
+
         else:
             raise NotImplementedError
 
@@ -286,7 +289,7 @@ class PipelineRunner:
                 "ecl_times": cached_accesses_inputs['accesses_data']['ecl_times'],
             }
 
-        if orbit_prop_inputs['version'] == "0.7":
+        if orbit_prop_inputs['version'] == "0.8":
 
             # define orbit prop outputs json
             output_json = {}
