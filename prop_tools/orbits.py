@@ -19,7 +19,7 @@ def flatten_walker(params):
 
     propagation_method = params["propagation_method"]
     sat_ids_spec = params["sat_ids"]
-    sat_ids = io_tools.parse_sat_ids(sat_ids_spec)
+    sat_ids = io_tools.parse_sat_ids(sat_ids_spec,params['sat_id_prefix'])
 
     num_sats = params["walker"]["num_sats"]
     num_planes = params["walker"]["num_planes"]
