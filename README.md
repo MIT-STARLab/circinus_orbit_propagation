@@ -3,7 +3,7 @@ Contains convenient code for simple orbit propagation tasks. Can use to produce 
 
 Most of the numbercrunching is done in Matlab, and there is a Python wrapper to facilitate calling Matlab and keeping instances of Matlab running.
 
-Please feel free to update this code! The more tools are here, the more useful it'll be for the whole lab. I want this to be the GOTO solution for any easy orbit propagation / analysis stuff. Try to respect the current organization though - if you have questions about changing things, please drop me a note: akennedy@mit.edu
+Note original MIT repo commit 46952246d3bb073d7acde4c402e6ac0b94d50d16 maps to a commit f94b8686ffc427d6f3f22927826f384ec4ec44c8 here
 
 ## Setup
 
