@@ -7,7 +7,16 @@ import json
 import copy
 from collections import OrderedDict
 
-from circinus_tools import io_tools
+try: # First try will work if subrepo circinus_tools is populated, or if prior module imported from elsewhere
+    from circinus_tools import io_tools
+except ImportError:
+    print("Importing circinus_tools from parent repo...")
+    try:
+        import sys
+        sys.path.insert(0, "../../")
+        from circinus_tools import io_tools
+    except ImportError:
+        print("Neither local nor parent-level circinus_tools found.")
 
 # should be 'prop_tools', the package name
 package_name = __name__.split('.')[0] 

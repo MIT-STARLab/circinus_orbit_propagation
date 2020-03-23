@@ -8,7 +8,6 @@
 import sys
 import time
 import os.path
-import matlab
 import argparse
 
 from run_tools import istring2dt
@@ -16,8 +15,29 @@ from run_tools import istring2dt
 #  local repo includes. todo:  make this less hackey
 sys.path.append ('..')
 from  prop_tools  import orbits
-from circinus_tools import io_tools
-from circinus_tools.matlab_if import MatlabIF
+try: # First try will work if subrepo circinus_tools is populated, or if prior module imported from elsewhere
+    from circinus_tools import io_tools
+except ImportError: # Covered by importing orbits above, but don't want to break if that's dropped.
+    print("Importing circinus_tools from parent repo...")
+    try:
+        sys.path.insert(0, "../../")
+        from circinus_tools import io_tools
+    except ImportError:
+        print("Neither local nor parent-level circinus_tools found.")
+
+try:
+    import matlab
+    try: # First try will work if subrepo circinus_tools is populated, or if prior module imported from elsewhere
+        from circinus_tools.matlab_if import MatlabIF
+    except ImportError: # Covered by importing orbits above, but don't want to break if that's dropped.
+        print("Importing circinus_tools from parent repo...")
+        try:
+            sys.path.insert(0, "../../")
+            from circinus_tools.matlab_if import MatlabIF
+        except ImportError:
+            print("Neither local nor parent-level circinus_tools found.")
+except ImportError:
+    print("Matlab module not installed.")
 
 REPO_BASE = os.path.abspath(os.pardir)  # os.pardir aka '..'
 MATLAB_PIPELINE_ENTRY = os.path.join(

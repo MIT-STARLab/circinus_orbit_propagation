@@ -1,6 +1,6 @@
 import json
 
-fd = open("/Users/ktikennedy/Dropbox (MIT)/Cesium/Cesium-1.27/Apps/AutomatedConstViz/movie_rev3/app_data_files/autoconst_sats.czml", "r")
+fd = open("[pathto]/Cesium/Cesium-1.27/Apps/AutomatedConstViz/movie_rev3/app_data_files/autoconst_sats.czml", "r")
 
 czml = json.load(fd)
 
@@ -17,6 +17,6 @@ for pkt in czml:
         # print field
 
 
-fd2 = open("/Users/ktikennedy/Dropbox (MIT)/Cesium/Cesium-1.27/Apps/AutomatedConstViz/movie_rev3/app_data_files/autoconst_sats2.czml", "w")
+fd2 = open("[pathto]/Cesium/Cesium-1.27/Apps/AutomatedConstViz/movie_rev3/app_data_files/autoconst_sats2.czml", "w")
 
 json.dump(czml,fd2,indent=4)

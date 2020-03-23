@@ -1,4 +1,0 @@
-[submodule "circinus_tools"]
-	path = circinus_tools
-	url = git@github.com:apollokit/circinus_tools.git 
-    branch = master

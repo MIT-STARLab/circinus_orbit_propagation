@@ -54,7 +54,7 @@ suncoef = 1;
 
 rsun = zeros(num_timepoints,3);
 for timepoint_num=1:num_timepoints
-    jdate = juliandate(start_time_dt + seconds(sat_times_s(timepoint_num)));
+    jdate = juliandate(datevec(start_time_dt + seconds(sat_times_s(timepoint_num))));
     [rasc, decl, rsun(timepoint_num,:)] = sun2 (jdate);  % rsun in km
 end
 
@@ -133,7 +133,7 @@ parfor sat_num = 1:num_sats
             access_times_slice = access_times(start_indx:end_indx,:);
             az_el_range_slice = az_el_range(start_indx:end_indx,:);
             
-            aer = [aer; mjuliandate(parse_iso_datestr(access_times_slice)) az_el_range_slice];
+            aer = [aer; mjuliandate(datevec(parse_iso_datestr(access_times_slice))) az_el_range_slice];
         end
         
         obs{sat_num,target_num} = obs_windows;
@@ -206,7 +206,7 @@ for sat_num = 1:num_sats
             access_times_slice = access_times(start_indx:end_indx,:);
             az_el_range_slice = az_el_range(start_indx:end_indx,:);
             
-            aer = [aer; mjuliandate(parse_iso_datestr(access_times_slice)) az_el_range_slice];
+            aer = [aer; mjuliandate(datevec(parse_iso_datestr(access_times_slice))) az_el_range_slice];
         end
         
         gslink{sat_num,gs_num} = dlnk_windows;
@@ -248,7 +248,7 @@ if yes_crosslinks && ~params.use_cached_accesses
                 access_times_slice = access_times(start_indx:end_indx,:);
                 range_slice = range(start_indx:end_indx,:);
                 alt_of_closest_point_slice = alt_of_closest_point(start_indx:end_indx,:);
-                sats_xlnks_range = [sats_xlnks_range; mjuliandate(parse_iso_datestr(access_times_slice)) range_slice alt_of_closest_point_slice];
+                sats_xlnks_range = [sats_xlnks_range; mjuliandate(datevec(parse_iso_datestr(access_times_slice))) range_slice alt_of_closest_point_slice];
             end
 
             xlink{sat_num,other_sat_num} = xlnk_windows;  % Note: had a problem earlier where I declared 'xlink' to be the wrong size, and kept on getting abstruse "you can't index this way!!1" errors from matlab. Super helpful  debug message (not). To be on the lookout for in future... 

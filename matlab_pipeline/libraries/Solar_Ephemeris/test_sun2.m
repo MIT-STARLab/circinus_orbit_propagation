@@ -1,8 +1,6 @@
 addpath('demo_sun2')
 
-% t = datetime('now')
-t = datetime([2017, 3, 15, 0, 0, 0])
-jdate = juliandate(t)
+jdate = juliandate([2017, 3, 15, 0, 0, 0])
 [rasc, decl, rsun] = sun2 (jdate);
 
 % rasc*180/pi
