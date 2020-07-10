@@ -96,7 +96,7 @@ sun_locations = [];
 
 rsun = zeros(num_timepoints,3);
 for timepoint_num=1:num_timepoints
-    jdate = juliandate(datevec(sat_times(timepoint_num,:)));
+    jdate = juliandate(sat_times(timepoint_num,:));
     [rasc, decl, rsun(timepoint_num,:)] = sun2 (jdate);  % rsun in km
 end
 

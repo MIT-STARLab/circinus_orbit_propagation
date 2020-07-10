@@ -7,6 +7,8 @@ import json
 import copy
 from collections import OrderedDict
 
+# from circinus_tools import io_tools
+
 try: # First try will work if subrepo circinus_tools is populated, or if prior module imported from elsewhere
     from circinus_tools import io_tools
 except ImportError:

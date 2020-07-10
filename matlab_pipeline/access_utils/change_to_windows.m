@@ -22,7 +22,7 @@ if size(times_list,1) == 0
     return
 end
 
-current_time = mjuliandate(datevec(parse_iso_datestr(times_list(1,:))));
+current_time = mjuliandate(parse_iso_datestr(times_list(1,:)));
 current_indx = 1;
 start_time = current_time;
 start_indx = current_indx;
@@ -32,7 +32,7 @@ last_indx = current_indx;
 for i = 2:size(times_list,1)
     last_time = current_time;
     last_indx = current_indx;
-    current_time = mjuliandate(datevec(parse_iso_datestr(times_list(i,:))));
+    current_time = mjuliandate(parse_iso_datestr(times_list(i,:)));
     current_indx = i;
     
     % close a window and move on to next
